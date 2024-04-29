@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "@feature-sliced",
+    "next/core-web-vitals",
+    "plugin:storybook/recommended"
+  ]
+}
