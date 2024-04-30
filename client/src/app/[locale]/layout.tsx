@@ -11,11 +11,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params: { locale },
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang={locale} data-theme="light">
       <body className={inter.className}>{children}</body>
     </html>
   );
