@@ -1,4 +1,4 @@
-:root[data-theme="light"] {
+:root {
   --text-50: #efeff5;
   --text-100: #dfdfec;
   --text-200: #c0c0d8;
@@ -59,9 +59,9 @@
   --accent-900: #1f1416;
   --accent-950: #100a0b;
 
-  --error-color: #cc1919;
-  --success-color: #27b34f;
-  --warning-color: #c1b030;
+  --error-800: #cc1919;
+  --success-500: #27b34f;
+  --warning-500: #c1b030;
 }
 :root[data-theme="dark"] {
   --text-50: #0a0a10;

@@ -9,6 +9,10 @@ export default meta;
 
 type Story = StoryObj<typeof AppButton>;
 
-export const Small: Story = {
-  args: { size: "sm" },
+export const HomePageButton: Story = {
+  args: { size: "lg", color: "primary", children: "Создать игру" },
+};
+
+export const Link: Story = {
+  args: { size: "md", href: "https://google.com" },
 };

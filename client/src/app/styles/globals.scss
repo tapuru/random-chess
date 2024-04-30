@@ -1,2 +1,7 @@
 @import "./reset.scss";
 @import "./colors.scss";
+@import "./vars.scss";
+
+html {
+  font-size: 10px;
+}

@@ -7,7 +7,6 @@ export const HomePage = () => {
   return (
     <main>
       <h1>{t("title")}</h1>
-      <AppButton size="sm" />
     </main>
   );
 };

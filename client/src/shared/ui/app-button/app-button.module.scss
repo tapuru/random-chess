@@ -1,3 +1,110 @@
 .root {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--border-radius);
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: default;
+  }
+}
+
+//size
+
+.large {
+  padding: 12px 48px;
+  font-size: 2.4rem;
+}
+.medium {
+  padding: 10px 24px;
+  font-size: 2rem;
+}
+.small {
+  padding: 8px 8px;
+  font-size: 1.8rem;
+}
+
+// variants
+
+.filled.primary {
   background-color: var(--primary-500);
+  color: var(--text-50);
+
+  &:hover {
+    background-color: var(--primary-600);
+  }
+
+  &:disabled {
+    &:hover {
+      background-color: var(--primary-500);
+    }
+  }
+}
+.filled.secondary {
+  background-color: var(--secondary-500);
+  color: var(--text-50);
+
+  &:hover {
+    background-color: var(--secondary-600);
+  }
+
+  &:disabled {
+    &:hover {
+      background-color: var(--secondary-500);
+    }
+  }
+}
+.filled.error {
+  background-color: var(--error-800);
+  color: var(--text-50);
+}
+.filled.sucess {
+  background-color: transparent;
+  border: 1px solid var(--success-500);
+}
+
+.outlined.primary {
+  background-color: transparent;
+  border: 1px solid var(--primary-500);
+  color: var(--text-900);
+
+  &:hover {
+    box-shadow: 0px 0px 3px var(--primary-400);
+  }
+
+  &:disabled:hover {
+    box-shadow: none;
+  }
+}
+.outlined.secondary {
+  background-color: transparent;
+  border: 1px solid var(--secondary-500);
+  color: var(--text-900);
+
+  &:hover {
+    box-shadow: 0px 0px 3px var(--secondary-400);
+  }
+
+  &:disabled:hover {
+    box-shadow: none;
+  }
+}
+.outlined.error {
+  background-color: transparent;
+  border: 1px solid var(--error-500);
+}
+.outlined.sucess {
+  background-color: transparent;
+  border: 1px solid var(--success-500);
+}
+
+.fullWidth {
+  display: flex;
 }
