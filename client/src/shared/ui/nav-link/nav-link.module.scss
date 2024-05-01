@@ -1,0 +1,8 @@
+.navLink {
+  font-size: 2rem;
+  color: var(--text-800);
+
+  &.active {
+    color: var(--primary-500);
+  }
+}

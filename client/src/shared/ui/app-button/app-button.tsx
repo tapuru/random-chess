@@ -1,6 +1,6 @@
+import cn from "classnames";
 import React from "react";
 import cl from "./app-button.module.scss";
-import cn from "classnames";
 
 interface AppButtonProps {
   size?: "sm" | "md" | "lg";

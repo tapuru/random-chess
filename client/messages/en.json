@@ -1,5 +1,10 @@
 {
   "IndexPage": {
     "title": "Hello world!"
+  },
+  "Navigation": {
+    "lobby": "Game",
+    "history": "History",
+    "about": "About"
   }
 }

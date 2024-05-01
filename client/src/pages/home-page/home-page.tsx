@@ -1,4 +1,3 @@
-import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useTranslations } from "next-intl";
 
 export const HomePage = () => {
