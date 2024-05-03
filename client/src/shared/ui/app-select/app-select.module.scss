@@ -5,13 +5,19 @@
   gap: 12px;
 
   padding: 2px 14px;
-  border: 1px solid var(--background-300);
+  border: 1px solid var(--background-600);
   background-color: transparent;
   border-radius: var(--border-radius);
   font-size: 1.8rem;
 
   &[data-state="open"] {
-    box-shadow: var(--focus-shadow-primary);
+    // box-shadow: var(--focus-shadow-primary);
+    // outline: 1px solid var(--primary-500);
+    border: 1px solid var(--primary-500);
+
+    & .selectIcon {
+      transform: rotate(180deg) translateY(4px);
+    }
   }
 
   &[data-disabled] {
@@ -22,12 +28,13 @@
   &.underlined {
     padding: 0px 4px;
     border: none;
-    border-radius: 0px;
-    border-bottom: 2px solid var(--background-300);
+    border-radius: var(--border-radius) var(--border-radius) 0px 0px;
+    border-bottom: 1px solid var(--background-700);
 
     &[data-state="open"] {
-      border-bottom: 2px solid var(--primary-500);
+      border-bottom: 1px solid var(--primary-500);
       box-shadow: none;
+      background-color: var(--primary-100);
     }
   }
 }
@@ -41,6 +48,7 @@
 
 .selectIcon {
   transform: translateY(2px);
+  transition: transform linear 0.2s;
 }
 
 .selectItem {
@@ -58,9 +66,8 @@
 }
 
 .groupLabel {
-  font-weight: 600;
-  color: var(--text-300);
-  margin-bottom: 4px;
+  color: var(--text-200);
+  margin-bottom: 6px;
   padding-left: 8px;
 }
 
