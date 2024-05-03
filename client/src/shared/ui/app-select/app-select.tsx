@@ -54,22 +54,26 @@ export const AppSelect = ({
           )}
           <Select.Viewport className="SelectViewport">
             {options?.map((option) => (
-              <SelectItem {...option}>{option.title}</SelectItem>
+              <SelectItem {...option} key={option.value}>
+                {option.title}
+              </SelectItem>
             ))}
             {optionGroups?.map((group, index) => (
-              <>
+              <div key={group.label}>
                 <Select.Group>
                   <Select.Label className={cl.groupLabel}>
                     {group.label}
                   </Select.Label>
                   {group.options.map((option) => (
-                    <SelectItem {...option}>{option.title}</SelectItem>
+                    <SelectItem key={option.value} {...option}>
+                      {option.title}
+                    </SelectItem>
                   ))}
                 </Select.Group>
                 {index !== optionGroups.length - 1 && (
                   <Select.Separator className={cl.selectDivider} />
                 )}
-              </>
+              </div>
             ))}
           </Select.Viewport>
           {withScrollButtons && (
