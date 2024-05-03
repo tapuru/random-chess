@@ -1,0 +1,71 @@
+.selectTrigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  padding: 2px 14px;
+  border: 1px solid var(--background-300);
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  font-size: 1.8rem;
+
+  &[data-state="open"] {
+    box-shadow: var(--focus-shadow-primary);
+  }
+
+  &[data-disabled] {
+    cursor: default;
+    opacity: 0.8;
+  }
+
+  &.underlined {
+    padding: 0px 4px;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 2px solid var(--background-300);
+
+    &[data-state="open"] {
+      border-bottom: 2px solid var(--primary-500);
+      box-shadow: none;
+    }
+  }
+}
+
+.selectContent {
+  padding: 12px 18px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-top: 8px;
+}
+
+.selectIcon {
+  transform: translateY(2px);
+}
+
+.selectItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 8px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--primary-100);
+  }
+}
+
+.groupLabel {
+  font-weight: 600;
+  color: var(--text-300);
+  margin-bottom: 4px;
+  padding-left: 8px;
+}
+
+.selectDivider {
+  background-color: var(--background-200);
+  height: 1px;
+  margin: 8px 8px;
+}
