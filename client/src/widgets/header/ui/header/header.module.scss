@@ -4,5 +4,12 @@
   align-items: center;
 
   height: 60px;
-  border-bottom: 1px solid var(--background-100);
+  border-bottom: 1px solid var(--background-600);
+  background-color: var(--background-500);
+  padding: 8px 50px;
+
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: var(--layer-6);
 }

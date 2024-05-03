@@ -20,9 +20,7 @@ export default function RootLayout({
   return (
     <html lang={locale} data-theme="light">
       <body className={inter.className}>
-        <header>
-          <Header />
-        </header>
+        <Header />
         {children}
         <footer></footer>
       </body>

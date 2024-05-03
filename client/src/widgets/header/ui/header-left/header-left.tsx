@@ -1,14 +1,10 @@
 import Link from "next/link";
-import cl from "./header-right.module.scss";
-import {
-  NextIntlClientProvider,
-  useMessages,
-  useTranslations,
-} from "next-intl";
+import cl from "./header-left.module.scss";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 import { pick } from "lodash";
 import { Navbar } from "../navbar/navbar";
 
-export const HeaderRight = () => {
+export const HeaderLeft = () => {
   const messages = useMessages();
 
   return (

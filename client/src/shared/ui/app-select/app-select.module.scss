@@ -44,6 +44,9 @@
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   margin-top: 8px;
+  background-color: var(--background-100);
+
+  z-index: var(--layer-7);
 }
 
 .selectIcon {

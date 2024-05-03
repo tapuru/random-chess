@@ -1,15 +1,16 @@
-import { HeaderRight } from "../header-right/header-right";
+import { HeaderLeft } from "../header-left/header-left";
+import { HeaderRight } from "../header-right/header-roght";
 import cl from "./header.module.scss";
 
 export const Header = () => {
   return (
-    <div className={cl.root}>
+    <header className={cl.root}>
+      <div className={cl.left}>
+        <HeaderLeft />
+      </div>
       <div className={cl.right}>
         <HeaderRight />
       </div>
-      <div className={cl.left}>
-        <div></div>
-      </div>
-    </div>
+    </header>
   );
 };
