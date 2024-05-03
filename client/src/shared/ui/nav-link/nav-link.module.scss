@@ -1,8 +1,33 @@
 .navLink {
   font-size: 2rem;
-  color: var(--text-800);
+  color: var(--text-400);
+  transition: color var(--transition-hover);
+
+  position: relative;
 
   &.active {
     color: var(--primary-500);
+  }
+
+  &:hover {
+    margin-bottom: 100px;
+    &:after {
+      opacity: 1;
+      bottom: -5px;
+    }
+  }
+
+  &:after {
+    display: block;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: var(--background-700);
+    transition: all var(--transition-hover);
+    opacity: 0;
+
+    position: absolute;
+    bottom: 1px;
+    left: 0;
   }
 }

@@ -30,11 +30,16 @@
     border: none;
     border-radius: var(--border-radius) var(--border-radius) 0px 0px;
     border-bottom: 1px solid var(--background-700);
+    transition: all var(--transition-hover);
 
     &[data-state="open"] {
       border-bottom: 1px solid var(--primary-500);
       box-shadow: none;
       background-color: var(--primary-100);
+    }
+
+    &:hover {
+      border-bottom: 1px solid var(--primary-500);
     }
   }
 }
@@ -62,6 +67,7 @@
   padding: 6px 8px;
   border-radius: var(--border-radius);
   cursor: pointer;
+  transition: background-color var(--transition-hover);
 
   &:hover {
     background-color: var(--primary-100);
