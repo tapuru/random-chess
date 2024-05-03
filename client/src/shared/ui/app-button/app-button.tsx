@@ -1,8 +1,8 @@
 import cn from "classnames";
-import React from "react";
+import React, { ComponentProps, PropsWithRef } from "react";
 import cl from "./app-button.module.scss";
 
-interface AppButtonProps {
+interface AppButtonProps extends ComponentProps<"button"> {
   size?: "sm" | "md" | "lg";
   variant?: "filled" | "outlined";
   color?: "primary" | "secondary" | "inherit" | "success" | "error";
@@ -22,6 +22,7 @@ export const AppButton = ({
   icon,
   variant = "filled",
   href,
+  ...props
 }: AppButtonProps) => {
   if (href) {
     return (
@@ -57,6 +58,7 @@ export const AppButton = ({
 
   return (
     <button
+      {...props}
       disabled={disabled}
       className={cn(
         cl.root,

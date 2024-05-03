@@ -1,6 +1,9 @@
 {
-  "IndexPage": {
-    "title": "Привет мир!"
+  "HomePage": {
+    "title": "Привет мир!",
+    "createGame": "Создать игру",
+    "findGame": "Найти игру",
+    "playWithEngine": "Играть с компьютером"
   },
   "Navigation": {
     "lobby": "Игра",
