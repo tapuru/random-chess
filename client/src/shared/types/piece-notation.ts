@@ -9,6 +9,6 @@ export enum PieceNotation {
   ROOK_BLACK = "r",
   BISHOP_WHITE = "B",
   BISHOP_BLACK = "b",
-  NIGHT_WHITE = "N",
-  NIGHT_BLACK = "n",
+  KNIGHT_WHITE = "N",
+  KNIGHT_BLACK = "n",
 }

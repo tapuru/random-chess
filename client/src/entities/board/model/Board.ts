@@ -1,7 +1,8 @@
 import { ChessColors } from "@/shared/types/chess-colors";
 import { Tile } from "./Tile";
-import { Piece } from "./Piece";
+import { Piece } from "./piece/Piece";
 import { PieceNotation } from "@/shared/types/piece-notation";
+import { getPieceFromNotation } from "../lib/getPieceFromNotation";
 
 export class Board {
   private width: number;
@@ -38,9 +39,11 @@ export class Board {
         } else {
           //TODO: make fen validation
 
-          const piece = Piece.getPieceFromNotation(rows[i][j] as PieceNotation);
           const color = iteration % 2 ? ChessColors.BLACK : ChessColors.WHITE;
-          rowArray.push(new Tile(color, iteration % 8, i, piece));
+          const tile = new Tile(color, iteration % 8, i);
+          const piece = getPieceFromNotation(rows[i][j] as PieceNotation, tile);
+          tile.setPiece(piece);
+          rowArray.push(tile);
           iteration++;
         }
       }
