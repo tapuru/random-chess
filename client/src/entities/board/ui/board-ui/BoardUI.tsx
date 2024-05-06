@@ -7,7 +7,7 @@ import { TileUI } from "../tile-ui/tile-ui";
 
 interface BoardUIProps {
   board: Board;
-  setBoard: () => Board;
+  setBoard: (board: Board) => void;
 }
 
 export const BoardUI = ({ board, setBoard }: BoardUIProps) => {

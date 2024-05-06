@@ -4,7 +4,6 @@ import { Piece } from "./Piece";
 import { PieceNotation } from "@/shared/types/piece-notation";
 
 export class Board {
-  private tile: typeof Tile;
   private width: number;
   private height: number;
   private initialFEN: string;
@@ -12,7 +11,6 @@ export class Board {
   public tiles: Tile[][] = [];
 
   constructor(
-    tile: typeof Tile,
     initialFen: string = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     width: number = 8,
     height: number = 8
@@ -20,7 +18,6 @@ export class Board {
     this.width = width;
     this.height = height;
     this.initialFEN = initialFen;
-    this.tile = tile;
   }
 
   public initFromFen() {

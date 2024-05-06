@@ -1,6 +1,6 @@
 import { ChessColors } from "@/shared/types/chess-colors";
 import { Piece } from "./Piece";
-import { letterRowAlias } from "../lib/notation-alias";
+import { letterRowAlias } from "../lib/const";
 
 export class Tile {
   readonly color: ChessColors;
