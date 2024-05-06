@@ -1,9 +1,8 @@
 "use client";
-
-import { AppButton } from "@/shared/ui/app-button/app-button";
-import cl from "./home-buttos.module.scss";
-import { useRouter } from "@/shared/config/navigation";
+import { useRouter } from "next/router";
+import cl from "./home-buttons.module.scss";
 import { useTranslations } from "next-intl";
+import { AppButton } from "@/shared/ui/app-button/app-button";
 
 export const HomeButtons = () => {
   const router = useRouter();
