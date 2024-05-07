@@ -53,19 +53,19 @@ export class Board {
     this.tiles = res;
   }
 
-  // public initTiles() {
-  //   const res: Tile[][] = [];
-  //   for (let i = 0; i < this.width; i++) {
-  //     const row: Tile[] = [];
-  //     for (let j = 0; j < this.height; j++) {
-  //       if ((i + j) % 2 !== 0) {
-  //         row.push(new Tile(i, j, ChessColors.BLACK, ));
-  //       } else {
-  //         row.push(new Tile());
-  //       }
-  //     }
-  //     res.push(row);
-  //   }
-  //   return res;
-  // }
+  public showAvaliableTiles(selectedTile: Tile | null) {
+    for (let i = 0; i < this.tiles.length; i++) {
+      const row = this.tiles[i];
+      for (let j = 0; j < row.length; j++) {
+        row[j].isAvaliable = !!selectedTile?.piece?.canMove(row[j]);
+      }
+    }
+  }
+
+  public getClone() {
+    const clone = new Board();
+    clone.tiles = this.tiles;
+    clone.initialFEN = this.initialFEN;
+    return clone;
+  }
 }

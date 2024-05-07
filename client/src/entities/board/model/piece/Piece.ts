@@ -23,7 +23,13 @@ export class Piece {
     this.image = null;
   }
 
-  getColorFromNotation(notation: PieceNotation): ChessColors {
+  private getColorFromNotation(notation: PieceNotation): ChessColors {
     return isUpperCase(notation) ? ChessColors.WHITE : ChessColors.BLACK;
   }
+
+  public canMove(tile: Tile): boolean {
+    return true;
+  }
+
+  public move(targetTile: Tile) {}
 }

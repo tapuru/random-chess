@@ -6,7 +6,7 @@ export class Tile {
   readonly color: ChessColors;
   readonly x: number;
   readonly y: number;
-  notation: string;
+  readonly notation: string;
   isAvaliable: boolean;
   piece: Piece | null;
 
@@ -24,11 +24,19 @@ export class Tile {
     piece ? (this.piece = piece) : (this.piece = null);
   }
 
-  getNotation() {
+  private getNotation() {
     return `${letterRowAlias[this.y]}${this.x + 1}`;
   }
 
   public setPiece(piece: Piece) {
     this.piece = piece;
+  }
+
+  public movePiece(targetTile: Tile) {
+    if (this.piece?.canMove(targetTile)) {
+      this.piece.move(targetTile);
+      targetTile.piece = this.piece;
+      this.piece = null;
+    }
   }
 }
