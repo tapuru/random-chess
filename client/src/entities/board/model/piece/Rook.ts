@@ -16,7 +16,12 @@ export class Rook extends Piece {
 
   public canMove(targetTile: Tile): boolean {
     if (!super.canMove(targetTile)) return false;
-
-    return true;
+    if (
+      this.tile.isEmptyVertical(targetTile) ||
+      this.tile.isEmptyHorizontal(targetTile)
+    ) {
+      return true;
+    }
+    return false;
   }
 }

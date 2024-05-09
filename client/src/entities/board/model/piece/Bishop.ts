@@ -16,7 +16,7 @@ export class Bishop extends Piece {
 
   public canMove(targetTile: Tile): boolean {
     if (!super.canMove(targetTile)) return false;
-
-    return true;
+    if (this.tile.isEmptyDiagonal(targetTile)) return true;
+    return false;
   }
 }
