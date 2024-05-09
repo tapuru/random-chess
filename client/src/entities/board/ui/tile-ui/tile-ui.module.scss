@@ -24,13 +24,13 @@
 }
 
 .avaliable {
-  background-color: var(--success-color);
+  background-color: var(--success-500);
 }
 
 .avaliableDot {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgb(147, 143, 150);
+  background-color: var(--success-500);
   opacity: 0.8;
 }
