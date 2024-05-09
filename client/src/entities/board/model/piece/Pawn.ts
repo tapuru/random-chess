@@ -14,4 +14,10 @@ export class Pawn extends Piece {
     super(notation, tile);
     this.image = this.color === ChessColors.BLACK ? imageBlack : imageWhite;
   }
+
+  public canMove(targetTile: Tile): boolean {
+    if (!super.canMove(targetTile)) return false;
+
+    return true;
+  }
 }

@@ -1,4 +1,4 @@
-import { isUpperCase } from "@/shared/lib/isUpperCase";
+import { isUpperCase } from "@/shared/lib/is-upper-case";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { PieceNotation } from "@/shared/types/piece-notation";
 import { Tile } from "../Tile";
@@ -27,7 +27,13 @@ export class Piece {
     return isUpperCase(notation) ? ChessColors.WHITE : ChessColors.BLACK;
   }
 
-  public canMove(tile: Tile): boolean {
+  public canMove(targetTile: Tile): boolean {
+    if (targetTile.piece?.color === this.color) return false;
+    if (
+      targetTile.piece?.notation === PieceNotation.KING_BLACK ||
+      targetTile.piece?.notation === PieceNotation.KING_WHITE
+    )
+      return false;
     return true;
   }
 

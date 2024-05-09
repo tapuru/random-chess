@@ -64,8 +64,6 @@ export class Tile {
       return false;
     }
 
-    console.log(this);
-
     const min = Math.min(this.y, targetTile.y);
     const max = Math.max(this.y, targetTile.y);
 
@@ -76,10 +74,36 @@ export class Tile {
   }
 
   public isEmptyHorizontal(targetTile: Tile): boolean {
+    if (this.y !== targetTile.y) {
+      return false;
+    }
+
+    const min = Math.min(this.x, targetTile.x);
+    const max = Math.max(this.x, targetTile.x);
+
+    for (let i = min + 1; i < max; i++) {
+      if (!this.board.getTileByCords(i, this.y).isEmpty()) return false;
+    }
     return true;
   }
 
   public isEmptyDiagonal(targetTile: Tile): boolean {
+    const absX = Math.abs(targetTile.x - this.x);
+    const absY = Math.abs(targetTile.y - this.y);
+
+    if (absX !== absY) return false;
+
+    const dy = this.y < targetTile.y ? 1 : -1;
+    const dx = this.x < targetTile.x ? 1 : -1;
+
+    for (let i = 1; i < absY; i++) {
+      if (
+        !this.board.getTileByCords(this.x + dx * i, this.y + dy * i).isEmpty()
+      ) {
+        return false;
+      }
+    }
+
     return true;
   }
 }

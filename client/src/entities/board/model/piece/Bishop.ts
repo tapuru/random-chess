@@ -4,7 +4,6 @@ import { Tile } from "../Tile";
 import imageBlack from "@/shared/assets/images/pieces-1/Piece=Bishop, Side=Black.png";
 import imageWhite from "@/shared/assets/images/pieces-1/Piece=Bishop, Side=White.png";
 import { ChessColors } from "@/shared/types/chess-colors";
-import { StaticImageData } from "next/image";
 
 export class Bishop extends Piece {
   constructor(
@@ -13,5 +12,11 @@ export class Bishop extends Piece {
   ) {
     super(notation, tile);
     this.image = this.color === ChessColors.BLACK ? imageBlack : imageWhite;
+  }
+
+  public canMove(targetTile: Tile): boolean {
+    if (!super.canMove(targetTile)) return false;
+
+    return true;
   }
 }
