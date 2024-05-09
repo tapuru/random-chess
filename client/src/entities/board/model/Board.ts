@@ -1,6 +1,5 @@
 import { ChessColors } from "@/shared/types/chess-colors";
 import { Tile } from "./Tile";
-import { Piece } from "./piece/Piece";
 import { PieceNotation } from "@/shared/types/piece-notation";
 import { getPieceFromNotation } from "../lib/getPieceFromNotation";
 
@@ -32,25 +31,29 @@ export class Board {
         const emptyTiles = parseInt(rows[i][j]);
         if (emptyTiles) {
           for (let k = 0; k < emptyTiles; k++) {
-            const color = iteration % 2 ? ChessColors.BLACK : ChessColors.WHITE;
-            rowArray.push(new Tile(color, j + k, i, null));
+            const color = Tile.getColorFromCords(iteration % 8, i);
+            rowArray.push(new Tile(this, color, j + k, i, null));
             iteration++;
           }
         } else {
           //TODO: make fen validation
 
-          const color = iteration % 2 ? ChessColors.BLACK : ChessColors.WHITE;
-          const tile = new Tile(color, iteration % 8, i);
+          const color = Tile.getColorFromCords(iteration % 8, i);
+          const tile = new Tile(this, color, iteration % 8, i);
           const piece = getPieceFromNotation(rows[i][j] as PieceNotation, tile);
           tile.setPiece(piece);
           rowArray.push(tile);
           iteration++;
         }
       }
-      iteration++;
       res.push(rowArray);
     }
     this.tiles = res;
+    console.log(this.tiles);
+  }
+
+  public getTileByCords(x: number, y: number) {
+    return this.tiles[y][x];
   }
 
   public showAvaliableTiles(selectedTile: Tile | null) {
