@@ -49,7 +49,6 @@ export class Board {
       res.push(rowArray);
     }
     this.tiles = res;
-    console.log(this.tiles);
   }
 
   public getTileByCords(x: number, y: number) {
