@@ -23,12 +23,10 @@ export class Piece {
     this.image = null;
   }
 
-  private getColorFromNotation(notation: PieceNotation): ChessColors {
-    return isUpperCase(notation) ? ChessColors.WHITE : ChessColors.BLACK;
-  }
-
-  public canMove(targetTile: Tile): boolean {
-    if (targetTile.piece?.color === this.color) return false;
+  public canMove(targetTile: Tile, countFrendlyOccupied?: boolean): boolean {
+    if (!countFrendlyOccupied && targetTile.piece?.color === this.color) {
+      return false;
+    }
     if (
       targetTile.piece?.notation === PieceNotation.KING_BLACK ||
       targetTile.piece?.notation === PieceNotation.KING_WHITE
@@ -38,4 +36,8 @@ export class Piece {
   }
 
   public move(targetTile: Tile) {}
+
+  private getColorFromNotation(notation: PieceNotation): ChessColors {
+    return isUpperCase(notation) ? ChessColors.WHITE : ChessColors.BLACK;
+  }
 }

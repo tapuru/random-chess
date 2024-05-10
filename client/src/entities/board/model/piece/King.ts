@@ -15,9 +15,19 @@ export class King extends Piece {
     this.image = this.color === ChessColors.BLACK ? imageBlack : imageWhite;
   }
 
-  public canMove(targetTile: Tile): boolean {
-    if (!super.canMove(targetTile)) return false;
+  public canMove(targetTile: Tile, countFrendlyOccupied?: boolean): boolean {
+    if (!super.canMove(targetTile, countFrendlyOccupied)) return false;
+    const dx = Math.abs(this.tile.x - targetTile.x);
+    const dy = Math.abs(this.tile.y - targetTile.y);
 
-    return true;
+    if (
+      (dx === 1 && dy === 1) ||
+      (dx === 1 && dy === 0) ||
+      (dy === 1 && dx === 0)
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }

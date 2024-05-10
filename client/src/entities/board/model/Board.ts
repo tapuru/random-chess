@@ -60,6 +60,16 @@ export class Board {
     for (let i = 0; i < this.tiles.length; i++) {
       const row = this.tiles[i];
       for (let j = 0; j < row.length; j++) {
+        if (
+          selectedTile?.piece?.notation.toLowerCase() === "k" &&
+          !!selectedTile.piece.canMove(row[j])
+        ) {
+          if (!row[j].isAttackedByEnemy(selectedTile.piece.color)) {
+            row[j].isAvaliable = true;
+          }
+          continue;
+        }
+
         row[j].isAvaliable = !!selectedTile?.piece?.canMove(row[j]);
       }
     }

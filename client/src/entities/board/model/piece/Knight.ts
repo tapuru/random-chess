@@ -14,9 +14,11 @@ export class Knight extends Piece {
     this.image = this.color === ChessColors.BLACK ? imageBlack : imageWhite;
   }
 
-  public canMove(targetTile: Tile): boolean {
-    if (!super.canMove(targetTile)) return false;
+  public canMove(targetTile: Tile, countFrendlyOccupied?: boolean): boolean {
+    if (!super.canMove(targetTile, countFrendlyOccupied)) return false;
+    const dx = Math.abs(this.tile.x - targetTile.x);
+    const dy = Math.abs(this.tile.y - targetTile.y);
 
-    return true;
+    return (dx === 1 && dy === 2) || (dx === 2 && dy === 1);
   }
 }

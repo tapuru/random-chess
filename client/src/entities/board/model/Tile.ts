@@ -3,6 +3,7 @@ import { Piece } from "./piece/Piece";
 import { letterRowAlias } from "../lib/const";
 import { Board } from "./Board";
 import { isEven } from "@/shared/lib/is-even";
+import { Pawn } from "./piece/Pawn";
 
 export class Tile {
   readonly color: ChessColors;
@@ -41,9 +42,46 @@ export class Tile {
     return `${letterRowAlias[this.y]}${this.x + 1}`;
   }
 
-  public isEmpty() {
+  public isEmpty(): boolean {
     if (this.piece !== null) return false;
     return true;
+  }
+
+  public isAttackedByEnemy(color: ChessColors): boolean {
+    for (let i = 0; i < this.board.tiles.length; i++) {
+      const row = this.board.tiles[i];
+      for (let j = 0; j < row.length; j++) {
+        const tile = row[j];
+        if (!tile.piece) {
+          continue;
+        }
+        if (tile.piece.color === color) {
+          continue;
+        }
+
+        if (tile.piece.notation.toLowerCase() === "p") {
+          const pawn = tile.piece as Pawn;
+          if (pawn.canAttack(this)) {
+            console.log(this);
+            return true;
+          } else {
+            continue;
+          }
+        }
+
+        if (tile.piece.canMove(this, true)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public isEnemy(targetTile: Tile): boolean {
+    if (targetTile.piece) {
+      return targetTile.piece.color !== this.piece?.color;
+    }
+    return false;
   }
 
   public setPiece(piece: Piece) {

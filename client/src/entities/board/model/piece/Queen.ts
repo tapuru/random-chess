@@ -14,8 +14,8 @@ export class Queen extends Piece {
     this.image = this.color === ChessColors.BLACK ? imageBlack : imageWhite;
   }
 
-  public canMove(targetTile: Tile): boolean {
-    if (!super.canMove(targetTile)) return false;
+  public canMove(targetTile: Tile, countFrendlyOccupied?: boolean): boolean {
+    if (!super.canMove(targetTile, countFrendlyOccupied)) return false;
     if (
       this.tile.isEmptyVertical(targetTile) ||
       this.tile.isEmptyHorizontal(targetTile) ||
