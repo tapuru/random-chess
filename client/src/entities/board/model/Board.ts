@@ -2,12 +2,14 @@ import { ChessColors } from "@/shared/types/chess-colors";
 import { Tile } from "./Tile";
 import { PieceNotation } from "@/shared/types/piece-notation";
 import { getPieceFromNotation } from "../lib/getPieceFromNotation";
+import { Piece } from "./piece/Piece";
 
 export class Board {
   private width: number;
   private height: number;
   private initialFEN: string;
-
+  public lostBlackPieces: Piece[] = [];
+  public lostWhitePieces: Piece[] = [];
   public tiles: Tile[][] = [];
 
   constructor(
@@ -79,5 +81,13 @@ export class Board {
     clone.tiles = this.tiles;
     clone.initialFEN = this.initialFEN;
     return clone;
+  }
+
+  public addLostPiece(piece: Piece) {
+    if (piece.color === ChessColors.BLACK) {
+      this.lostBlackPieces.push(piece);
+    } else {
+      this.lostWhitePieces.push(piece);
+    }
   }
 }

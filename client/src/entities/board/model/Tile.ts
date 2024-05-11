@@ -92,6 +92,9 @@ export class Tile {
   public movePiece(targetTile: Tile) {
     if (this.piece?.canMove(targetTile)) {
       this.piece.move(targetTile);
+      if (targetTile.piece) {
+        this.board.addLostPiece(targetTile.piece);
+      }
       targetTile.setPiece(this.piece);
       this.piece = null;
     }
