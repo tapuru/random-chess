@@ -80,6 +80,8 @@ export class Board {
     const clone = new Board();
     clone.tiles = this.tiles;
     clone.initialFEN = this.initialFEN;
+    clone.lostBlackPieces = this.lostBlackPieces;
+    clone.lostWhitePieces = this.lostWhitePieces;
     return clone;
   }
 

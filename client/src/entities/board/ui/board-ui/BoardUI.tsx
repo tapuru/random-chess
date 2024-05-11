@@ -5,13 +5,21 @@ import { Board } from "../../model/Board";
 import { TileUI } from "../tile-ui/tile-ui";
 import { useEffect, useState } from "react";
 import { Tile } from "../../model/Tile";
+import { ChessColors } from "@/shared/types/chess-colors";
 
 interface BoardUIProps {
   board: Board;
   setBoard: (board: Board) => void;
+  currentPlayerColor: ChessColors | null;
+  swapPlayer: () => void;
 }
 
-export const BoardUI = ({ board, setBoard }: BoardUIProps) => {
+export const BoardUI = ({
+  board,
+  setBoard,
+  currentPlayerColor,
+  swapPlayer,
+}: BoardUIProps) => {
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
 
   useEffect(() => {
@@ -35,11 +43,12 @@ export const BoardUI = ({ board, setBoard }: BoardUIProps) => {
       selectedTile.piece?.canMove(tile)
     ) {
       selectedTile.movePiece(tile);
+      swapPlayer();
       setSelectedTile(null);
-      return;
-    }
-    if (tile.piece !== null) {
-      setSelectedTile(tile);
+    } else {
+      if (tile.piece?.color === currentPlayerColor) {
+        setSelectedTile(tile);
+      }
     }
   };
 
