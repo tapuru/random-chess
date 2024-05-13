@@ -1,15 +1,17 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectCurrentGame, setCurrnetTurn } from "./room-slice";
 import { useEffect, useState } from "react";
 import { Board } from "@/entities/board";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { ChessColors } from "@/shared/types/chess-colors";
+import { selectRoomId, selectRoomPlayers } from "./room-slice";
+import { gameActions, selectGame, selectGameSettings } from "@/entities/game";
 
 export const useLocalGameBoard = () => {
   const dispatch = useAppDispatch();
-  const currentGame = useAppSelector(selectCurrentGame);
+  const currentGame = useAppSelector(selectGame);
+  const gameSettings = useAppSelector(selectGameSettings);
+  const players = useAppSelector(selectRoomPlayers);
+  const roomId = useAppSelector(selectRoomId);
   const [board, setBoard] = useState(new Board());
 
   useEffect(() => {
@@ -17,15 +19,16 @@ export const useLocalGameBoard = () => {
   }, []);
 
   function start() {
-    const board = new Board(currentGame.initialFen || undefined);
+    const board = new Board(gameSettings.initialFen || undefined);
     board.initFromFen();
     setBoard(board);
-    dispatch(setCurrnetTurn(ChessColors.WHITE));
+    dispatch(gameActions.setCurrnetTurnColor(ChessColors.WHITE));
   }
 
   return {
     board,
     setBoard,
     currentGame,
+    roomId,
   };
 };

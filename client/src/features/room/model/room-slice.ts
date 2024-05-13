@@ -1,31 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { GameModes } from "../types/game-modes";
 import { ChessColors } from "@/shared/types/chess-colors";
-import { Turn } from "../types/turn";
 import { Player } from "@/entities/player";
-import { GameState } from "../types/game-state";
 import { GameResult } from "../types/game-result";
+import { GameModes } from "@/shared/types/game-modes";
+import { GameTypes } from "@/shared/types/game-type";
 
 interface RoomState {
-  gameSettings: {};
-  currentGame: GameState | null;
-  games: GameResult[];
-  gameVariant: "local" | "online" | "engine";
   id: string | "local";
-  mode: GameModes;
-  initialFen: string | null;
-  currentTurn: ChessColors;
-  turns: Turn[];
+  games: GameResult[];
   players: Player[];
 }
 
 const initialState: RoomState = {
-  gameVariant: "local",
   id: "local",
-  mode: GameModes.CLASSICAL,
-  initialFen: null,
-  currentTurn: ChessColors.WHITE,
-  turns: [],
   players: [
     {
       color: ChessColors.BLACK,
@@ -44,30 +31,17 @@ const initialState: RoomState = {
       ownerId: 1,
     },
   ],
+  games: [],
 };
 
 export const roomSlice = createSlice({
-  name: "game",
+  name: "room",
   initialState,
-  reducers: {
-    setCurrnetTurn(state, action: PayloadAction<ChessColors>) {
-      state.currentTurn = action.payload;
-    },
-    toggleCurrentTurn(state) {
-      state.currentTurn === ChessColors.BLACK
-        ? (state.currentTurn = ChessColors.WHITE)
-        : (state.currentTurn = ChessColors.BLACK);
-    },
-    makeTurn(state, action: PayloadAction<Turn>) {
-      state.turns.push(action.payload);
-    },
-  },
+  reducers: {},
 });
 
 export const roomReducer = roomSlice.reducer;
 
-export const { toggleCurrentTurn, makeTurn, setCurrnetTurn } =
-  roomSlice.actions;
-
-export const selectCurrentTurn = (state: RootState) => state.room;
-export const selectCurrentGame = (state: RootState) => state.room;
+export const selectRoomPlayers = (state: RootState) => state.room.players;
+export const selectRoomGames = (state: RootState) => state.room.games;
+export const selectRoomId = (state: RootState) => state.room.id;
