@@ -1,0 +1,25 @@
+@import "../../styles/breakpoints.module.scss";
+
+.root {
+  margin: 0 auto;
+  padding: 0px 12px;
+  max-width: 1320px;
+
+  @media (max-width: $bp-xxl) {
+    max-width: 1140px;
+  }
+  @media (max-width: $bp-xl) {
+    max-width: 960px;
+  }
+  @media (max-width: $bp-l) {
+    max-width: 720px;
+  }
+  @media (max-width: $bp-m) {
+    max-width: 540px;
+  }
+}
+
+.fullWidth {
+  max-width: 100%;
+  padding: 0px 12px;
+}
