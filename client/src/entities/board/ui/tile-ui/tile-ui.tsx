@@ -5,6 +5,7 @@ import { Tile } from "../../model/Tile";
 import cl from "./tile-ui.module.scss";
 import { ChessColors } from "@/shared/types/chess-colors";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface TileUIProps {
   tile: Tile;
@@ -27,8 +28,8 @@ export const TileUI = ({ tile, selected, onClick }: TileUIProps) => {
         <Image
           src={tile.piece.image}
           alt={tile.piece.notation}
-          width={50}
-          height={50}
+          width={400}
+          height={400}
         />
       )}
       {!tile.piece && tile.isAvaliable && (

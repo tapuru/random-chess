@@ -3,9 +3,8 @@
 import cl from "./BoardUI.module.scss";
 import { Board } from "../../model/Board";
 import { TileUI } from "../tile-ui/tile-ui";
-import { useEffect, useState } from "react";
-import { Tile } from "../../model/Tile";
 import { ChessColors } from "@/shared/types/chess-colors";
+import { useBoard } from "../../model/use-board";
 
 interface BoardUIProps {
   board: Board;
@@ -20,40 +19,15 @@ export const BoardUI = ({
   currentPlayerColor,
   swapPlayer,
 }: BoardUIProps) => {
-  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
-
-  useEffect(() => {
-    showAvaliableTiles();
-  }, [selectedTile]);
-
-  const updateBoard = () => {
-    const newBoard = board.getClone();
-    setBoard(newBoard);
-  };
-
-  const showAvaliableTiles = () => {
-    board.showAvaliableTiles(selectedTile);
-    updateBoard();
-  };
-
-  const handleTileClick = (tile: Tile) => {
-    if (
-      selectedTile &&
-      selectedTile !== tile &&
-      selectedTile.piece?.canMove(tile)
-    ) {
-      selectedTile.movePiece(tile);
-      swapPlayer();
-      setSelectedTile(null);
-    } else {
-      if (tile.piece?.color === currentPlayerColor) {
-        setSelectedTile(tile);
-      }
-    }
-  };
+  const { handleTileClick, boardRef, selectedTile } = useBoard(
+    board,
+    setBoard,
+    currentPlayerColor,
+    swapPlayer
+  );
 
   return (
-    <div className={cl.root}>
+    <div className={cl.root} ref={boardRef}>
       {board.tiles.map((row, index) => (
         <div className={cl.row} key={index}>
           {row.map((tile) => (
