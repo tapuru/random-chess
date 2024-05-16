@@ -12,4 +12,5 @@ export interface Turn {
     notation: string;
   };
   piece: PieceNotation;
+  captured: boolean;
 }
