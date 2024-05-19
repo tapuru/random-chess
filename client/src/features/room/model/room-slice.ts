@@ -14,7 +14,7 @@ const initialState: RoomState = {
   players: [
     {
       color: ChessColors.BLACK,
-      isRoomOwner: true,
+      isRoomOwner: false,
       isWinner: false,
       loses: 0,
       wins: 0,
@@ -23,11 +23,11 @@ const initialState: RoomState = {
     },
     {
       color: ChessColors.WHITE,
-      isRoomOwner: false,
+      isRoomOwner: true,
       isWinner: false,
       loses: 0,
       wins: 0,
-      ownerId: 1,
+      ownerId: 2,
       timeLeft: 300,
     },
   ],
@@ -37,10 +37,20 @@ const initialState: RoomState = {
 export const roomSlice = createSlice({
   name: "room",
   initialState,
-  reducers: {},
+  reducers: {
+    decrementPlayerTime(state, action: PayloadAction<number>) {
+      state.players.forEach((p) => {
+        if (p.ownerId === action.payload && p.timeLeft !== null) {
+          p.timeLeft > 0 ? p.timeLeft-- : (p.timeLeft = 0);
+        }
+      });
+    },
+  },
 });
 
 export const roomReducer = roomSlice.reducer;
+
+export const roomActions = roomSlice.actions;
 
 export const selectRoomPlayers = (state: RootState) => state.room.players;
 export const selectRoomGames = (state: RootState) => state.room.games;

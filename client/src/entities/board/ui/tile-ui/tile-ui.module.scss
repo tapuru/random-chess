@@ -10,12 +10,14 @@
 }
 
 .black {
-  background-color: black;
+  // background-color: #769656;
+  background-color: var(--primary-700);
   color: white;
 }
 
 .white {
-  background-color: white;
+  // background-color: #eeeed2;
+  background-color: var(--primary-200);
   color: black;
 }
 
