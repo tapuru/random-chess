@@ -2,8 +2,6 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { Player } from "@/entities/player";
 import { GameResult } from "../types/game-result";
-import { GameModes } from "@/shared/types/game-modes";
-import { GameTypes } from "@/shared/types/game-type";
 
 interface RoomState {
   id: string | "local";
@@ -21,6 +19,7 @@ const initialState: RoomState = {
       loses: 0,
       wins: 0,
       ownerId: 1,
+      timeLeft: 300,
     },
     {
       color: ChessColors.WHITE,
@@ -29,6 +28,7 @@ const initialState: RoomState = {
       loses: 0,
       wins: 0,
       ownerId: 1,
+      timeLeft: 300,
     },
   ],
   games: [],

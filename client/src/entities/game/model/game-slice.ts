@@ -4,7 +4,7 @@ import { GameSettings } from "../types/game-settings";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameModes } from "@/shared/types/game-modes";
 import { GameTypes } from "@/shared/types/game-type";
-import { Turn } from "../types/turn";
+import { Turn } from "@/shared/types/turn";
 
 interface GameState {
   game: Game | null;

@@ -1,5 +1,5 @@
 import { ChessColors } from "@/shared/types/chess-colors";
-import type { Turn } from "./turn";
+import { Turn } from "@/shared/types/turn";
 
 export interface Game {
   turns: Turn[];

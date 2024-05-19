@@ -1,0 +1,18 @@
+.root {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  column-gap: 48px;
+
+  height: calc(100vh - 60px);
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.board {
+  display: flex;
+  align-items: center;
+}

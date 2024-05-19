@@ -5,25 +5,26 @@ import { Board } from "../../model/Board";
 import { TileUI } from "../tile-ui/tile-ui";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { useBoard } from "../../model/use-board";
+import { Turn } from "@/shared/types/turn";
 
 interface BoardUIProps {
   board: Board;
   setBoard: (board: Board) => void;
   currentPlayerColor: ChessColors | null;
-  swapPlayer: () => void;
+  makeTurn: (turn: Turn) => void;
 }
 
 export const BoardUI = ({
   board,
   setBoard,
   currentPlayerColor,
-  swapPlayer,
+  makeTurn,
 }: BoardUIProps) => {
   const { handleTileClick, boardRef, selectedTile } = useBoard(
     board,
     setBoard,
     currentPlayerColor,
-    swapPlayer
+    makeTurn
   );
 
   return (

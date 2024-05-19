@@ -1,16 +1,14 @@
 "use client";
 
-import { BoardUI } from "@/entities/board";
 import cl from "./local-game-board.module.scss";
-import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
+import { BoardUI } from "@/entities/board";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/shared/config/navigation";
 import { useLocalGameBoard } from "../../model/use-local-game-board";
-import { gameActions } from "@/entities/game";
 
 export const LocalGameBoard = () => {
-  const dispatch = useAppDispatch();
-  const { board, currentGame, setBoard, roomId } = useLocalGameBoard();
+  const { board, currentGame, setBoard, roomId, makeTurn } =
+    useLocalGameBoard();
   const params = useParams();
   const router = useRouter();
 
@@ -23,11 +21,11 @@ export const LocalGameBoard = () => {
   }
 
   return (
-    <div>
+    <div className={cl.root}>
       <BoardUI
         board={board}
         setBoard={setBoard}
-        swapPlayer={() => dispatch(gameActions.toggleCurrentTurnColor())}
+        makeTurn={makeTurn}
         currentPlayerColor={currentGame.currentTurnColor}
       />
     </div>

@@ -5,6 +5,7 @@ import { Board } from "@/entities/board";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { selectRoomId, selectRoomPlayers } from "./room-slice";
 import { gameActions, selectGame, selectGameSettings } from "@/entities/game";
+import { Turn } from "@/shared/types/turn";
 
 export const useLocalGameBoard = () => {
   const dispatch = useAppDispatch();
@@ -25,10 +26,16 @@ export const useLocalGameBoard = () => {
     dispatch(gameActions.setCurrnetTurnColor(ChessColors.WHITE));
   }
 
+  const makeTurn = (turn: Turn) => {
+    dispatch(gameActions.makeTurn(turn));
+    dispatch(gameActions.toggleCurrentTurnColor());
+  };
+
   return {
     board,
     setBoard,
     currentGame,
     roomId,
+    makeTurn,
   };
 };

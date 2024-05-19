@@ -1,1 +1,1 @@
-export { Player } from "./model/Player";
+export type { Player } from "./types/player";

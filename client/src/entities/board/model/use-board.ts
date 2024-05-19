@@ -3,12 +3,13 @@ import { Tile } from "./Tile";
 import { Board } from "./Board";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { useOnWindowResize } from "@/shared/lib/hooks/use-on-window-resize";
+import { Turn } from "@/shared/types/turn";
 
 export const useBoard = (
   board: Board,
   setBoard: (board: Board) => void,
   currentPlayerColor: ChessColors | null,
-  swapPlayer: () => void
+  makeTurn: (turn: Turn) => void
 ) => {
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -47,8 +48,19 @@ export const useBoard = (
       selectedTile !== tile &&
       selectedTile.piece?.canMove(tile)
     ) {
+      const piece = selectedTile.piece;
+      const captured = !!tile.piece;
       selectedTile.movePiece(tile);
-      swapPlayer();
+      makeTurn({
+        fromPosition: {
+          x: selectedTile.x,
+          y: selectedTile.y,
+          notation: selectedTile.notation,
+        },
+        toPosition: { x: tile.x, y: tile.y, notation: tile.notation },
+        piece: piece.notation,
+        captured,
+      });
       setSelectedTile(null);
     } else {
       if (tile.piece?.color === currentPlayerColor) {
