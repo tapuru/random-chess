@@ -1,4 +1,7 @@
-.content {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
 }

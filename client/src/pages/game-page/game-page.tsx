@@ -7,11 +7,13 @@ export const GamePage = () => {
   return (
     <Container>
       <main className={cl.root}>
-        <div className={cl.board}>
-          <LocalGameBoard />
-        </div>
-        <div className={cl.roomInfo}>
-          <RoomInfo />
+        <div className={cl.content}>
+          <div className={cl.board}>
+            <LocalGameBoard />
+          </div>
+          <div className={cl.roomInfo}>
+            <RoomInfo />
+          </div>
         </div>
       </main>
     </Container>

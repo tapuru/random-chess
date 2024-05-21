@@ -1,5 +1,7 @@
+"use client";
+
 import { GameInfo, PlayerInfo, selectRoomPlayers } from "@/features/room";
-import cl from "./game-info.module.scss";
+import cl from "./room-info.module.scss";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 
 export const RoomInfo = () => {

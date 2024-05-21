@@ -1,14 +1,13 @@
 "use client";
 
 import cl from "./local-game-board.module.scss";
-import { BoardUI } from "@/entities/board";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/shared/config/navigation";
 import { useLocalGameBoard } from "../../model/use-local-game-board";
+import { Chessboard } from "react-chessboard";
 
 export const LocalGameBoard = () => {
-  const { board, currentGame, setBoard, roomId, makeTurn } =
-    useLocalGameBoard();
+  const { currentGame, roomId, chess, handlePieceDrop } = useLocalGameBoard();
   const params = useParams();
   const router = useRouter();
 
@@ -22,11 +21,10 @@ export const LocalGameBoard = () => {
 
   return (
     <div className={cl.root}>
-      <BoardUI
-        board={board}
-        setBoard={setBoard}
-        makeTurn={makeTurn}
-        currentPlayerColor={currentGame.currentTurnColor}
+      <Chessboard
+        id={"basicboard"}
+        position={chess?.fen()}
+        onPieceDrop={handlePieceDrop}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import { ChessColors } from "@/shared/types/chess-colors";
 import { GameModes } from "@/shared/types/game-modes";
 import { GameTypes } from "@/shared/types/game-type";
 import { Turn } from "@/shared/types/turn";
+import { Move } from "chess.js";
 
 interface GameState {
   game: Game | null;
@@ -14,7 +15,7 @@ interface GameState {
 const initialState: GameState = {
   game: {
     currentTurnColor: ChessColors.WHITE,
-    turns: [],
+    moves: [],
   },
   settings: {
     initialFen: "",
@@ -39,9 +40,9 @@ export const gameSlice = createSlice({
           : (state.game.currentTurnColor = ChessColors.BLACK);
       }
     },
-    makeTurn(state, action: PayloadAction<Turn>) {
+    makeTurn(state, action: PayloadAction<Move>) {
       if (state.game) {
-        state.game.turns.push(action.payload);
+        state.game.moves.push(action.payload);
       }
     },
     setGameSettings(state, action: PayloadAction<GameSettings>) {

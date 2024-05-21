@@ -8,6 +8,8 @@ export class Board {
   private width: number;
   private height: number;
   private initialFEN: string;
+  private whiteCheck: boolean = false;
+  private blackCheck: boolean = false;
   public lostBlackPieces: Piece[] = [];
   public lostWhitePieces: Piece[] = [];
   public tiles: Tile[][] = [];
@@ -74,6 +76,26 @@ export class Board {
         row[j].isAvaliable = !!selectedTile?.piece?.canMove(row[j]);
       }
     }
+  }
+
+  public getAvaliableTiles(selectedTile: Tile | null) {
+    const res: Tile[] = [];
+    for (let i = 0; i < this.tiles.length; i++) {
+      const row = this.tiles[i];
+      for (let j = 0; j < row.length; j++) {
+        if (
+          selectedTile?.piece?.notation.toLowerCase() === "k" &&
+          !!selectedTile.piece.canMove(row[j])
+        ) {
+          if (!row[j].isAttackedByEnemy(selectedTile.piece.color)) {
+            res.push(row[j]);
+          }
+          continue;
+        }
+        if (!!selectedTile?.piece?.canMove(row[j])) res.push(row[j]);
+      }
+    }
+    return res;
   }
 
   public getClone() {

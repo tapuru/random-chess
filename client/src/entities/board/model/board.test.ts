@@ -12,3 +12,17 @@ describe("board entity init tests", () => {
     expect(board.tiles[0][0].piece?.notation).toBe("r");
   });
 });
+
+describe("board methods test", () => {
+  test("should get correct avaliable tiles", () => {
+    const board = new Board();
+    board.initFromFen();
+    const selectedTile = board.getTileByCords(0, 6);
+    const avaliableTiles = board.getAvaliableTiles(selectedTile);
+    const cords = avaliableTiles.map((tile) => [tile.x, tile.y]);
+    expect(cords).toEqual([
+      [0, 4],
+      [0, 5],
+    ]);
+  });
+});

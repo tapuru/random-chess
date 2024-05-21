@@ -97,6 +97,12 @@ export class Tile {
       }
       targetTile.setPiece(this.piece);
       this.piece = null;
+      const avaliableTiles = this.board.getAvaliableTiles(targetTile);
+      for (let i = 0; i < avaliableTiles.length; i++) {
+        if (avaliableTiles[i].piece?.notation.toLowerCase() === "k") {
+          continue;
+        }
+      }
     }
   }
 
@@ -144,7 +150,6 @@ export class Tile {
         return false;
       }
     }
-
     return true;
   }
 }
