@@ -1,6 +1,5 @@
 {
   "HomePage": {
-    "title": "Привет мир!",
     "createGame": "Создать игру",
     "findGame": "Найти игру",
     "playWithEngine": "Играть с компьютером"

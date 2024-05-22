@@ -1,10 +1,10 @@
 "use client";
 
-import { Player } from "@/entities/player";
 import cl from "./player-info.module.scss";
+import { selectGame } from "@/entities/game";
+import { Player } from "@/entities/player";
 import { PlayerClock } from "@/entities/player/ui/player-clock/player-clock";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectGame } from "@/entities/game";
 import { roomActions } from "../../model/room-slice";
 
 export const PlayerInfo = ({ player }: { player: Player }) => {

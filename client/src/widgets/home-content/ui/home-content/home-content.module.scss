@@ -1,5 +1,12 @@
+@import "../../../../shared/styles/breakpoints.module.scss";
+
 .root {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
   align-items: center;
   gap: 54px;
+
+  @media (max-width: $bp-l) {
+    grid-template-columns: 1fr;
+  }
 }

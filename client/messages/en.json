@@ -1,6 +1,5 @@
 {
   "HomePage": {
-    "title": "Hello world!",
     "createGame": "Create game",
     "findGame": "Find game",
     "playWithEngine": "Play with engine"

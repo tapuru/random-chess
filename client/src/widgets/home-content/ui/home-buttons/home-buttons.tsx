@@ -8,6 +8,8 @@ export const HomeButtons = () => {
   const router = useRouter();
   const t = useTranslations("HomePage");
 
+  console.log(t("createGame"));
+
   return (
     <div className={cl.root}>
       <AppButton
