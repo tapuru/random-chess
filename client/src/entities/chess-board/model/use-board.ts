@@ -129,12 +129,13 @@ export const useBoard = (
     if (piece) {
       const gameCopy = new Chess(chess.fen());
       gameCopy.history = chess.history;
-      gameCopy.move({
+      const move = gameCopy.move({
         from: fromSquare,
         to: toSquare,
         promotion: piece[1].toLowerCase() ?? "q",
       });
       setChess(gameCopy);
+      onChange?.(move);
     }
 
     dispatch(setFromSquare(null));

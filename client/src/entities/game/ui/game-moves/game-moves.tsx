@@ -1,16 +1,15 @@
 "use client";
 
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import cl from "./game-turns.module.scss";
+import cl from "./game-moves.module.scss";
 import { selectGame } from "../../model/game-slice";
-import { Turn } from "@/shared/types/turn";
 import { Move } from "chess.js";
 
 const SingleTurn = ({ move }: { move: Move }) => {
   return <div className={cl.turn}>{move.san}</div>;
 };
 
-export const GameTurns = () => {
+export const GameMoves = () => {
   const game = useAppSelector(selectGame);
 
   const turnRows: Move[][] = [[]];

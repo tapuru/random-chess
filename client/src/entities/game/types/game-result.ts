@@ -1,8 +1,8 @@
 import { Player } from "@/entities/player";
-import { Turn } from "@/shared/types/turn";
+import { Move } from "chess.js";
 
 export interface GameResult {
-  winner: Player | null;
+  winner?: Player | null;
   isDraw: boolean;
-  turns: Turn[];
+  moves: Move[];
 }

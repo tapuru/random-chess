@@ -53,7 +53,7 @@ export const AppChessboard = ({
       customSquareStyles={{
         ...optionSquares,
       }}
-      customDarkSquareStyle={{ backgroundColor: "var(--primary-600)" }}
+      customDarkSquareStyle={{ backgroundColor: "var(--primary-500)" }}
       customLightSquareStyle={{ backgroundColor: "var(--primary-200)" }}
       promotionToSquare={toSquare}
       showPromotionDialog={showPromotionDialog}

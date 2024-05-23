@@ -3,14 +3,13 @@
 import cl from "./local-game-board.module.scss";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/shared/config/navigation";
-import { useLocalGameBoard } from "../../model/use-local-game-board";
-import { Chessboard } from "react-chessboard";
+import { useLocalGameBoard } from "../../../local-game/model/use-local-game-board";
 import { AppChessboard } from "@/entities/chess-board";
 
 export const LocalGameBoard = () => {
   const { chess, handleBoardChange, setChess } = useLocalGameBoard();
-  // const params = useParams();
-  // const router = useRouter();
+  const params = useParams();
+  const router = useRouter();
 
   // if (params?.gameId !== roomId) {
   //   router.push("/error");

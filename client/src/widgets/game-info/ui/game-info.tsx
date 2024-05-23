@@ -1,6 +1,6 @@
-import { GameTurns } from "@/entities/game/ui/game-turns/game-turns";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 import cl from "./game-info.module.scss";
+import { GameMoves } from "@/entities/game";
 
 export const GameInfo = () => {
   return (
@@ -8,7 +8,7 @@ export const GameInfo = () => {
       <AppCard.Content>
         <div className={cl.content}>
           <div className={cl.turns}>
-            <GameTurns />
+            <GameMoves />
           </div>
           <div className={cl.actions}>
             {/*<GameActions />*/}
