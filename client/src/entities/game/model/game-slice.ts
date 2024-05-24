@@ -52,8 +52,14 @@ export const gameSlice = createSlice({
     setGameSettings(state, action: PayloadAction<GameSettings>) {
       state.settings = action.payload;
     },
-    setResult: (state, action: PayloadAction<GameResult>) => {
+    setResult(state, action: PayloadAction<GameResult>) {
       state.result = action.payload;
+    },
+    setGame(state, action: PayloadAction<Game>) {
+      state.game = action.payload;
+    },
+    setGameStatus(state, action: PayloadAction<GameStatus>) {
+      if (state.game) state.game.status = action.payload;
     },
   },
 });
@@ -64,3 +70,4 @@ export const gameActions = gameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game.game;
 export const selectGameSettings = (state: RootState) => state.game.settings;
+export const selectGameResult = (state: RootState) => state.game.result;

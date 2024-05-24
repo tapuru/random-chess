@@ -1,30 +1,14 @@
-import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
+import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { Chess, Move } from "chess.js";
 import { useRef, useState } from "react";
 import { Chessboard, ClearPremoves } from "react-chessboard";
-import {
-  Piece,
-  PromotionPieceOption,
-  Square,
-} from "react-chessboard/dist/chessboard/types";
 import { selectBoard } from "../model/board-slice";
 import { useBoard } from "../model/use-board";
-
-// interface AppChessboardProps {
-//   position: string;
-//   onSquareClick: (square: Square) => void;
-//   onPromotionPieceSelect: (
-//     piece?: PromotionPieceOption | undefined,
-//     promoteFromSquare?: Square | undefined,
-//     promoteToSquare?: Square | undefined
-//   ) => boolean;
-
-// }
 
 interface AppChessboardProps {
   chess: Chess;
   setChess: (chess: Chess) => void;
-  onChange?: (move: Move) => void;
+  onChange?: (move: Move, chess: Chess) => void;
 }
 
 export const AppChessboard = ({

@@ -11,7 +11,7 @@ import { OptionSquares } from "../types/option-squares";
 export const useBoard = (
   chess: Chess,
   setChess: (chess: Chess) => void,
-  onChange?: (move: Move) => void
+  onChange?: (move: Move, chess: Chess) => void
 ) => {
   const { fromSquare, toSquare } = useAppSelector(selectBoard);
   const dispatch = useAppDispatch();
@@ -112,7 +112,7 @@ export const useBoard = (
 
       setChess(gameCopy);
 
-      onChange?.(move);
+      onChange?.(move, gameCopy);
 
       dispatch(setFromSquare(null));
       dispatch(setToSquare(null));
@@ -136,7 +136,7 @@ export const useBoard = (
         promotion: piece[1].toLowerCase() ?? "q",
       });
       setChess(gameCopy);
-      onChange?.(move);
+      onChange?.(move, gameCopy);
     }
 
     dispatch(setFromSquare(null));
@@ -158,6 +158,8 @@ export const useBoard = (
 
     // illegal move
     if (move === null) return false;
+
+    onChange?.(move, clone);
 
     return true;
   }

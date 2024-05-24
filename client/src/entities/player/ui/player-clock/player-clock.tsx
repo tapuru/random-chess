@@ -24,7 +24,6 @@ export const PlayerClock = ({
 
   useEffect(() => {
     if (isActive) {
-      console.log(player);
       startTimer();
     } else {
       stopTimer();
