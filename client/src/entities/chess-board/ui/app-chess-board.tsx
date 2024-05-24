@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { Chess, Move } from "chess.js";
-import { useState } from "react";
-import { Chessboard } from "react-chessboard";
+import { useRef, useState } from "react";
+import { Chessboard, ClearPremoves } from "react-chessboard";
 import {
   Piece,
   PromotionPieceOption,
@@ -34,16 +34,17 @@ export const AppChessboard = ({
 }: AppChessboardProps) => {
   const { optionSquares, showPromotionDialog, toSquare } =
     useAppSelector(selectBoard);
-  const { handlePromotionPieceSelect, handleSquareClick } = useBoard(
+  const { handlePromotionPieceSelect, handleSquareClick, onDrop } = useBoard(
     chess,
     setChess,
     onChange
   );
+  const chessboardRef = useRef<ClearPremoves>(null);
 
   return (
     <Chessboard
       animationDuration={200}
-      arePiecesDraggable={false}
+      arePiecesDraggable={true}
       position={chess.fen()}
       onSquareClick={handleSquareClick}
       customBoardStyle={{
@@ -58,6 +59,9 @@ export const AppChessboard = ({
       promotionToSquare={toSquare}
       showPromotionDialog={showPromotionDialog}
       onPromotionPieceSelect={handlePromotionPieceSelect}
+      arePremovesAllowed={true}
+      ref={chessboardRef}
+      onPieceDrop={onDrop}
     />
   );
 };

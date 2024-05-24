@@ -2,6 +2,7 @@ import { Chess, Move } from "chess.js";
 import { boardActions, selectBoard } from "./board-slice";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import {
+  Piece,
   PromotionPieceOption,
   Square,
 } from "react-chessboard/dist/chessboard/types";
@@ -145,5 +146,21 @@ export const useBoard = (
     return true;
   }
 
-  return { handlePromotionPieceSelect, handleSquareClick };
+  function onDrop(sourceSquare: Square, targetSquare: Square, piece: Piece) {
+    const clone = new Chess(chess.fen());
+    clone.history = chess.history;
+    const move = clone.move({
+      from: sourceSquare,
+      to: targetSquare,
+      promotion: piece[1].toLowerCase() ?? "q",
+    });
+    setChess(clone);
+
+    // illegal move
+    if (move === null) return false;
+
+    return true;
+  }
+
+  return { handlePromotionPieceSelect, handleSquareClick, onDrop };
 };
