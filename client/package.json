@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@reduxjs/toolkit": "^2.2.5",
     "@types/chess.js": "^0.13.7",

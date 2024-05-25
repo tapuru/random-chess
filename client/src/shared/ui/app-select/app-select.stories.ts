@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AppSelect, AppSelectOption, AppSelectOptionGroup } from "./app-select";
+import { AppSelect, AppSelectOptionGroup } from "./app-select";
 
 const meta: Meta<typeof AppSelect> = {
   component: AppSelect,
