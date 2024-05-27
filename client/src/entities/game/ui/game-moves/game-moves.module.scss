@@ -7,11 +7,24 @@
   overflow: auto;
 }
 
-.turnRow {
-  display: flex;
-  gap: 12px;
+.moveRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
 
-  padding: 10px 30px;
+.rowNumber {
+  text-align: center;
+  padding: 6px;
+  background-color: var(--secondary-50);
+
+  // box-shadow: inset var(--shadow);
+}
+
+.move {
+  text-align: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: var(--transition);
 
   &:hover {
     background-color: var(--primary-100);

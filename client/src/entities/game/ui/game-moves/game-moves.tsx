@@ -6,30 +6,30 @@ import { selectGame } from "../../model/game-slice";
 import { Move } from "chess.js";
 
 const SingleTurn = ({ move }: { move: Move }) => {
-  return <div className={cl.turn}>{move.san}</div>;
+  return <div className={cl.move}>{move.san}</div>;
 };
 
 export const GameMoves = () => {
   const game = useAppSelector(selectGame);
 
-  const turnRows: Move[][] = [[]];
+  const moveRows: Move[][] = [[]];
   game?.moves.forEach((move, index) => {
-    if (turnRows[turnRows.length - 1].length < 2) {
-      turnRows[turnRows.length - 1].push(move);
+    if (moveRows[moveRows.length - 1].length < 2) {
+      moveRows[moveRows.length - 1].push(move);
     } else {
-      turnRows.push([move]);
+      moveRows.push([move]);
     }
   });
 
   return (
     <div className={cl.root}>
-      <ul className={cl.turnList}>
+      <ul className={cl.moveList}>
         {!!game?.moves.length &&
-          turnRows.map((turnRow, index) => (
-            <li className={cl.turnRow} key={index}>
-              <div>{`${index + 1}.`}</div>
-              {turnRow[0] && <SingleTurn move={turnRow[0]} />}
-              {turnRow[1] && <SingleTurn move={turnRow[1]} />}
+          moveRows.map((moveRow, index) => (
+            <li className={cl.moveRow} key={index}>
+              <div className={cl.rowNumber}>{`${index + 1}.`}</div>
+              {moveRow[0] && <SingleTurn move={moveRow[0]} />}
+              {moveRow[1] && <SingleTurn move={moveRow[1]} />}
             </li>
           ))}
       </ul>
