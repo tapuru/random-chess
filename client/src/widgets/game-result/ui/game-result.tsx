@@ -13,14 +13,14 @@ export const GameResult = () => {
     setOpen,
     reason,
     title,
-    enemy,
+    playerOne,
     gameResult,
-    player,
+    playerTwo,
     titleColor,
     t,
   } = useGameResult();
   const router = useRouter();
-  if (!gameResult || !player || !enemy) return null;
+  if (!gameResult || !playerOne || !playerTwo) return null;
 
   return (
     <AppModal open={open} onOpenChange={() => setOpen(false)}>

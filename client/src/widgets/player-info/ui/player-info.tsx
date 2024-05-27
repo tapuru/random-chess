@@ -1,11 +1,17 @@
 "use client";
 
-import { Player, PlayerTimer, playersActions } from "@/entities/player";
+import {
+  Player,
+  PlayerTimer,
+  playersActions,
+  selectPlayerOne,
+  selectPlayerTwo,
+} from "@/entities/player";
 import cl from "./player-info.module.scss";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectGame } from "@/entities/game";
 
-export const PlayerInfo = ({ player }: { player: Player | null }) => {
+const PlayerInfo = ({ player }: { player: Player | null }) => {
   const game = useAppSelector(selectGame);
   const dispatch = useAppDispatch();
 
@@ -49,4 +55,14 @@ export const PlayerInfo = ({ player }: { player: Player | null }) => {
       </div>
     </div>
   );
+};
+
+export const PlayerOneInfo = () => {
+  const player = useAppSelector(selectPlayerOne);
+  return <PlayerInfo player={player} />;
+};
+
+export const PlayerTwoInfo = () => {
+  const player = useAppSelector(selectPlayerTwo);
+  return <PlayerInfo player={player} />;
 };

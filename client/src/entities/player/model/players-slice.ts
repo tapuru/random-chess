@@ -3,30 +3,30 @@ import { Player } from "../types/player";
 import { ChessColors } from "@/shared/types/chess-colors";
 
 interface PlayersState {
-  player: Player | null;
-  enemy: Player | null;
+  playerOne: Player | null;
+  playerTwo: Player | null;
 }
 
 const initialState: PlayersState = {
-  player: null,
-  enemy: null,
+  playerOne: null,
+  playerTwo: null,
 };
 
 export const playersSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    setPlayer: (state, action: PayloadAction<Player>) => {
-      state.player = action.payload;
+    setPlayerOne: (state, action: PayloadAction<Player>) => {
+      state.playerOne = action.payload;
     },
-    setEnemy: (state, action: PayloadAction<Player>) => {
-      state.enemy = action.payload;
+    setPlayerTwo: (state, action: PayloadAction<Player>) => {
+      state.playerTwo = action.payload;
     },
     changePlayerTime: (
       state,
       action: PayloadAction<{ time: number; color: ChessColors }>
     ) => {
-      const player = [state.enemy, state.player].find(
+      const player = [state.playerOne, state.playerTwo].find(
         (p) => p?.color === action.payload.color
       );
       if (!player) return;
@@ -42,5 +42,5 @@ export const playersSlice = createSlice({
 export const playersReducer = playersSlice.reducer;
 export const playersActions = playersSlice.actions;
 
-export const selectPlayer = (state: RootState) => state.players.player;
-export const selectEnemy = (state: RootState) => state.players.enemy;
+export const selectPlayerOne = (state: RootState) => state.players.playerOne;
+export const selectPlayerTwo = (state: RootState) => state.players.playerTwo;

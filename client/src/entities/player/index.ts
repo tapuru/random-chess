@@ -5,6 +5,6 @@ export { PlayerTimer } from "./ui/player-timer/player-timer";
 export {
   playersReducer,
   playersActions,
-  selectEnemy,
-  selectPlayer,
+  selectPlayerOne,
+  selectPlayerTwo,
 } from "./model/players-slice";
