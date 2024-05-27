@@ -1,25 +1,25 @@
 "use client";
 
-import cl from "./player-clock.module.scss";
+import cl from "./player-timer.module.scss";
 import cn from "classnames";
 import { Player } from "../../types/player";
 import { useEffect, useRef } from "react";
 import { secondsToHHMMSS } from "@/shared/lib/seconds-to-hhmmss";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 
-interface PlayerClockProps {
+interface PlayerTimerProps {
   player: Player;
   isActive: boolean;
   decrement: () => {};
   startTime: number;
 }
 
-export const PlayerClock = ({
+export const PlayerTimer = ({
   player,
   isActive,
   decrement,
   startTime,
-}: PlayerClockProps) => {
+}: PlayerTimerProps) => {
   const timer = useRef<null | ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {

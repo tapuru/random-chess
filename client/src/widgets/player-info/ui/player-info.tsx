@@ -1,6 +1,6 @@
 "use client";
 
-import { Player, PlayerClock, playersActions } from "@/entities/player";
+import { Player, PlayerTimer, playersActions } from "@/entities/player";
 import cl from "./player-info.module.scss";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectGame } from "@/entities/game";
@@ -33,7 +33,7 @@ export const PlayerInfo = ({ player }: { player: Player | null }) => {
     <div className={cl.root}>
       <div className={cl.basicPlayer}>{player.color}</div>
       <div className={cl.clock}>
-        <PlayerClock
+        <PlayerTimer
           player={player}
           isActive={game?.currentTurn === player.color}
           decrement={() =>
