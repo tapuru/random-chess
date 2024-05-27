@@ -10,10 +10,13 @@ import {
 import cl from "./player-info.module.scss";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectGame } from "@/entities/game";
+import { useMessages } from "next-intl";
+import { useTranslations } from "use-intl";
 
 const PlayerInfo = ({ player }: { player: Player | null }) => {
   const game = useAppSelector(selectGame);
   const dispatch = useAppDispatch();
+  const t = useTranslations("Game");
 
   if (!player) return null;
 
@@ -37,7 +40,7 @@ const PlayerInfo = ({ player }: { player: Player | null }) => {
 
   return (
     <div className={cl.root}>
-      <div className={cl.basicPlayer}>{player.color}</div>
+      <div className={cl.basicPlayer}>{t(player.color)}</div>
       <div className={cl.clock}>
         <PlayerTimer
           player={player}
