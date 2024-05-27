@@ -14,6 +14,9 @@ import { PlayerInfo } from "@/widgets/player-info";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { useEffect } from "react";
 import { GameInfo } from "@/widgets/game-info";
+import { GameResult } from "@/widgets/game-result";
+import { NextIntlClientProvider, useMessages } from "next-intl";
+import { pick } from "lodash";
 
 const player1: Player = {
   color: ChessColors.WHITE,
@@ -56,6 +59,7 @@ export const GamePage = () => {
           </div>
         </div>
       </main>
+      <GameResult />
     </Container>
   );
 };

@@ -31,11 +31,26 @@ export const useLocalGameBoard = () => {
     if (chess.isGameOver()) {
       if (chess.isCheckmate()) {
         const color = chess.turn();
-        const winner = [player, enemy].find((p) => p?.color === color);
+        const winner = [player, enemy].find((p) => p?.color !== color);
         dispatch(
-          gameActions.setResult({ isDraw: false, winner, moves: game.moves })
+          gameActions.setResult({
+            winner,
+            moves: game.moves,
+            reason: "checkmate",
+          })
         );
         dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
+      }
+      if (chess.isDraw()) {
+        dispatch(
+          gameActions.setResult({
+            reason: "draw",
+            moves: game.moves,
+          })
+        );
+      }
+      if (chess.isStalemate()) {
+        gameActions.setResult({ reason: "draw", moves: game.moves });
       }
     }
   };

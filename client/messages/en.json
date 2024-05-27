@@ -8,5 +8,21 @@
     "lobby": "Game",
     "history": "History",
     "about": "About"
+  },
+  "Game": {
+    "w": "White",
+    "b": "Black",
+    "win": "wins",
+    "victory": "Victory",
+    "defeat": "Defeat",
+    "checkmate": "Checkmate",
+    "stalemate": "Stalemate",
+    "draw": "Draw",
+    "whiteSurrender": "White has surrendered",
+    "blackSurrender": "Black has surrendered",
+    "whiteOutOfTime": "White is out of time",
+    "blackOutOfTime": "Black is out of time",
+    "rematch": "Rematch",
+    "leave": "Leave"
   }
 }
