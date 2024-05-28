@@ -10,7 +10,6 @@ import {
 import cl from "./player-info.module.scss";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectGame } from "@/entities/game";
-import { useMessages } from "next-intl";
 import { useTranslations } from "use-intl";
 
 const PlayerInfo = ({ player }: { player: Player | null }) => {

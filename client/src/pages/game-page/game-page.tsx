@@ -7,9 +7,10 @@ import { GameBoard } from "@/widgets/game-board";
 import { PlayerOneInfo, PlayerTwoInfo } from "@/widgets/player-info";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
 import { useEffect } from "react";
-import { GameInfo } from "@/widgets/game-info";
 import { GameResult } from "@/widgets/game-result";
 import { Player, playersActions } from "@/entities/player";
+import { GameInfoLayout, GameMoves } from "@/entities/game";
+import { GameTurn } from "@/widgets/game-turn";
 
 const player1: Player = {
   color: ChessColors.WHITE,
@@ -43,9 +44,13 @@ export const GamePage = () => {
           <div className={cl.board}>
             <GameBoard />
           </div>
-          <div className={cl.gameInfo}>
+          <div className={cl.info}>
             <PlayerTwoInfo />
-            <GameInfo />
+            <GameInfoLayout
+              gameActions={<div></div>}
+              gameMoves={<GameMoves />}
+              gameTurn={<GameTurn />}
+            />
             <PlayerOneInfo />
           </div>
         </div>

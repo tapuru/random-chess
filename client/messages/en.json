@@ -12,6 +12,10 @@
   "Game": {
     "w": "White",
     "b": "Black",
+    "whiteTurn": "White turn",
+    "blackTurn": "Black turn",
+    "yourTurn": "Your turn",
+    "waitOpponent": "Waiting for the opponent",
     "win": "wins",
     "victory": "Victory",
     "defeat": "Defeat",
