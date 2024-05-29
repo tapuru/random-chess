@@ -7,7 +7,8 @@ import { useLocalGameBoard } from "../../../local-game/model/use-local-game-boar
 import { AppChessboard } from "@/entities/chess-board";
 
 export const LocalGameBoard = () => {
-  const { chess, handleBoardChange, setChess } = useLocalGameBoard();
+  const { chess, handleBoardChange, setChess, disableBoard } =
+    useLocalGameBoard();
   const params = useParams();
   const router = useRouter();
 
@@ -25,6 +26,7 @@ export const LocalGameBoard = () => {
         chess={chess}
         onChange={handleBoardChange}
         setChess={setChess}
+        disabled={disableBoard}
       />
     </div>
   );

@@ -52,6 +52,7 @@ export const useLocalGameBoard = () => {
   function start() {
     const chess = new Chess(gameSettings.initialFen || undefined);
     setChess(chess);
+    dispatch(gameActions.setGameStatus(GameStatus.ACTIVE));
   }
 
   const handleBoardChange = (move: Move, chess: Chess) => {
@@ -86,5 +87,10 @@ export const useLocalGameBoard = () => {
     }
   };
 
-  return { handleBoardChange, chess, setChess };
+  return {
+    handleBoardChange,
+    chess,
+    setChess,
+    disableBoard: !(game?.status === GameStatus.ACTIVE),
+  };
 };

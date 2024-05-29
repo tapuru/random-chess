@@ -11,7 +11,8 @@ import { OptionSquares } from "../types/option-squares";
 export const useBoard = (
   chess: Chess,
   setChess: (chess: Chess) => void,
-  onChange?: (move: Move, chess: Chess) => void
+  onChange?: (move: Move, chess: Chess) => void,
+  disabled?: boolean
 ) => {
   const { fromSquare, toSquare } = useAppSelector(selectBoard);
   const dispatch = useAppDispatch();
@@ -52,6 +53,10 @@ export const useBoard = (
   }
 
   function handleSquareClick(square: Square) {
+    if (disabled) {
+      return;
+    }
+
     // from square
     if (!fromSquare) {
       const hasMoveOptions = getMoveOptions(square);

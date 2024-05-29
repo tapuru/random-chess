@@ -9,19 +9,22 @@ interface AppChessboardProps {
   chess: Chess;
   setChess: (chess: Chess) => void;
   onChange?: (move: Move, chess: Chess) => void;
+  disabled?: boolean;
 }
 
 export const AppChessboard = ({
   onChange,
   chess,
   setChess,
+  disabled,
 }: AppChessboardProps) => {
   const { optionSquares, showPromotionDialog, toSquare } =
     useAppSelector(selectBoard);
   const { handlePromotionPieceSelect, handleSquareClick, onDrop } = useBoard(
     chess,
     setChess,
-    onChange
+    onChange,
+    disabled
   );
   const chessboardRef = useRef<ClearPremoves>(null);
 
