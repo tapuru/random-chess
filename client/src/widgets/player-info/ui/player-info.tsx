@@ -9,8 +9,9 @@ import {
 } from "@/entities/player";
 import cl from "./player-info.module.scss";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectGame } from "@/entities/game";
+import { selectGame, selectGameResult } from "@/entities/game";
 import { useTranslations } from "use-intl";
+import { GameStatus } from "@/shared/types/game-status";
 
 const PlayerInfo = ({ player }: { player: Player | null }) => {
   const game = useAppSelector(selectGame);
@@ -43,7 +44,11 @@ const PlayerInfo = ({ player }: { player: Player | null }) => {
       <div className={cl.clock}>
         <PlayerTimer
           player={player}
-          isActive={game?.currentTurn === player.color}
+          isActive={
+            game?.currentTurn === player.color &&
+            !(game.status === GameStatus.FINISHED) &&
+            game.moves.length !== 0
+          }
           decrement={() =>
             dispatch(
               playersActions.changePlayerTime({

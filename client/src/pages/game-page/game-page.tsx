@@ -16,7 +16,7 @@ const player1: Player = {
   color: ChessColors.WHITE,
   isWinner: false,
   loses: 0,
-  timeLeft: 300,
+  timeLeft: 10,
   type: "basic",
   wins: 0,
 };
@@ -25,7 +25,7 @@ const player2: Player = {
   color: ChessColors.BLACK,
   isWinner: false,
   loses: 0,
-  timeLeft: 300,
+  timeLeft: 10,
   type: "basic",
   wins: 0,
 };

@@ -24,7 +24,10 @@ export const useGameResult = () => {
   const t = useTranslations("Game");
 
   let titleColor: "s" | "e" | "n" = "n";
-  if (playerOne?.color === gameResult?.winner?.color) {
+  if (
+    playerOne?.color === gameResult?.winner?.color ||
+    (gameType === GameTypes.LOCAL && gameResult?.winner !== null)
+  ) {
     titleColor = "s";
   }
   if (
@@ -48,13 +51,12 @@ export const useGameResult = () => {
 
   if (gameResult?.winner) {
     if (gameType === GameTypes.LOCAL) {
+      console.log(t(gameResult.winner.color));
       title = `${t(gameResult.winner.color)} ${t("win")}!`;
-    }
-    if (gameResult.winner.color === playerOne?.color) {
+    } else if (gameResult.winner.color === playerOne?.color) {
       title = `${t("victory")}!`;
-    }
-    if (gameResult.winner.color === playerTwo?.color) {
-      title = `${t("victory")}!`;
+    } else if (gameResult.winner.color === playerTwo?.color) {
+      title = `${t("defeat")}!`;
     }
   }
 
