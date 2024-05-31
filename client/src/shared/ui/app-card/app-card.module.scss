@@ -1,7 +1,14 @@
 .root {
-  border: 1px solid var(--background-600);
   border-radius: var(--border-radius);
   background-color: var(--background-50);
+
+  &.basic {
+    border: 1px solid var(--background-600);
+  }
+
+  &.floating {
+    box-shadow: var(--shadow);
+  }
 }
 
 .content {
