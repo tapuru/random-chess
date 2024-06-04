@@ -1,0 +1,15 @@
+.filed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.message {
+  font-size: 1.4rem;
+  color: var(--error-800);
+}
+
+.label {
+  color: var(--text-500);
+}
