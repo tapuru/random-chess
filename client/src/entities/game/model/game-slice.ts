@@ -19,11 +19,13 @@ const initialState: GameState = {
     currentTurn: ChessColors.WHITE,
     moves: [],
     status: GameStatus.PENDING,
+    initialFen: "",
   },
   settings: {
-    initialFen: "",
     mode: GameModes.CLASSICAL,
     type: GameTypes.LOCAL,
+    time: null,
+    additionTime: null,
   },
   result: null,
 };

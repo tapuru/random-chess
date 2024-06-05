@@ -7,4 +7,5 @@ export interface Game {
   moves: Move[];
   currentTurn: ChessColors;
   status: GameStatus;
+  initialFen: string | null;
 }

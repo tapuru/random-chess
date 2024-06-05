@@ -22,6 +22,10 @@ export const playersSlice = createSlice({
     setPlayerTwo: (state, action: PayloadAction<Player>) => {
       state.playerTwo = action.payload;
     },
+    setPlayersTime: (state, action: PayloadAction<number>) => {
+      if (state.playerOne) state.playerOne.timeLeft = action.payload;
+      if (state.playerTwo) state.playerTwo.timeLeft = action.payload;
+    },
     changePlayerTime: (
       state,
       action: PayloadAction<{ time: number; color: ChessColors }>

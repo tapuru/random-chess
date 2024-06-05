@@ -3,6 +3,7 @@ import { GameTypes } from "@/shared/types/game-type";
 
 export interface GameSettings {
   type: GameTypes;
-  initialFen: string | null;
   mode: GameModes;
+  time: number | null;
+  additionTime: number | null;
 }

@@ -12,30 +12,8 @@ import { Player, playersActions } from "@/entities/player";
 import { GameInfoLayout, GameMoves } from "@/entities/game";
 import { GameTurn } from "@/widgets/game-turn";
 
-const player1: Player = {
-  color: ChessColors.WHITE,
-  isWinner: false,
-  loses: 0,
-  timeLeft: 10,
-  type: "basic",
-  wins: 0,
-};
-
-const player2: Player = {
-  color: ChessColors.BLACK,
-  isWinner: false,
-  loses: 0,
-  timeLeft: 10,
-  type: "basic",
-  wins: 0,
-};
-
 export const GamePage = () => {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(playersActions.setPlayerTwo(player2));
-    dispatch(playersActions.setPlayerOne(player1));
-  }, []);
 
   return (
     <Container>
