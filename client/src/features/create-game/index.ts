@@ -1,1 +1,1 @@
-export { CreateGameForm } from "./ui/create-game-form/create-game-form";
+export { CreateLocalGameForm } from "./ui/create-game-form/create-local-game-from";

@@ -1,5 +1,5 @@
 import cl from "./create-game-page.module.scss";
-import { CreateGameForm } from "@/features/create-game";
+import { CreateLocalGameForm } from "@/features/create-game";
 import { AppText } from "@/shared/ui/app-text/app-text";
 import { Container } from "@/shared/ui/container/container";
 import { pick } from "lodash";
@@ -14,7 +14,7 @@ export const CreateGamePage = () => {
       <main className={cl.main}>
         <NextIntlClientProvider messages={pick(messages, "CreateGame")}>
           <CreateGameHeader />
-          <CreateGameForm />
+          <CreateLocalGameForm />
         </NextIntlClientProvider>
       </main>
     </Container>

@@ -1,7 +1,7 @@
 "use client";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 import { AppSelect } from "@/shared/ui/app-select/app-select";
-import cl from "./create-game-form.module.scss";
+import cl from "./create-local-game-form.module.scss";
 import { AppCheckbox } from "@/shared/ui/app-checkbox/app-checkbox";
 import { AppSlider } from "@/shared/ui/app-slider/app-slider";
 import { GameModes } from "@/shared/types/game-modes";
@@ -18,7 +18,7 @@ import { useTranslations } from "use-intl";
 import { TimeControls } from "@/shared/types/time-controls";
 import { AppText } from "@/shared/ui/app-text/app-text";
 
-interface CreateGameFormData {
+interface CreateLocalGameFormData {
   mode: GameModes;
   isWithTime: boolean;
   time: string;
@@ -27,10 +27,10 @@ interface CreateGameFormData {
   timeControl: TimeControls | null;
 }
 
-export const CreateGameForm = () => {
+export const CreateLocalGameForm = () => {
   const dispatch = useAppDispatch();
   const { control, handleSubmit, formState, watch } =
-    useForm<CreateGameFormData>({
+    useForm<CreateLocalGameFormData>({
       defaultValues: {
         mode: GameModes.CLASSICAL,
         isWithTime: false,
@@ -44,7 +44,7 @@ export const CreateGameForm = () => {
 
   const currentTime = watch("time");
 
-  const submit: SubmitHandler<CreateGameFormData> = (data) => {
+  const submit: SubmitHandler<CreateLocalGameFormData> = (data) => {
     const time = parseInt(data.time);
     const additionTime = parseInt(data.additionTime);
     const timeControl = data.timeControl;
