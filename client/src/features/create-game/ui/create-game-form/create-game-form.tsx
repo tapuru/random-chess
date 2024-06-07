@@ -8,51 +8,60 @@ import { GameModes } from "@/shared/types/game-modes";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
-import { gameActions } from "@/entities/game";
+import { gameActions, getTimeControlsFromSecods } from "@/entities/game";
 import { GameTypes } from "@/shared/types/game-type";
 import { playersActions } from "@/entities/player";
 import { useRouter } from "@/shared/config/navigation";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { useTranslations } from "use-intl";
+import { TimeControls } from "@/shared/types/time-controls";
+import { AppText } from "@/shared/ui/app-text/app-text";
 
 interface CreateGameFormData {
   mode: GameModes;
-  test: string;
   isWithTime: boolean;
   time: string;
   isWithAdditionTime: boolean;
   additionTime: string;
+  timeControl: TimeControls | null;
 }
 
 export const CreateGameForm = () => {
   const dispatch = useAppDispatch();
-  const { control, handleSubmit, formState } = useForm<CreateGameFormData>({
-    defaultValues: {
-      mode: GameModes.CLASSICAL,
-      isWithTime: false,
-      isWithAdditionTime: false,
-      time: "50",
-      additionTime: "50",
-    },
-  });
+  const { control, handleSubmit, formState, watch } =
+    useForm<CreateGameFormData>({
+      defaultValues: {
+        mode: GameModes.CLASSICAL,
+        isWithTime: false,
+        isWithAdditionTime: false,
+        time: "50",
+        additionTime: "50",
+      },
+    });
   const router = useRouter();
-
   const t = useTranslations("CreateGame");
 
+  const currentTime = watch("time");
+
   const submit: SubmitHandler<CreateGameFormData> = (data) => {
+    const time = parseInt(data.time);
+    const additionTime = parseInt(data.additionTime);
+    const timeControl = data.timeControl;
+
     dispatch(
       gameActions.setGameSettings({
         type: GameTypes.LOCAL,
         mode: data.mode,
-        time: parseInt(data.time) ?? null,
-        additionTime: parseInt(data.additionTime) ?? null,
+        time: time ?? null,
+        additionTime: additionTime ?? null,
+        timeControl: timeControl || getTimeControlsFromSecods(time),
       })
     );
     dispatch(
       playersActions.setPlayerOne({
         color: ChessColors.WHITE,
-        timeLeft: parseInt(data.time),
+        timeLeft: time,
         type: "basic",
         loses: 0,
         wins: 0,
@@ -62,7 +71,7 @@ export const CreateGameForm = () => {
     dispatch(
       playersActions.setPlayerTwo({
         color: ChessColors.BLACK,
-        timeLeft: parseInt(data.time),
+        timeLeft: time,
         type: "basic",
         loses: 0,
         wins: 0,
@@ -146,10 +155,17 @@ export const CreateGameForm = () => {
                     {...field}
                     value={[parseInt(field.value)]}
                     onValueChange={([v]) => field.onChange(v)}
-                    minStepsBetweenThumbs={60}
+                    step={60}
                   />
                 )}
               />
+            </div>
+            <div className={cl.timeControlName}>
+              {formState.dirtyFields.isWithTime && (
+                <AppText color="text-300">
+                  {getTimeControlsFromSecods(parseInt(currentTime))}
+                </AppText>
+              )}
             </div>
           </div>
           <div className={cl.row}>

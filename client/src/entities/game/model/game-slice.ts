@@ -7,6 +7,7 @@ import { GameTypes } from "@/shared/types/game-type";
 import { Move } from "chess.js";
 import { GameStatus } from "@/shared/types/game-status";
 import { GameResult } from "../types/game-result";
+import { TimeControls } from "@/shared/types/time-controls";
 
 interface GameState {
   game: Game | null;
@@ -26,6 +27,7 @@ const initialState: GameState = {
     type: GameTypes.LOCAL,
     time: null,
     additionTime: null,
+    timeControl: TimeControls,
   },
   result: null,
 };
