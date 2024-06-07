@@ -1,0 +1,31 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  padding: 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--background-700);
+  font-size: 1.8rem;
+  color: var(--text-500);
+  background-color: transparent;
+
+  &:focus {
+    border: 1px solid var(--primary-500);
+  }
+
+  &.error {
+    border: 1px solid var(--error-800);
+  }
+
+  &.small {
+    padding: 4px;
+    font-size: 1.5rem;
+  }
+
+  &.disabled {
+    opacity: 0.7;
+  }
+}
