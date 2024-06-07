@@ -5,81 +5,16 @@ import cl from "./create-local-game-form.module.scss";
 import { AppCheckbox } from "@/shared/ui/app-checkbox/app-checkbox";
 import { AppSlider } from "@/shared/ui/app-slider/app-slider";
 import { GameModes } from "@/shared/types/game-modes";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { AppButton } from "@/shared/ui/app-button/app-button";
-import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
-import { gameActions, getTimeControlsFromSecods } from "@/entities/game";
-import { GameTypes } from "@/shared/types/game-type";
-import { playersActions } from "@/entities/player";
-import { useRouter } from "@/shared/config/navigation";
-import { ChessColors } from "@/shared/types/chess-colors";
 import { AppInput } from "@/shared/ui/app-input/app-input";
-import { useTranslations } from "use-intl";
-import { TimeControls } from "@/shared/types/time-controls";
 import { AppText } from "@/shared/ui/app-text/app-text";
-
-interface CreateLocalGameFormData {
-  mode: GameModes;
-  isWithTime: boolean;
-  time: string;
-  isWithAdditionTime: boolean;
-  additionTime: string;
-  timeControl: TimeControls | null;
-}
+import { useCreateLocalGameForm } from "../../model/use-create-local-game-form";
+import { getTimeControlsFromSecods } from "@/entities/game";
 
 export const CreateLocalGameForm = () => {
-  const dispatch = useAppDispatch();
-  const { control, handleSubmit, formState, watch } =
-    useForm<CreateLocalGameFormData>({
-      defaultValues: {
-        mode: GameModes.CLASSICAL,
-        isWithTime: false,
-        isWithAdditionTime: false,
-        time: "50",
-        additionTime: "50",
-      },
-    });
-  const router = useRouter();
-  const t = useTranslations("CreateGame");
-
-  const currentTime = watch("time");
-
-  const submit: SubmitHandler<CreateLocalGameFormData> = (data) => {
-    const time = parseInt(data.time);
-    const additionTime = parseInt(data.additionTime);
-    const timeControl = data.timeControl;
-
-    dispatch(
-      gameActions.setGameSettings({
-        type: GameTypes.LOCAL,
-        mode: data.mode,
-        time: time ?? null,
-        additionTime: additionTime ?? null,
-        timeControl: timeControl || getTimeControlsFromSecods(time),
-      })
-    );
-    dispatch(
-      playersActions.setPlayerOne({
-        color: ChessColors.WHITE,
-        timeLeft: time,
-        type: "basic",
-        loses: 0,
-        wins: 0,
-        isWinner: false,
-      })
-    );
-    dispatch(
-      playersActions.setPlayerTwo({
-        color: ChessColors.BLACK,
-        timeLeft: time,
-        type: "basic",
-        loses: 0,
-        wins: 0,
-        isWinner: false,
-      })
-    );
-    router.push("/game/local");
-  };
+  const { control, currentTimeControl, formState, handleSubmit, submit, t } =
+    useCreateLocalGameForm();
 
   return (
     <AppCard>
@@ -162,9 +97,7 @@ export const CreateLocalGameForm = () => {
             </div>
             <div className={cl.timeControlName}>
               {formState.dirtyFields.isWithTime && (
-                <AppText color="text-300">
-                  {getTimeControlsFromSecods(parseInt(currentTime))}
-                </AppText>
+                <AppText color="text-300">{currentTimeControl}</AppText>
               )}
             </div>
           </div>
