@@ -1,6 +1,6 @@
 .row {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  align-items: center;
   gap: 20px;
   align-items: center;
   width: 100%;
@@ -10,4 +10,20 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.slider {
+  max-width: 400px;
+  flex-grow: 1;
+}
+
+.sliderInput {
+  width: 50px;
+  font-size: 1.6rem;
+}
+
+.mode {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
