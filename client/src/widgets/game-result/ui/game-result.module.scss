@@ -1,0 +1,29 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  min-width: 450px;
+}
+
+.title {
+  font-size: 3rem;
+  text-align: center;
+
+  &.winner {
+    color: var(--success-500);
+  }
+  &.looser {
+    color: var(--error-800);
+  }
+}
+
+.reason {
+  text-align: center;
+  color: var(--text-300);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}

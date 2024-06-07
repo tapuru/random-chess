@@ -1,0 +1,32 @@
+.root {
+  border: 1px solid var(--background-600);
+  height: 300px;
+  min-width: 200px;
+
+  border-radius: var(--border-radius);
+  overflow: auto;
+}
+
+.moveRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.rowNumber {
+  text-align: center;
+  padding: 6px;
+  background-color: var(--secondary-50);
+
+  // box-shadow: inset var(--shadow);
+}
+
+.move {
+  text-align: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    background-color: var(--primary-100);
+  }
+}

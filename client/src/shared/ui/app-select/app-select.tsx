@@ -23,69 +23,78 @@ interface AppSelectProps extends Select.SelectProps {
   options?: AppSelectOption[];
   optionGroups?: AppSelectOptionGroup[];
   variant?: "outlined" | "underlined";
+  fullWidth?: boolean;
 }
 
-export const AppSelect = ({
-  placeholder,
-  withScrollButtons,
-  options,
-  optionGroups,
-  variant,
-  ...props
-}: AppSelectProps) => {
-  return (
-    <Select.Root {...props}>
-      <Select.Trigger
-        className={cn(cl.selectTrigger, {
-          [cl.underlined]: variant === "underlined",
-        })}
-      >
-        <Select.Value placeholder={placeholder} />
-        <Select.Icon className={cl.selectIcon}>
-          <MdKeyboardArrowDown size={25} />
-        </Select.Icon>
-      </Select.Trigger>
-      <Select.Portal>
-        <Select.Content className={cl.selectContent} position="popper">
-          {withScrollButtons && (
-            <Select.ScrollUpButton className="SelectScrollButton">
-              <MdKeyboardArrowUp />
-            </Select.ScrollUpButton>
-          )}
-          <Select.Viewport className="SelectViewport">
-            {options?.map((option) => (
-              <SelectItem {...option} key={option.value}>
-                {option.title}
-              </SelectItem>
-            ))}
-            {optionGroups?.map((group, index) => (
-              <div key={group.label}>
-                <Select.Group>
-                  <Select.Label className={cl.groupLabel}>
-                    {group.label}
-                  </Select.Label>
-                  {group.options.map((option) => (
-                    <SelectItem key={option.value} {...option}>
-                      {option.title}
-                    </SelectItem>
-                  ))}
-                </Select.Group>
-                {index !== optionGroups.length - 1 && (
-                  <Select.Separator className={cl.selectDivider} />
-                )}
-              </div>
-            ))}
-          </Select.Viewport>
-          {withScrollButtons && (
-            <Select.ScrollDownButton className="SelectScrollButton">
-              <MdKeyboardArrowDown />
-            </Select.ScrollDownButton>
-          )}
-        </Select.Content>
-      </Select.Portal>
-    </Select.Root>
-  );
-};
+export const AppSelect = React.forwardRef<HTMLButtonElement, AppSelectProps>(
+  (
+    {
+      placeholder,
+      withScrollButtons,
+      options,
+      optionGroups,
+      variant,
+      fullWidth,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <Select.Root {...props}>
+        <Select.Trigger
+          className={cn(cl.selectTrigger, {
+            [cl.underlined]: variant === "underlined",
+            [cl.fullWidth]: fullWidth,
+          })}
+          ref={ref}
+        >
+          <Select.Value placeholder={placeholder} />
+          <Select.Icon className={cl.selectIcon}>
+            <MdKeyboardArrowDown size={25} />
+          </Select.Icon>
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content className={cl.selectContent} position="popper">
+            {withScrollButtons && (
+              <Select.ScrollUpButton className="SelectScrollButton">
+                <MdKeyboardArrowUp />
+              </Select.ScrollUpButton>
+            )}
+            <Select.Viewport className="SelectViewport">
+              {options?.map((option) => (
+                <SelectItem {...option} key={option.value}>
+                  {option.title}
+                </SelectItem>
+              ))}
+              {optionGroups?.map((group, index) => (
+                <div key={group.label}>
+                  <Select.Group>
+                    <Select.Label className={cl.groupLabel}>
+                      {group.label}
+                    </Select.Label>
+                    {group.options.map((option) => (
+                      <SelectItem key={option.value} {...option}>
+                        {option.title}
+                      </SelectItem>
+                    ))}
+                  </Select.Group>
+                  {index !== optionGroups.length - 1 && (
+                    <Select.Separator className={cl.selectDivider} />
+                  )}
+                </div>
+              ))}
+            </Select.Viewport>
+            {withScrollButtons && (
+              <Select.ScrollDownButton className="SelectScrollButton">
+                <MdKeyboardArrowDown />
+              </Select.ScrollDownButton>
+            )}
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
+    );
+  }
+);
 
 const SelectItem = ({
   children,

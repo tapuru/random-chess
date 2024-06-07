@@ -1,6 +1,5 @@
 {
   "HomePage": {
-    "title": "Hello world!",
     "createGame": "Create game",
     "findGame": "Find game",
     "playWithEngine": "Play with engine"
@@ -9,5 +8,25 @@
     "lobby": "Game",
     "history": "History",
     "about": "About"
+  },
+  "Game": {
+    "w": "White",
+    "b": "Black",
+    "whiteTurn": "White turn",
+    "blackTurn": "Black turn",
+    "yourTurn": "Your turn",
+    "waitOpponent": "Waiting for the opponent",
+    "win": "wins",
+    "victory": "Victory",
+    "defeat": "Defeat",
+    "checkmate": "Checkmate",
+    "stalemate": "Stalemate",
+    "draw": "Draw",
+    "whiteSurrender": "White has surrendered",
+    "blackSurrender": "Black has surrendered",
+    "whiteOutOfTime": "White is out of time",
+    "blackOutOfTime": "Black is out of time",
+    "rematch": "Rematch",
+    "leave": "Leave"
   }
 }

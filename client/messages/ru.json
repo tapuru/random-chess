@@ -1,6 +1,5 @@
 {
   "HomePage": {
-    "title": "Привет мир!",
     "createGame": "Создать игру",
     "findGame": "Найти игру",
     "playWithEngine": "Играть с компьютером"
@@ -9,5 +8,25 @@
     "lobby": "Игра",
     "history": "Мои партии",
     "about": "Информация"
+  },
+  "Game": {
+    "w": "Белые",
+    "b": "Чёрные",
+    "whiteTurn": "Ход белых",
+    "blackTurn": "Ход чёрных",
+    "yourTurn": "Ваш ход",
+    "waitOpponent": "Ожидание соперника",
+    "win": "побеждают",
+    "victory": "Победа",
+    "defeat": "Поражение",
+    "checkmate": "Шах и мат",
+    "stalemate": "Пат",
+    "draw": "Ничья",
+    "whiteSurrender": "Белые сдались",
+    "blackSurrender": "Чёрные сдались",
+    "whiteOutOfTime": "У белых закончилось время",
+    "blackOutOfTime": "У чёрных закончилось время",
+    "rematch": "Реванш",
+    "leave": "Выйти"
   }
 }

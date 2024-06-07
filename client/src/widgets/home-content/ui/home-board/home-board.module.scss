@@ -1,0 +1,9 @@
+@import "../../../../shared/styles/breakpoints.module.scss";
+
+.root {
+  display: flex;
+
+  @media (max-width: $bp-l) {
+    display: none;
+  }
+}

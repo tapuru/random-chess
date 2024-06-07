@@ -18,3 +18,10 @@ export const basicCard: Story = {
 export const cardWithContent: Story = {
   args: { children: <AppCard.Content>card with content</AppCard.Content> },
 };
+
+export const FloatingCard: Story = {
+  args: {
+    children: <AppCard.Content>floating card</AppCard.Content>,
+    variant: "floating",
+  },
+};

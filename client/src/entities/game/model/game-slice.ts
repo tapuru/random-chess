@@ -4,23 +4,30 @@ import { GameSettings } from "../types/game-settings";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameModes } from "@/shared/types/game-modes";
 import { GameTypes } from "@/shared/types/game-type";
-import { Turn } from "@/shared/types/turn";
+import { Move } from "chess.js";
+import { GameStatus } from "@/shared/types/game-status";
+import { GameResult } from "../types/game-result";
 
 interface GameState {
   game: Game | null;
   settings: GameSettings;
+  result: GameResult | null;
 }
 
 const initialState: GameState = {
   game: {
-    currentTurnColor: ChessColors.WHITE,
-    turns: [],
+    currentTurn: ChessColors.WHITE,
+    moves: [],
+    status: GameStatus.PENDING,
+    initialFen: "",
   },
   settings: {
-    initialFen: "",
     mode: GameModes.CLASSICAL,
     type: GameTypes.LOCAL,
+    time: null,
+    additionTime: null,
   },
+  result: null,
 };
 
 export const gameSlice = createSlice({
@@ -29,23 +36,32 @@ export const gameSlice = createSlice({
   reducers: {
     setCurrnetTurnColor(state, action: PayloadAction<ChessColors>) {
       if (state.game) {
-        state.game.currentTurnColor = action.payload;
+        state.game.currentTurn = action.payload;
       }
     },
-    toggleCurrentTurnColor(state) {
+    toggleCurrentTurn(state) {
       if (state.game) {
-        state.game.currentTurnColor === ChessColors.BLACK
-          ? (state.game.currentTurnColor = ChessColors.WHITE)
-          : (state.game.currentTurnColor = ChessColors.BLACK);
+        state.game.currentTurn === ChessColors.BLACK
+          ? (state.game.currentTurn = ChessColors.WHITE)
+          : (state.game.currentTurn = ChessColors.BLACK);
       }
     },
-    makeTurn(state, action: PayloadAction<Turn>) {
+    addMove(state, action: PayloadAction<Move>) {
       if (state.game) {
-        state.game.turns.push(action.payload);
+        state.game.moves.push(action.payload);
       }
     },
     setGameSettings(state, action: PayloadAction<GameSettings>) {
       state.settings = action.payload;
+    },
+    setResult(state, action: PayloadAction<GameResult>) {
+      state.result = action.payload;
+    },
+    setGame(state, action: PayloadAction<Game>) {
+      state.game = action.payload;
+    },
+    setGameStatus(state, action: PayloadAction<GameStatus>) {
+      if (state.game) state.game.status = action.payload;
     },
   },
 });
@@ -56,3 +72,4 @@ export const gameActions = gameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game.game;
 export const selectGameSettings = (state: RootState) => state.game.settings;
+export const selectGameResult = (state: RootState) => state.game.result;
