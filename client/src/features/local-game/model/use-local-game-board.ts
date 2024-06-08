@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Chess, Move } from "chess.js";
 import { gameActions, selectGame, selectGameSettings } from "@/entities/game";
 import { selectPlayerOne, selectPlayerTwo } from "@/entities/player";
@@ -50,42 +50,45 @@ export const useLocalGameBoard = () => {
   }, [playerOne, playerTwo]);
 
   function start() {
-    const chess = new Chess(gameSettings.initialFen || undefined);
+    const chess = new Chess(game?.initialFen || undefined);
     setChess(chess);
     dispatch(gameActions.setGameStatus(GameStatus.ACTIVE));
   }
 
-  const handleBoardChange = (move: Move, chess: Chess) => {
-    if (!game) return;
-    dispatch(gameActions.addMove(move));
-    dispatch(gameActions.toggleCurrentTurn());
+  const handleBoardChange = useCallback(
+    (move: Move, chess: Chess) => {
+      if (!game) return;
+      dispatch(gameActions.addMove(move));
+      dispatch(gameActions.toggleCurrentTurn());
 
-    if (chess.isGameOver()) {
-      if (chess.isCheckmate()) {
-        const color = chess.turn();
-        const winner = [playerOne, playerTwo].find((p) => p?.color !== color);
-        dispatch(
-          gameActions.setResult({
-            winner,
-            moves: game.moves,
-            reason: "checkmate",
-          })
-        );
-        dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
+      if (chess.isGameOver()) {
+        if (chess.isCheckmate()) {
+          const color = chess.turn();
+          const winner = [playerOne, playerTwo].find((p) => p?.color !== color);
+          dispatch(
+            gameActions.setResult({
+              winner,
+              moves: game.moves,
+              reason: "checkmate",
+            })
+          );
+          dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
+        }
+        if (chess.isDraw()) {
+          dispatch(
+            gameActions.setResult({
+              reason: "draw",
+              moves: game.moves,
+            })
+          );
+        }
+        if (chess.isStalemate()) {
+          gameActions.setResult({ reason: "draw", moves: game.moves });
+        }
       }
-      if (chess.isDraw()) {
-        dispatch(
-          gameActions.setResult({
-            reason: "draw",
-            moves: game.moves,
-          })
-        );
-      }
-      if (chess.isStalemate()) {
-        gameActions.setResult({ reason: "draw", moves: game.moves });
-      }
-    }
-  };
+    },
+    [chess, game, dispatch]
+  );
 
   return {
     handleBoardChange,
