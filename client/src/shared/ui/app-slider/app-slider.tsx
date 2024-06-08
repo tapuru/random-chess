@@ -5,18 +5,23 @@ import React from "react";
 
 interface AppSliderProps extends Slider.SliderProps {
   color?: "primary" | "secondary";
+  className?: string;
 }
 
 export const AppSlider = React.forwardRef<HTMLDivElement, AppSliderProps>(
-  ({ color = "secondary", ...props }, ref) => {
+  ({ color = "secondary", className, ...props }, ref) => {
     const value = props.value || props.defaultValue;
 
     return (
       <Slider.Root
-        className={cn(cl.root, {
-          [cl.primary]: color === "primary",
-          [cl.secondary]: color === "secondary",
-        })}
+        className={cn(
+          cl.root,
+          {
+            [cl.primary]: color === "primary",
+            [cl.secondary]: color === "secondary",
+          },
+          className
+        )}
         {...props}
         ref={ref}
       >

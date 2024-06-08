@@ -28,5 +28,13 @@
     "blackOutOfTime": "Black is out of time",
     "rematch": "Rematch",
     "leave": "Leave"
+  },
+  "CreateGame": {
+    "mode": "Mode",
+    "timeControl": "Time control",
+    "additionTime": "Addition time",
+    "createGame": "Create game",
+    "back": "Back",
+    "create": "Create"
   }
 }

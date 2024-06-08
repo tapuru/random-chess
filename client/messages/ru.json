@@ -28,5 +28,13 @@
     "blackOutOfTime": "У чёрных закончилось время",
     "rematch": "Реванш",
     "leave": "Выйти"
+  },
+  "CreateGame": {
+    "mode": "Режим",
+    "timeControl": "Контроль времени",
+    "additionTime": "Добавление за ход",
+    "createGame": "Создать игру",
+    "back": "Назад",
+    "create": "Создать"
   }
 }

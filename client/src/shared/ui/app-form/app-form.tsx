@@ -1,54 +1,68 @@
 import React from "react";
 import cl from "./app-form.module.scss";
-import * as Form from "@radix-ui/react-form";
+import cn from "classnames";
 
-interface AppFormProps extends Form.FormProps {}
-interface FormMessage
-  extends Pick<Form.FormMessageProps, "match" | "forceMatch" | "name"> {
-  message?: string;
-}
-interface FormFieldProps
-  extends Pick<Form.FormFieldProps, "name" | "children"> {
+interface AppFormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
+interface AppFormFieldProps {
+  isError?: boolean;
+  errorMessage?: string;
+  name: string;
+  children?: React.ReactNode;
   label?: string;
-  messages?: FormMessage[];
-  className?: string;
+  labelPosition?: "top" | "left" | "right" | "bottom";
+  required?: boolean;
+}
+interface AppForm
+  extends React.ForwardRefExoticComponent<
+    AppFormProps & React.RefAttributes<HTMLFormElement>
+  > {
+  Field?: React.ForwardRefExoticComponent<
+    AppFormFieldProps & React.RefAttributes<HTMLDivElement>
+  >;
 }
 
 export const AppForm = ({ children, ...props }: AppFormProps) => {
   return (
-    <Form.Root {...props} className={cl.root}>
+    <form className={cl.root} {...props}>
       {children}
-    </Form.Root>
+    </form>
   );
 };
 
-AppForm.Field = ({ children, label, messages, ...props }: FormFieldProps) => {
+AppForm.Field = ({
+  name,
+  children,
+  errorMessage = "error",
+  isError,
+  label,
+  labelPosition = "top",
+  required,
+}: AppFormFieldProps) => {
   return (
-    <Form.Field {...props} className={cl.filed}>
-      <Form.Label className={cl.label}>{label}</Form.Label>
-      {children}
-      {messages?.map((m, index) => (
-        <Form.Message
-          className={cl.message}
-          match={m.match}
-          forceMatch={m.forceMatch}
-          key={index}
-        >
-          {m.message}
-        </Form.Message>
-      ))}
-    </Form.Field>
+    <div
+      className={cn(cl.field, {
+        [cl.required]: required,
+        [cl.error]: isError,
+      })}
+    >
+      <div
+        className={cn(cl.fieldContent, {
+          [cl.labelVertical]:
+            labelPosition === "top" || labelPosition === "bottom",
+          [cl.labelHorizontal]:
+            labelPosition === "left" || labelPosition === "right",
+        })}
+      >
+        {!!(label && (labelPosition === "top" || labelPosition === "left")) && (
+          <label htmlFor={name}>{label}</label>
+        )}
+        {children}
+        {!!(
+          label &&
+          (labelPosition === "right" || labelPosition === "bottom")
+        ) && <label htmlFor={name}>{label}</label>}
+      </div>
+      {isError && <div className={cl.errorMessage}>{errorMessage}</div>}
+    </div>
   );
-};
-
-AppForm.Control = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Form.FormControl className={cl.control} asChild>
-      {children}
-    </Form.FormControl>
-  );
-};
-
-AppForm.Submit = ({ children }: { children: React.ReactNode }) => {
-  return <Form.Submit asChild>{children}</Form.Submit>;
 };

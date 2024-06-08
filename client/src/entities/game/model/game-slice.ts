@@ -26,6 +26,7 @@ const initialState: GameState = {
     type: GameTypes.LOCAL,
     time: null,
     additionTime: null,
+    timeControl: null,
   },
   result: null,
 };

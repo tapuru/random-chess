@@ -1,15 +1,36 @@
-.filed {
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 12px;
-}
 
-.message {
-  font-size: 1.4rem;
-  color: var(--error-800);
-}
+  position: relative;
 
-.label {
-  color: var(--text-500);
+  &.required {
+    transform: translateX(10px);
+    &::before {
+      content: "*";
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-10px);
+    }
+  }
+
+  .fieldContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.labelHorizontal {
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
+  }
 }
