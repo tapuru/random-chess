@@ -29,8 +29,8 @@ export const LocalResignButton = () => {
         moves: game.moves,
         reason:
           currentPlayer?.color === ChessColors.BLACK
-            ? "blackSurrendered"
-            : "whiteSurrendered",
+            ? "blackResigned"
+            : "whiteResigned",
         winner,
       })
     );

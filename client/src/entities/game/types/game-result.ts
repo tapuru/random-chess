@@ -3,8 +3,8 @@ import { Move } from "chess.js";
 
 export type GameEndReason =
   | "checkmate"
-  | "whiteSurrendered"
-  | "blackSurrendered"
+  | "whiteResigned"
+  | "blackResigned"
   | "whiteOutOfTime"
   | "blackOutOfTime"
   | "draw"
