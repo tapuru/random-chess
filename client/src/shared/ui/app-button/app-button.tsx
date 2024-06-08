@@ -11,6 +11,7 @@ interface AppButtonProps extends ComponentProps<"button"> {
   disabled?: boolean;
   fullWidth?: boolean;
   href?: string;
+  className?: string;
 }
 
 export const AppButton = ({
@@ -22,6 +23,7 @@ export const AppButton = ({
   icon,
   variant = "filled",
   href,
+  className,
   ...props
 }: AppButtonProps) => {
   if (href) {
@@ -47,7 +49,8 @@ export const AppButton = ({
           },
           {
             [cl.fullWidth]: fullWidth,
-          }
+          },
+          className
         )}
       >
         {icon && <div className={cl.icon}>{icon}</div>}
@@ -79,7 +82,8 @@ export const AppButton = ({
         },
         {
           [cl.fullWidth]: fullWidth,
-        }
+        },
+        className
       )}
     >
       {icon && <div className={cl.icon}>{icon}</div>}
