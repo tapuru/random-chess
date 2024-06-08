@@ -38,18 +38,19 @@ export const useCreateLocalGameForm = () => {
   const currentTimeControl = getTimeControlsFromSecods(parseInt(currentTime));
 
   const submit: SubmitHandler<CreateLocalGameFormData> = (data) => {
-    const time = parseInt(data.time);
-    const additionTime = parseInt(data.additionTime);
-    const timeControl = data.timeControl;
+    let time: number | null = parseInt(data.time);
 
-    console.log(data);
+    let additionTime: number | null = parseInt(data.additionTime);
+    if (Number.isNaN(time)) time = null;
+    if (Number.isNaN(additionTime)) additionTime = null;
+    const timeControl = data.timeControl;
 
     dispatch(
       gameActions.setGameSettings({
         type: GameTypes.LOCAL,
         mode: data.mode,
-        time: time ?? null,
-        additionTime: additionTime ?? null,
+        time,
+        additionTime,
         timeControl: timeControl || getTimeControlsFromSecods(time),
       })
     );

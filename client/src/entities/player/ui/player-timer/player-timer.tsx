@@ -45,7 +45,6 @@ export const PlayerTimer = ({
       clearInterval(timer.current);
     }
   }
-
   if (player.timeLeft === null) return null;
 
   const timeToShow = secondsToHHMMSS(player.timeLeft);
