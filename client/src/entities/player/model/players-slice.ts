@@ -40,6 +40,12 @@ export const playersSlice = createSlice({
           : (player.timeLeft += action.payload.time);
       }
     },
+    swapPlayersColors: (state) => {
+      if (state.playerOne && state.playerTwo) {
+        state.playerOne.color = state.playerTwo.color;
+        state.playerTwo.color = state.playerOne.color;
+      }
+    },
   },
 });
 

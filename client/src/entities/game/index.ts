@@ -4,6 +4,7 @@ export {
   selectGame,
   selectGameSettings,
   selectGameResult,
+  selectGameHasRestarted,
 } from "./model/game-slice";
 export type { Game } from "./types/game";
 export type { GameSettings } from "./types/game-settings";

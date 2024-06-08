@@ -2,22 +2,34 @@
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { useCallback, useEffect, useState } from "react";
 import { Chess, Move } from "chess.js";
-import { gameActions, selectGame, selectGameSettings } from "@/entities/game";
+import {
+  gameActions,
+  selectGame,
+  selectGameHasRestarted,
+  selectGameSettings,
+} from "@/entities/game";
 import { selectPlayerOne, selectPlayerTwo } from "@/entities/player";
 import { GameStatus } from "@/shared/types/game-status";
 import { ChessColors } from "@/shared/types/chess-colors";
 
 export const useLocalGameBoard = () => {
   const dispatch = useAppDispatch();
-  const gameSettings = useAppSelector(selectGameSettings);
   const game = useAppSelector(selectGame);
   const [chess, setChess] = useState<Chess>(new Chess());
   const playerOne = useAppSelector(selectPlayerOne);
   const playerTwo = useAppSelector(selectPlayerTwo);
+  const gameHasRestarted = useAppSelector(selectGameHasRestarted);
 
   useEffect(() => {
     start();
   }, []);
+
+  useEffect(() => {
+    if (gameHasRestarted) {
+      start();
+      dispatch(gameActions.setGameHasRestarted(false));
+    }
+  }, [gameHasRestarted]);
 
   useEffect(() => {
     if (!game || game.status === GameStatus.FINISHED) return;

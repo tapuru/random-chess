@@ -6,6 +6,7 @@ import { AppModal } from "@/shared/ui/app-modal/app-modal";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useGameResult } from "../model/use-game-result";
 import { useRouter } from "@/shared/config/navigation";
+import { LocalRematchButton } from "@/features/local-game";
 
 export const GameResult = () => {
   const {
@@ -35,9 +36,7 @@ export const GameResult = () => {
         </div>
         {!!reason && <div className={cl.reason}>{t(reason)}</div>}
         <div className={cl.actions}>
-          <AppButton variant="filled" color="secondary">
-            {t("rematch")}
-          </AppButton>
+          <LocalRematchButton title={t("rematch")} />
           <AppButton onClick={() => router.push("/lobby")}>
             {t("leave")}
           </AppButton>

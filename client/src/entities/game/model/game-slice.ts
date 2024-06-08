@@ -12,6 +12,7 @@ interface GameState {
   game: Game | null;
   settings: GameSettings;
   result: GameResult | null;
+  gameHasRestarted: boolean;
 }
 
 const initialState: GameState = {
@@ -29,6 +30,8 @@ const initialState: GameState = {
     timeControl: null,
   },
   result: null,
+  //this flag is used for updating the board with non-serializable chess state
+  gameHasRestarted: false,
 };
 
 export const gameSlice = createSlice({
@@ -55,7 +58,7 @@ export const gameSlice = createSlice({
     setGameSettings(state, action: PayloadAction<GameSettings>) {
       state.settings = action.payload;
     },
-    setResult(state, action: PayloadAction<GameResult>) {
+    setResult(state, action: PayloadAction<GameResult | null>) {
       state.result = action.payload;
     },
     setGame(state, action: PayloadAction<Game>) {
@@ -63,6 +66,18 @@ export const gameSlice = createSlice({
     },
     setGameStatus(state, action: PayloadAction<GameStatus>) {
       if (state.game) state.game.status = action.payload;
+    },
+    resetGame(state) {
+      if (state.game) {
+        state.game.currentTurn = ChessColors.WHITE;
+        state.game.moves = [];
+        state.game.status = GameStatus.PENDING;
+        //has to be manually set to false in the startGame function
+        state.gameHasRestarted = true;
+      }
+    },
+    setGameHasRestarted: (state, action: PayloadAction<boolean>) => {
+      state.gameHasRestarted = action.payload;
     },
   },
 });
@@ -74,3 +89,5 @@ export const gameActions = gameSlice.actions;
 export const selectGame = (state: RootState) => state.game.game;
 export const selectGameSettings = (state: RootState) => state.game.settings;
 export const selectGameResult = (state: RootState) => state.game.result;
+export const selectGameHasRestarted = (state: RootState) =>
+  state.game.gameHasRestarted;
