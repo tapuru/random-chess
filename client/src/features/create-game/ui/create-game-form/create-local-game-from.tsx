@@ -10,7 +10,7 @@ import { AppButton } from "@/shared/ui/app-button/app-button";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { AppText } from "@/shared/ui/app-text/app-text";
 import { useCreateLocalGameForm } from "../../model/use-create-local-game-form";
-import { getTimeControlsFromSecods } from "@/entities/game";
+import { AppForm } from "@/shared/ui/app-form/app-form";
 
 export const CreateLocalGameForm = () => {
   const { control, currentTimeControl, formState, handleSubmit, submit, t } =
@@ -19,25 +19,30 @@ export const CreateLocalGameForm = () => {
   return (
     <AppCard>
       <AppCard.Content>
-        <form className={cl.form} onSubmit={handleSubmit(submit)}>
+        <AppForm onSubmit={handleSubmit(submit)}>
           <div className={cl.mode}>
-            <label htmlFor="mode" className={cl.label}>
-              {t("mode")}:
-            </label>
-            <Controller
+            <AppForm.Field
+              required
               name="mode"
-              control={control}
-              render={({ field }) => (
-                <AppSelect
-                  {...field}
-                  onValueChange={field.onChange}
-                  options={[
-                    { title: "classical", value: GameModes.CLASSICAL },
-                    { title: "fisher", value: GameModes.FISHER },
-                  ]}
-                />
-              )}
-            />
+              label={`${t("mode")}:`}
+              labelPosition="left"
+            >
+              <Controller
+                name="mode"
+                control={control}
+                render={({ field }) => (
+                  <AppSelect
+                    required
+                    {...field}
+                    onValueChange={field.onChange}
+                    options={[
+                      { title: "classical", value: GameModes.CLASSICAL },
+                      { title: "fisher", value: GameModes.FISHER },
+                    ]}
+                  />
+                )}
+              />
+            </AppForm.Field>
           </div>
           <div className={cl.row}>
             <div className={cl.checkbox}>
@@ -55,7 +60,7 @@ export const CreateLocalGameForm = () => {
                 name="isWithTime"
               />
             </div>
-            <div className={cl.value}>
+            <div className={cl.sliderValue}>
               <Controller
                 name="time"
                 control={control}
@@ -102,64 +107,70 @@ export const CreateLocalGameForm = () => {
             </div>
           </div>
           <div className={cl.row}>
-            <Controller
-              name="isWithAdditionTime"
-              control={control}
-              disabled={!formState.dirtyFields.isWithTime}
-              render={({ field }) => (
-                <AppCheckbox
-                  label={`${t("additionTime")}:`}
-                  onCheckedChange={field.onChange}
-                  checked={field.value}
-                  {...field}
-                  value={""}
-                />
-              )}
-            />
-            <Controller
-              name="additionTime"
-              control={control}
-              disabled={!formState.dirtyFields.isWithAdditionTime}
-              render={({ field }) => (
-                <AppInput
-                  type="text"
-                  className={cl.sliderInput}
-                  {...field}
-                  value={`${parseInt(field.value)}s`}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    let value = parseInt(e.target.value);
-                    if (Number.isNaN(value)) {
-                      value = 0;
-                    }
-                    field.onChange(value * 60);
-                  }}
-                  small
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="additionTime"
-              disabled={
-                !formState.dirtyFields.isWithTime ||
-                !formState.dirtyFields.isWithAdditionTime
-              }
-              render={({ field }) => (
-                <AppSlider
-                  min={0}
-                  max={100}
-                  {...field}
-                  value={[parseInt(field.value)]}
-                  onValueChange={([v]) => field.onChange(v)}
-                  className={cl.slider}
-                />
-              )}
-            />
+            <div className={cl.checkbox}>
+              <Controller
+                name="isWithAdditionTime"
+                control={control}
+                disabled={!formState.dirtyFields.isWithTime}
+                render={({ field }) => (
+                  <AppCheckbox
+                    label={`${t("additionTime")}:`}
+                    onCheckedChange={field.onChange}
+                    checked={field.value}
+                    {...field}
+                    value={""}
+                  />
+                )}
+              />
+            </div>
+            <div className={cl.sliderValue}>
+              <Controller
+                name="additionTime"
+                control={control}
+                disabled={!formState.dirtyFields.isWithAdditionTime}
+                render={({ field }) => (
+                  <AppInput
+                    type="text"
+                    className={cl.sliderInput}
+                    {...field}
+                    value={`${parseInt(field.value)}s`}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      let value = parseInt(e.target.value);
+                      if (Number.isNaN(value)) {
+                        value = 0;
+                      }
+                      field.onChange(value * 60);
+                    }}
+                    small
+                  />
+                )}
+              />{" "}
+            </div>
+            <div className={cl.slider}>
+              <Controller
+                control={control}
+                name="additionTime"
+                disabled={
+                  !formState.dirtyFields.isWithTime ||
+                  !formState.dirtyFields.isWithAdditionTime
+                }
+                render={({ field }) => (
+                  <AppSlider
+                    min={0}
+                    max={100}
+                    {...field}
+                    value={[parseInt(field.value)]}
+                    onValueChange={([v]) => field.onChange(v)}
+                    className={cl.slider}
+                  />
+                )}
+              />
+            </div>
           </div>
           <div className={cl.submit}>
             <AppButton>{t("create")}</AppButton>
           </div>
-        </form>
+        </AppForm>
       </AppCard.Content>
     </AppCard>
   );

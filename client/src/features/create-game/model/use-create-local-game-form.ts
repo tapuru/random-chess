@@ -27,7 +27,7 @@ export const useCreateLocalGameForm = () => {
         mode: GameModes.CLASSICAL,
         isWithTime: false,
         isWithAdditionTime: false,
-        time: "50",
+        time: "600",
         additionTime: "50",
       },
     });
@@ -41,6 +41,8 @@ export const useCreateLocalGameForm = () => {
     const time = parseInt(data.time);
     const additionTime = parseInt(data.additionTime);
     const timeControl = data.timeControl;
+
+    console.log(data);
 
     dispatch(
       gameActions.setGameSettings({
