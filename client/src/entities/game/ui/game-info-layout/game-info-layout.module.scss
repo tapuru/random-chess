@@ -3,3 +3,9 @@
   grid-template-columns: 1fr 1.5fr;
   gap: 18px;
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+}

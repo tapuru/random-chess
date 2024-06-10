@@ -61,7 +61,8 @@ export const gameSlice = createSlice({
     setResult(state, action: PayloadAction<GameResult | null>) {
       state.result = action.payload;
     },
-    setGame(state, action: PayloadAction<Game>) {
+    setGame(state, action: PayloadAction<Game | null>) {
+      if (action.payload !== null) state.gameHasRestarted = true;
       state.game = action.payload;
     },
     setGameStatus(state, action: PayloadAction<GameStatus>) {

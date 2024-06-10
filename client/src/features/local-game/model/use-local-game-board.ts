@@ -6,7 +6,6 @@ import {
   gameActions,
   selectGame,
   selectGameHasRestarted,
-  selectGameSettings,
 } from "@/entities/game";
 import { selectPlayerOne, selectPlayerTwo } from "@/entities/player";
 import { GameStatus } from "@/shared/types/game-status";

@@ -11,7 +11,7 @@ import { GameResult } from "@/widgets/game-result";
 import { Player, playersActions } from "@/entities/player";
 import { GameInfoLayout, GameMoves } from "@/entities/game";
 import { GameTurn } from "@/widgets/game-turn";
-import { LocalResignButton } from "@/features/local-game";
+import { LocalAbortButton, LocalResignButton } from "@/features/local-game";
 
 export const GamePage = () => {
   const dispatch = useAppDispatch();
@@ -27,9 +27,10 @@ export const GamePage = () => {
             <PlayerTwoInfo />
             <GameInfoLayout
               gameActions={
-                <div>
+                <>
                   <LocalResignButton />
-                </div>
+                  <LocalAbortButton />
+                </>
               }
               gameMoves={<GameMoves />}
               gameTurn={<GameTurn />}

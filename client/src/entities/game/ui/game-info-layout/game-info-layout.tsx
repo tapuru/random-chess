@@ -16,8 +16,8 @@ export const GameInfoLayout = ({
       <AppCard.Content>
         <div className={cl.content}>
           <div className={cl.moves}>{gameMoves}</div>
-          <div className={cl.actions}>
-            {gameActions}
+          <div className={cl.infoRight}>
+            <div className={cl.actions}>{gameActions}</div>
             {gameTurn}
           </div>
         </div>

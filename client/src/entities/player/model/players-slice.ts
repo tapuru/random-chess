@@ -16,10 +16,10 @@ export const playersSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    setPlayerOne: (state, action: PayloadAction<Player>) => {
+    setPlayerOne: (state, action: PayloadAction<Player | null>) => {
       state.playerOne = action.payload;
     },
-    setPlayerTwo: (state, action: PayloadAction<Player>) => {
+    setPlayerTwo: (state, action: PayloadAction<Player | null>) => {
       state.playerTwo = action.payload;
     },
     setPlayersTime: (state, action: PayloadAction<number>) => {
