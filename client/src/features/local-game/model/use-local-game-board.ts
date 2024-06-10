@@ -6,8 +6,13 @@ import {
   gameActions,
   selectGame,
   selectGameHasRestarted,
+  selectGameSettings,
 } from "@/entities/game";
-import { selectPlayerOne, selectPlayerTwo } from "@/entities/player";
+import {
+  playersActions,
+  selectPlayerOne,
+  selectPlayerTwo,
+} from "@/entities/player";
 import { GameStatus } from "@/shared/types/game-status";
 import { ChessColors } from "@/shared/types/chess-colors";
 
@@ -18,6 +23,10 @@ export const useLocalGameBoard = () => {
   const playerOne = useAppSelector(selectPlayerOne);
   const playerTwo = useAppSelector(selectPlayerTwo);
   const gameHasRestarted = useAppSelector(selectGameHasRestarted);
+  const gameSettions = useAppSelector(selectGameSettings);
+  const currentPlayer = [playerOne, playerTwo].find(
+    (p) => p?.color === game?.currentTurn
+  );
 
   useEffect(() => {
     start();
@@ -96,6 +105,16 @@ export const useLocalGameBoard = () => {
         if (chess.isStalemate()) {
           gameActions.setResult({ reason: "draw", moves: game.moves });
         }
+      }
+
+      if (gameSettions.additionTime && gameSettions.time) {
+        dispatch(
+          playersActions.changePlayerTime({
+            color: game.currentTurn,
+            time: gameSettions.additionTime,
+            maxTime: gameSettions.time,
+          })
+        );
       }
     },
     [chess, game, dispatch]

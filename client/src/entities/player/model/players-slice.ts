@@ -28,7 +28,11 @@ export const playersSlice = createSlice({
     },
     changePlayerTime: (
       state,
-      action: PayloadAction<{ time: number; color: ChessColors }>
+      action: PayloadAction<{
+        time: number;
+        color: ChessColors;
+        maxTime: number | null;
+      }>
     ) => {
       const player = [state.playerOne, state.playerTwo].find(
         (p) => p?.color === action.payload.color
@@ -38,6 +42,13 @@ export const playersSlice = createSlice({
         player.timeLeft === 0
           ? (player.timeLeft = 0)
           : (player.timeLeft += action.payload.time);
+
+        if (
+          action.payload.maxTime &&
+          player.timeLeft > action.payload.maxTime
+        ) {
+          player.timeLeft = action.payload.maxTime;
+        }
       }
     },
     swapPlayersColors: (state) => {
