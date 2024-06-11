@@ -23,13 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={locale} data-theme="light">
-      <Providers>
-        <body className={montserrat.className}>
+      <body className={montserrat.className}>
+        <Providers>
           <Header />
           {children}
           <footer></footer>
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   );
 }
