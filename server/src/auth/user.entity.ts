@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false, unique: true })
   username: string;
@@ -14,6 +14,6 @@ export class User {
   @Column({ nullable: false })
   hashedPassword: string;
 
-  @Column({})
+  @Column({ nullable: true })
   refreshToken: string;
 }
