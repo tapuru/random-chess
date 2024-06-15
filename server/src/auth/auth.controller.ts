@@ -1,28 +1,29 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { GoogleAuthGuard } from './utils/guards';
-import { Request } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthDto } from './dto/auth.dto';
+import { Tokens } from './types/token.type';
 
 @Controller('auth')
 export class AuthController {
-  @Get('google/login')
-  @UseGuards(GoogleAuthGuard)
-  googleLogin() {
-    return { message: 'google auth' };
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('register')
+  register(@Body() dto: AuthDto): Promise<Tokens> {
+    return this.authService.register(dto);
   }
 
-  @Get('google/redirect')
-  @UseGuards(GoogleAuthGuard)
-  googleRedirect() {
-    return { message: 'google redirect' };
+  @Post('login')
+  login() {
+    return this.authService.login();
   }
 
-  @Get('status')
-  status(@Req() req: Request) {
-    console.log(req.user);
-    if (req.user) {
-      return { message: 'Authenticated' };
-    } else {
-      return { message: 'Not Authenticated' };
-    }
+  @Post('logout')
+  logout() {
+    return this.authService.logout();
+  }
+
+  @Post('refresh')
+  refresh() {
+    return this.authService.refresh();
   }
 }
