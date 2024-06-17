@@ -25,6 +25,10 @@ export class AuthService {
       throw new BadRequestException({ type: 'email-exists' });
     }
 
+    if (!dto.passwordConfirm || dto.password !== dto.passwordConfirm) {
+      throw new BadRequestException({ type: 'password-mismatch' });
+    }
+
     const hashedPassword = await this.tokensService.hashData(dto.password);
 
     const user = this.userRepository.create({

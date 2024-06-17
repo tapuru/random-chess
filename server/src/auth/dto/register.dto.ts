@@ -22,6 +22,14 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
+    description: 'Password confirm',
+    example: '123456',
+  })
+  passwordConfirm: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
     description: 'Username',
     example: 'username',
   })
