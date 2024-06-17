@@ -7,8 +7,6 @@ import { useParams } from "next/navigation";
 export const AuthForm = () => {
   const pathname = usePathname();
 
-  console.log(pathname);
-
   if (pathname === "/login") {
     return <LoginForm />;
   }
