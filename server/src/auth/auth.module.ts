@@ -6,6 +6,7 @@ import { User } from './user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { TokensService } from './tokens.service';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
+import { CookieService } from './cookie.service';
 
 @Module({
   controllers: [AuthController],
@@ -14,6 +15,7 @@ import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
     AccessTokenStrategy,
     RefreshTokenStrategy,
     TokensService,
+    CookieService,
   ],
   imports: [TypeOrmModule.forFeature([User]), JwtModule.register({})],
 })

@@ -5,42 +5,66 @@ import {
   HttpStatus,
   Post,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { LoginDto, RegisterDto } from './dto';
 import { Tokens } from './types';
+import { AcessTokenGuard, RefreshTokenGuard } from 'src/common/guards';
+import { GetCurrentUser } from 'src/common/decorators';
+import { CookieService } from './cookie.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly cookieService: CookieService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  register(@Body() dto: RegisterDto): Promise<Tokens> {
-    return this.authService.register(dto);
+  async register(@Res() res: Response, @Body() dto: RegisterDto) {
+    const { refreshToken, accessToken } = await this.authService.register(dto);
+    this.cookieService.setRefreshToken(res, refreshToken);
+    res.json({ accessToken });
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Body() dto: LoginDto): Promise<Tokens> {
-    return this.authService.login(dto);
+  async login(@Body() dto: LoginDto, @Res() res: Response) {
+    const { refreshToken, accessToken } = await this.authService.login(dto);
+    this.cookieService.setRefreshToken(res, refreshToken);
+    res.json({ accessToken });
   }
 
   @Post('logout')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AcessTokenGuard)
   @HttpCode(HttpStatus.OK)
-  logout(@Req() req: Request) {
-    const user = req.user as { sub: string };
-    return this.authService.logout(user.sub);
+  async logout(
+    @GetCurrentUser('sub') userId: string,
+    @Res() res: Response,
+    @GetCurrentUser() user: any,
+  ) {
+    console.log(user);
+    const response = await this.authService.logout(userId);
+    this.cookieService.removeRefreshToken(res);
+    res.json(response);
   }
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  refresh(@Req() req: Request) {
-    const user = req.user as { sub: string; refreshToken: string };
-    return this.authService.refresh(user.sub, user.refreshToken);
+  @UseGuards(RefreshTokenGuard)
+  async refresh(
+    @Res() res: Response,
+    @GetCurrentUser('sub') userId: string,
+    @GetCurrentUser('refreshToken') refreshToken: string,
+  ) {
+    const { accessToken, refreshToken: newRefreshToken } =
+      await this.authService.refresh(userId, refreshToken);
+    // this.cookieService.setRefreshToken(res, newRefreshToken);
+    res.json({ accessToken });
   }
 }

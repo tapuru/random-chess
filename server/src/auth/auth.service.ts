@@ -6,11 +6,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
-import { RegisterDto } from './dto/register.dto';
-import { Tokens } from './types/token.type';
-import { TokensService } from './tokens.service';
-import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
+import { TokensService } from './tokens.service';
+import { Tokens } from './types';
+import { LoginDto, RegisterDto } from './dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -78,10 +77,7 @@ export class AuthService {
       throw new ForbiddenException('Unauthorized');
     }
 
-    const refreshTokenMatches = await bcrypt.compare(
-      refreshToken,
-      user.refreshToken,
-    );
+    const refreshTokenMatches = refreshToken === user.refreshToken;
 
     if (!refreshTokenMatches) {
       throw new ForbiddenException('Unauthorized');

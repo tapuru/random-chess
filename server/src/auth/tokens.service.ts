@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
@@ -30,10 +30,8 @@ export class TokensService {
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {
-    const hash = await this.hashData(refreshToken);
-
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    user.refreshToken = hash;
+    user.refreshToken = refreshToken;
     await this.userRepository.save(user);
   }
 }

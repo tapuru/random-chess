@@ -21,7 +21,7 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    PassportModule.register({ session: true }),
+    PassportModule.register({ session: false }),
     AuthModule,
   ],
   controllers: [AppController],
