@@ -1,12 +1,15 @@
 import { Container } from "@/shared/ui/container/container";
 import { AuthForm } from "@/widgets/auth-form";
+import { AuthPageLayout } from "./ui/auth-page-layout";
 
 export const AuthPage = () => {
   return (
-    <div>
+    <main>
       <Container>
-        <AuthForm />
+        <AuthPageLayout>
+          <AuthForm />
+        </AuthPageLayout>
       </Container>
-    </div>
+    </main>
   );
 };

@@ -43,7 +43,9 @@ export const LoginForm = () => {
         render={({ field }) => <AppInput {...field} type="password" required />}
       />
 
-      <AppButton type="submit">Submit</AppButton>
+      <div>
+        <AppButton type="submit">Submit</AppButton>
+      </div>
     </AppForm>
   );
 };

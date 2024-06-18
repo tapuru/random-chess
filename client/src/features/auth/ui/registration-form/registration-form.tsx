@@ -38,7 +38,6 @@ export const RegistrationForm = () => {
         control={control}
         render={({ field }) => <AppInput {...field} type="email" required />}
       />
-      <Controller control={control} name="username" render={() => <></>} />
       <AppForm.RHFField
         name="username"
         label="Username"
@@ -66,7 +65,9 @@ export const RegistrationForm = () => {
         isError={!!errors.passwordConfirm}
         errorMessages={[errors.passwordConfirm?.message ?? ""]}
       />
-      <AppButton>Submit</AppButton>
+      <div>
+        <AppButton>Submit</AppButton>
+      </div>
     </AppForm>
   );
 };
