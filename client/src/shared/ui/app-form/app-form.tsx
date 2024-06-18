@@ -1,24 +1,43 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import cl from "./app-form.module.scss";
 import cn from "classnames";
+import {
+  Control,
+  Controller,
+  ControllerFieldState,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+  Path,
+  UseFormStateReturn,
+} from "react-hook-form";
 
 interface AppFormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
 interface AppFormFieldProps {
-  isError?: boolean;
-  errorMessage?: string;
   name: string;
-  children?: React.ReactNode;
+  isError?: boolean;
+  errorMessages?: string[];
   label?: string;
   labelPosition?: "top" | "left" | "right" | "bottom";
   required?: boolean;
+  className?: string;
+  children?: React.ReactNode;
 }
-interface AppForm
-  extends React.ForwardRefExoticComponent<
-    AppFormProps & React.RefAttributes<HTMLFormElement>
-  > {
-  Field?: React.ForwardRefExoticComponent<
-    AppFormFieldProps & React.RefAttributes<HTMLDivElement>
-  >;
+
+interface AppFormRHFFieldProps<T extends FieldValues>
+  extends Omit<AppFormFieldProps, "name" | "children"> {
+  name: FieldPath<T>;
+  control?: Control<T>;
+  rules?: Record<string, unknown>;
+  render: ({
+    field,
+    fieldState,
+    formState,
+  }: {
+    field: ControllerRenderProps<T, Path<T>>;
+    fieldState: ControllerFieldState;
+    formState: UseFormStateReturn<T>;
+  }) => ReactElement<any>;
 }
 
 export const AppForm = ({ children, ...props }: AppFormProps) => {
@@ -31,19 +50,24 @@ export const AppForm = ({ children, ...props }: AppFormProps) => {
 
 AppForm.Field = ({
   name,
-  children,
-  errorMessage = "error",
+  errorMessages = ["invalid data"],
   isError,
   label,
   labelPosition = "top",
   required,
+  className,
+  children,
 }: AppFormFieldProps) => {
   return (
     <div
-      className={cn(cl.field, {
-        [cl.required]: required,
-        [cl.error]: isError,
-      })}
+      className={cn(
+        cl.field,
+        {
+          [cl.required]: required,
+          [cl.error]: isError,
+        },
+        className
+      )}
     >
       <div
         className={cn(cl.fieldContent, {
@@ -62,7 +86,38 @@ AppForm.Field = ({
           (labelPosition === "right" || labelPosition === "bottom")
         ) && <label htmlFor={name}>{label}</label>}
       </div>
-      {isError && <div className={cl.errorMessage}>{errorMessage}</div>}
+      {isError &&
+        errorMessages.map((message, index) => (
+          <div className={cl.errorMessage} key={index}>
+            {message}
+          </div>
+        ))}
     </div>
+  );
+};
+
+AppForm.RHFField = <T extends FieldValues>({
+  name,
+  errorMessages = ["invalid data"],
+  isError,
+  label,
+  labelPosition = "top",
+  required,
+  render,
+  className,
+  control,
+}: AppFormRHFFieldProps<T>) => {
+  return (
+    <AppForm.Field
+      name={name}
+      errorMessages={errorMessages}
+      isError={isError}
+      label={label}
+      labelPosition={labelPosition}
+      required={required}
+      className={className}
+    >
+      <Controller name={name} control={control} render={render} />
+    </AppForm.Field>
   );
 };
