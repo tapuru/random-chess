@@ -1,5 +1,5 @@
 import { AppForm } from "@/shared/ui/app-form/app-form";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, Control } from "react-hook-form";
 import {
   RegistrationFormData,
   registrationSchema,
@@ -19,6 +19,7 @@ export const RegistrationForm = () => {
       email: "",
       password: "",
       passwordConfirm: "",
+      username: "",
     },
   });
 
@@ -28,45 +29,43 @@ export const RegistrationForm = () => {
 
   return (
     <AppForm onSubmit={handleSubmit(onSubmit)}>
-      <AppForm.Field
+      <AppForm.RHFField
         name="email"
         label="Email"
         required
         isError={!!errors.email}
-        errorMessage={errors.email?.message}
-      >
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => <AppInput {...field} type="email" />}
-        />
-      </AppForm.Field>
-      <AppForm.Field
+        errorMessages={[errors.email?.message ?? ""]}
+        control={control}
+        render={({ field }) => <AppInput {...field} type="email" required />}
+      />
+      <Controller control={control} name="username" render={() => <></>} />
+      <AppForm.RHFField
+        name="username"
+        label="Username"
+        required
+        control={control}
+        render={({ field }) => <AppInput {...field} required />}
+        isError={!!errors.username}
+        errorMessages={[errors.username?.message ?? ""]}
+      />
+      <AppForm.RHFField
         name="password"
         label="Password"
+        control={control}
         required
+        render={({ field }) => <AppInput {...field} required />}
         isError={!!errors.password}
-        errorMessage={errors.password?.message}
-      >
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => <AppInput {...field} type="password" />}
-        />
-      </AppForm.Field>
-      <AppForm.Field
+        errorMessages={[errors.password?.message ?? ""]}
+      />
+      <AppForm.RHFField
+        required
         name="passwordConfirm"
         label="Confirm password"
-        required
+        control={control}
+        render={({ field }) => <AppInput {...field} required />}
         isError={!!errors.passwordConfirm}
-        errorMessage={errors.passwordConfirm?.message}
-      >
-        <Controller
-          control={control}
-          name="passwordConfirm"
-          render={({ field }) => <AppInput {...field} type="password" />}
-        />
-      </AppForm.Field>
+        errorMessages={[errors.passwordConfirm?.message ?? ""]}
+      />
       <AppButton>Submit</AppButton>
     </AppForm>
   );
