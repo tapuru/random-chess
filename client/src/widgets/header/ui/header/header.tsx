@@ -1,5 +1,5 @@
 import { HeaderLeft } from "../header-left/header-left";
-import { HeaderRight } from "../header-right/header-roght";
+import { HeaderRight } from "../header-right/header-right";
 import cl from "./header.module.scss";
 
 export const Header = () => {
