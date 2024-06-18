@@ -36,5 +36,29 @@
     "createGame": "Создать игру",
     "back": "Назад",
     "create": "Создать"
+  },
+  "Auth": {
+    "login": "Вход",
+    "register": "Регистрация",
+    "username": "Имя",
+    "email": "Email",
+    "password": "Пароль",
+    "confirmPassword": "Подтвердите пароль",
+    "registerSubmit": "Создать аккаунт",
+    "loginSubmit": "Войти",
+    "back": "Назад",
+    "loginButtonLabel": "Войти",
+    "alreadyRegistered": "Уже зарегестрированы?",
+    "notRegistered": "Нет аккаунта?",
+    "emailEmptyError": "Введите email",
+    "passwordEmptyError": "Введите пароль",
+    "usernameEmptyError": "Введите имя",
+    "passwordConfirmationEmptyError": "Подтвердите пароль",
+    "passwordsNotMatchError": "Пароли не совпадают",
+    "emailValidationError": "Введите правильный email",
+    "passwordTooShortError": "Пароль не должен быть короче 6 символов",
+    "passwordTooLongError": "Пароль не должен быть длинее 50 символов",
+    "usernameTooLongError": "Имя не должно быть длинее 50 символов",
+    "usernameTooShortError": "Имя не должно быть короче 3 символов"
   }
 }

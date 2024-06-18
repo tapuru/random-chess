@@ -36,5 +36,30 @@
     "createGame": "Create game",
     "back": "Back",
     "create": "Create"
+  },
+  "Auth": {
+    "login": "Login",
+    "register": "Register",
+    "username": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "registerSubmit": "Create account",
+    "loginSubmit": "Login",
+    "back": "Back",
+    "loginButtonLabel": "Login",
+    "alreadyRegistered": "Already have an account?",
+    "notRegistered": "Don't have an account?",
+    "createAccount": "Create account",
+    "emailEmptyError": "Email is required",
+    "passwordEmptyError": "Password is required",
+    "usernameEmptyError": "Username is required",
+    "passwordConfirmationEmptyError": "Confirm password is required",
+    "passwordsNotMatchError": "Passwords do not match",
+    "emailValidationError": "Invalid email",
+    "passwordTooShortError": "Password should not be less than 6 characters",
+    "passwordTooLongError": "Password should not be more than 50 characters",
+    "usernameTooLongError": "Username should not be more than 50 characters",
+    "usernameTooShortError": "Username should not be less than 3 characters"
   }
 }

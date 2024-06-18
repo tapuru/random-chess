@@ -2,23 +2,21 @@ import { z } from "zod";
 
 export const registrationSchema = z
   .object({
-    email: z
-      .string()
-      .email("Invalid email")
-      .min(1, "Email is required")
-      .max(50, "Email is too long"),
+    email: z.string().email("emailValidationError").min(1, "emailEmptyError"),
     username: z
       .string()
-      .min(1, "Username is required")
-      .max(50, "Username is too long"),
+      .min(1, "usernameEmptyError")
+      .min(3, "usernameTooShortError")
+      .max(50, "usernameTooLongError"),
     password: z
       .string()
-      .min(1, "Password is required")
-      .max(50, "Password is too long"),
-    passwordConfirm: z.string().min(1, "Confirm your password"),
+      .min(1, "passwordEmptyError")
+      .min(6, "passwordTooShortError")
+      .max(50, "passwordTooLongError"),
+    passwordConfirm: z.string().min(1, "passwordConfirmationEmptyError"),
   })
   .refine(({ password, passwordConfirm }) => password === passwordConfirm, {
-    message: "Passwords do not match",
+    message: "passwordsNotMatchError",
     path: ["passwordConfirm"],
   });
 
