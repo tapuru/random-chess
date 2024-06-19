@@ -5,15 +5,24 @@ import cn from "classnames";
 interface AppCardProps {
   children?: React.ReactNode;
   variant?: "floating" | "basic";
+  className?: string;
 }
 
-export const AppCard = ({ children, variant = "basic" }: AppCardProps) => {
+export const AppCard = ({
+  children,
+  className,
+  variant = "basic",
+}: AppCardProps) => {
   return (
     <div
-      className={cn(cl.root, {
-        [cl.basic]: variant === "basic",
-        [cl.floating]: variant === "floating",
-      })}
+      className={cn(
+        cl.root,
+        {
+          [cl.basic]: variant === "basic",
+          [cl.floating]: variant === "floating",
+        },
+        className
+      )}
     >
       {children}
     </div>
