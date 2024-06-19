@@ -30,17 +30,17 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Res() res: Response, @Body() dto: RegisterDto) {
-    const { refreshToken, accessToken } = await this.authService.register(dto);
-    this.cookieService.setRefreshToken(res, refreshToken);
-    res.json({ accessToken });
+    const { tokens, user } = await this.authService.register(dto);
+    this.cookieService.setRefreshToken(res, tokens.refreshToken);
+    res.json({ accessToken: tokens.accessToken, user });
   }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto, @Res() res: Response) {
-    const { refreshToken, accessToken } = await this.authService.login(dto);
-    this.cookieService.setRefreshToken(res, refreshToken);
-    res.json({ accessToken });
+    const { tokens, user } = await this.authService.login(dto);
+    this.cookieService.setRefreshToken(res, tokens.refreshToken);
+    res.json({ acessToken: tokens.accessToken, user });
   }
 
   @Post('logout')

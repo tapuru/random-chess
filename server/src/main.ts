@@ -11,6 +11,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
 
+  app.enableCors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Random chess API')
     .setVersion('1.0')

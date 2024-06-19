@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { TokensService } from './tokens.service';
 import { Tokens } from './types';
-import { LoginDto, RegisterDto } from './dto';
+import { LoginDto, RegisterDto, UserDto } from './dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly tokensService: TokensService,
   ) {}
 
-  async register(dto: RegisterDto): Promise<Tokens> {
+  async register(dto: RegisterDto): Promise<{ tokens: Tokens; user: UserDto }> {
     const userExists = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -38,11 +38,12 @@ export class AuthService {
     });
     await this.userRepository.save(user);
 
+    const userDto = new UserDto(user);
     const tokens = await this.tokensService.getTokens(user.id, user.email);
     await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    return { tokens, user: userDto };
   }
-  async login(dto: LoginDto): Promise<Tokens> {
+  async login(dto: LoginDto): Promise<{ tokens: Tokens; user: UserDto }> {
     const user = await this.userRepository.findOne({
       where: { email: dto.email },
     });
@@ -59,9 +60,13 @@ export class AuthService {
       throw new ForbiddenException('Unauthorized');
     }
 
+    const userDto = new UserDto(user);
     const tokens = await this.tokensService.getTokens(user.id, user.email);
     await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    return {
+      tokens,
+      user: userDto,
+    };
   }
 
   async logout(userId: string) {
