@@ -11,9 +11,12 @@ export class User {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   hashedPassword: string;
 
   @Column({ nullable: true })
   refreshToken: string;
+
+  @Column({ nullable: true })
+  provider: string;
 }

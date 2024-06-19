@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -9,13 +10,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { LoginDto, RegisterDto } from './dto';
-import { Tokens } from './types';
-import { AcessTokenGuard, RefreshTokenGuard } from 'src/common/guards';
 import { GetCurrentUser } from 'src/common/decorators';
 import { CookieService } from './cookie.service';
+import {
+  AcessTokenGuard,
+  GoogleOauthGuard,
+  RefreshTokenGuard,
+} from 'src/common/guards';
 
 @Controller('auth')
 export class AuthController {
@@ -59,12 +62,26 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   async refresh(
     @Res() res: Response,
-    @GetCurrentUser('sub') userId: string,
+    @GetCurrentUser() userId: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
+    console.log(userId);
     const { accessToken, refreshToken: newRefreshToken } =
       await this.authService.refresh(userId, refreshToken);
-    // this.cookieService.setRefreshToken(res, newRefreshToken);
+    this.cookieService.setRefreshToken(res, newRefreshToken);
     res.json({ accessToken });
+  }
+
+  @Get('/google/redirect')
+  @UseGuards(GoogleOauthGuard)
+  async googleLogin(@Res() res: Response, @GetCurrentUser() user: any) {
+    try {
+      const { refreshToken, accessToken } =
+        await this.authService.googleLogin(user);
+      this.cookieService.setRefreshToken(res, refreshToken);
+      res.redirect(`http://localhost:3000/login?token=${accessToken}`);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   }
 }

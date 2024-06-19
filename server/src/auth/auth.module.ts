@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TokensService } from './tokens.service';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { CookieService } from './cookie.service';
+import { GoogleStrategy } from './strategies/google-oauth.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -14,6 +15,7 @@ import { CookieService } from './cookie.service';
     AuthService,
     AccessTokenStrategy,
     RefreshTokenStrategy,
+    GoogleStrategy,
     TokensService,
     CookieService,
   ],

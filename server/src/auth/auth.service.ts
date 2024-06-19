@@ -91,4 +91,34 @@ export class AuthService {
     await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
+
+  async googleLogin(user: any) {
+    const userFromDb = await this.userRepository.findOne({
+      where: { email: user.email },
+    });
+
+    console.log(user);
+
+    if (!userFromDb) {
+      const newUser = this.userRepository.create({
+        email: user.email,
+        username: user.username,
+        provider: 'google',
+      });
+      await this.userRepository.save(newUser);
+      const tokens = await this.tokensService.getTokens(
+        newUser.id,
+        newUser.email,
+      );
+      await this.tokensService.updateRefreshToken(
+        newUser.id,
+        tokens.refreshToken,
+      );
+      return tokens;
+    }
+
+    const tokens = await this.tokensService.getTokens(user.id, user.email);
+    await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
+    return tokens;
+  }
 }
