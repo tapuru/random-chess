@@ -10,8 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useTranslations } from "next-intl";
+import { authActions, useRegisterMutation } from "@/entities/auth";
+import { useRouter } from "@/shared/config/navigation";
+import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
 
 export const RegistrationForm = () => {
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -25,11 +29,25 @@ export const RegistrationForm = () => {
       username: "",
     },
   });
-
+  const router = useRouter();
+  const [register] = useRegisterMutation();
   const t = useTranslations("Auth");
 
-  const onSubmit = (data: RegistrationFormData) => {
-    console.log(data);
+  const onSubmit = async (data: RegistrationFormData) => {
+    try {
+      const response = await register(data).unwrap();
+      dispatch(
+        authActions.setCredentials({
+          user: response.user,
+          accessToken: response.accessToken,
+        })
+      );
+
+      router.push("/");
+    } catch (error) {
+      //TODO: handle error
+      console.log(error);
+    }
   };
 
   return (

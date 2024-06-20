@@ -7,8 +7,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "../../lib/schemas/login-schema";
 import { useTranslations } from "next-intl";
+import { authActions, authApi, useLoginMutation } from "@/entities/auth";
+import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
+import { useRouter } from "@/shared/config/navigation";
 
 export const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -18,13 +22,28 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
+  const router = useRouter();
+  const [login] = useLoginMutation();
+  const t = useTranslations("Auth");
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
-    reset;
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await login(data).unwrap();
+      console.log(response.accessToken);
+      dispatch(
+        authActions.setCredentials({
+          user: response.user,
+          accessToken: response.accessToken,
+        })
+      );
+
+      router.back();
+    } catch (error) {
+      console.log(error);
+    }
+    reset();
   };
 
-  const t = useTranslations("Auth");
   return (
     <AppForm onSubmit={handleSubmit(onSubmit)}>
       <AppForm.RHFField
