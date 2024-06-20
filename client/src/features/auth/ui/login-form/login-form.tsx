@@ -2,7 +2,7 @@
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "../../lib/schemas/login-schema";
 import { useTranslations } from "next-intl";
@@ -36,7 +36,7 @@ export const LoginForm = () => {
         })
       );
 
-      router.push("/");
+      router.push("/lobby");
     } catch (error) {
       console.log(error);
     }

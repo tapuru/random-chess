@@ -9,5 +9,7 @@ export {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
+  useRefreshMutation,
+  useTestPrivateRotureQuery,
   authApi,
 } from "./api/auth-api";

@@ -25,8 +25,25 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    refresh: builder.mutation<LoginResponse, void>({
+      query: () => ({
+        url: "/auth/refresh",
+        method: "POST",
+      }),
+    }),
+    testPrivateRoture: builder.query<{ message: string }, void>({
+      query: () => ({
+        url: "/auth/testPrivateRoute",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useRefreshMutation,
+  useTestPrivateRotureQuery,
+} = authApi;
