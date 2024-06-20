@@ -21,28 +21,27 @@ export const CreateLocalGameForm = () => {
       <AppCard.Content>
         <AppForm onSubmit={handleSubmit(submit)}>
           <div className={cl.mode}>
-            <AppForm.Field
+            <AppForm.RHFField
               required
               name="mode"
               label={`${t("mode")}:`}
               labelPosition="left"
-            >
-              <Controller
-                name="mode"
-                control={control}
-                render={({ field }) => (
-                  <AppSelect
-                    required
-                    {...field}
-                    onValueChange={field.onChange}
-                    options={[
-                      { title: "classical", value: GameModes.CLASSICAL },
-                      { title: "fisher", value: GameModes.FISHER },
-                    ]}
-                  />
-                )}
-              />
-            </AppForm.Field>
+              isError={!!formState.errors.mode}
+              errorMessages={[formState.errors.mode?.message ?? ""]}
+              control={control}
+              render={({ field }) => (
+                <AppSelect
+                  {...field}
+                  value={field.value as string}
+                  required
+                  onValueChange={field.onChange}
+                  options={[
+                    { title: "classical", value: GameModes.CLASSICAL },
+                    { title: "fisher", value: GameModes.FISHER },
+                  ]}
+                />
+              )}
+            />
           </div>
           <div className={cl.row}>
             <div className={cl.checkbox}>
