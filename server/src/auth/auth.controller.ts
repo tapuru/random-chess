@@ -66,10 +66,12 @@ export class AuthController {
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
     console.log(userId);
-    const { accessToken, refreshToken: newRefreshToken } =
-      await this.authService.refresh(userId, refreshToken);
-    this.cookieService.setRefreshToken(res, newRefreshToken);
-    res.json({ accessToken });
+    const { tokens, user } = await this.authService.refresh(
+      userId,
+      refreshToken,
+    );
+    this.cookieService.setRefreshToken(res, tokens.refreshToken);
+    res.json({ accessToken: tokens.accessToken, user });
   }
 
   @Get('/google/redirect')
@@ -83,5 +85,12 @@ export class AuthController {
     } catch (error) {
       res.status(500).send(error.message);
     }
+  }
+
+  @Get('testPrivateRoute')
+  @UseGuards(AcessTokenGuard)
+  @HttpCode(HttpStatus.OK)
+  testPrivateRoute() {
+    return { message: 'testPrivateRoute' };
   }
 }

@@ -80,7 +80,10 @@ export class AuthService {
     return { message: 'logout' };
   }
 
-  async refresh(userId: string, refreshToken: string) {
+  async refresh(
+    userId: string,
+    refreshToken: string,
+  ): Promise<{ tokens: Tokens; user: UserDto }> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user || !user.refreshToken) {
       throw new ForbiddenException('Unauthorized');
@@ -94,7 +97,8 @@ export class AuthService {
 
     const tokens = await this.tokensService.getTokens(user.id, user.email);
     await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    const userDto = new UserDto(user);
+    return { tokens, user: userDto };
   }
 
   async googleLogin(user: any) {
