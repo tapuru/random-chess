@@ -30,7 +30,7 @@ export const RegistrationForm = () => {
     },
   });
   const router = useRouter();
-  const [register] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
   const t = useTranslations("Auth");
 
   const onSubmit = async (data: RegistrationFormData) => {
@@ -59,14 +59,18 @@ export const RegistrationForm = () => {
         isError={!!errors.email}
         errorMessages={!!errors.email ? [t(errors.email.message)] : []}
         control={control}
-        render={({ field }) => <AppInput {...field} type="email" required />}
+        render={({ field }) => (
+          <AppInput {...field} type="email" required disabled={isLoading} />
+        )}
       />
       <AppForm.RHFField
         name="username"
         label={t("username")}
         required
         control={control}
-        render={({ field }) => <AppInput {...field} required />}
+        render={({ field }) => (
+          <AppInput {...field} required disabled={isLoading} />
+        )}
         isError={!!errors.username}
         errorMessages={!!errors.username ? [t(errors.username?.message)] : []}
       />
@@ -75,7 +79,9 @@ export const RegistrationForm = () => {
         label={t("password")}
         control={control}
         required
-        render={({ field }) => <AppInput {...field} required />}
+        render={({ field }) => (
+          <AppInput {...field} required type="password" disabled={isLoading} />
+        )}
         isError={!!errors.password}
         errorMessages={!!errors.password ? [t(errors.password?.message)] : []}
       />
@@ -84,14 +90,20 @@ export const RegistrationForm = () => {
         name="passwordConfirm"
         label={t("confirmPassword")}
         control={control}
-        render={({ field }) => <AppInput {...field} required />}
+        render={({ field }) => (
+          <AppInput {...field} required type="password" disabled={isLoading} />
+        )}
         isError={!!errors.passwordConfirm}
         errorMessages={
           !!errors.passwordConfirm ? [t(errors.passwordConfirm?.message)] : []
         }
       />
       <div>
-        <AppButton>{t("registerSubmit")}</AppButton>
+        {isLoading ? (
+          "Loading..."
+        ) : (
+          <AppButton type="submit">{t("register")}</AppButton>
+        )}
       </div>
     </AppForm>
   );

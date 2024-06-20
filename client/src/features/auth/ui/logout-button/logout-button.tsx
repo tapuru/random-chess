@@ -7,7 +7,7 @@ import { AppText } from "@/shared/ui/app-text/app-text";
 
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
-  const [logout] = useLogoutMutation();
+  const [logout, { isLoading }] = useLogoutMutation();
   const router = useRouter();
   const handleLogout = async () => {
     try {
@@ -20,7 +20,7 @@ export const LogoutButton = () => {
     }
   };
   return (
-    <button onClick={handleLogout}>
+    <button onClick={handleLogout} disabled={isLoading}>
       <AppText tag="span" color="text-500">
         Logout
       </AppText>

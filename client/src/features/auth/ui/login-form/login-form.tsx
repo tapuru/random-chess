@@ -3,7 +3,6 @@ import { AppButton } from "@/shared/ui/app-button/app-button";
 import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormData, loginSchema } from "../../lib/schemas/login-schema";
 import { useTranslations } from "next-intl";
@@ -23,7 +22,7 @@ export const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
   const router = useRouter();
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const t = useTranslations("Auth");
 
   const onSubmit = async (data: LoginFormData) => {
@@ -37,7 +36,7 @@ export const LoginForm = () => {
         })
       );
 
-      router.back();
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +51,9 @@ export const LoginForm = () => {
         required
         isError={!!errors.email}
         control={control}
-        render={({ field }) => <AppInput {...field} type="email" required />}
+        render={({ field }) => (
+          <AppInput {...field} type="email" required disabled={isLoading} />
+        )}
         errorMessages={!!errors.email ? [t(errors.email?.message)] : []}
       />
       <AppForm.RHFField
@@ -62,11 +63,20 @@ export const LoginForm = () => {
         isError={!!errors.password}
         errorMessages={!!errors.password ? [t(errors.password?.message)] : []}
         control={control}
-        render={({ field }) => <AppInput {...field} type="password" required />}
+        render={({ field }) => (
+          <AppInput {...field} type="password" required disabled={isLoading} />
+        )}
       />
 
       <div>
-        <AppButton type="submit">{t("loginSubmit")}</AppButton>
+        {isLoading ? (
+          // TODO: add loader component
+          "Loading..."
+        ) : (
+          <AppButton type="submit" disabled={isLoading}>
+            {t("loginSubmit")}
+          </AppButton>
+        )}
       </div>
     </AppForm>
   );
