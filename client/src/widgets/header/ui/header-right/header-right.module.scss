@@ -3,3 +3,19 @@
   gap: 20px;
   align-items: center;
 }
+.profilePlaceholder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatarPlaceholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--background-800);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+}
