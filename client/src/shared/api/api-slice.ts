@@ -1,3 +1,4 @@
+// TODO: rewrite this. Shared should not import entities.
 import { authActions } from "@/entities/auth";
 import {
   BaseQueryFn,
@@ -8,7 +9,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
