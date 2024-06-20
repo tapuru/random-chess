@@ -5,4 +5,9 @@ export {
   selectIsAuth,
   selectUser,
 } from "./model/auth-slice";
-export { authApi } from "./api/auth-api";
+export {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  authApi,
+} from "./api/auth-api";
