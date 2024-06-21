@@ -1,50 +1,16 @@
 "use client";
+
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormData, loginSchema } from "../../lib/schemas/login-schema";
-import { useTranslations } from "next-intl";
-import { authActions, authApi, useLoginMutation } from "@/entities/auth";
-import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
-import { useRouter } from "@/shared/config/navigation";
+import { useLoginForm } from "../../model/use-login-form";
 
 export const LoginForm = () => {
-  const dispatch = useAppDispatch();
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
-  });
-  const router = useRouter();
-  const [login, { isLoading }] = useLoginMutation();
-  const t = useTranslations("Auth");
-
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      const response = await login(data).unwrap();
-      console.log(response.accessToken);
-      dispatch(
-        authActions.setCredentials({
-          user: response.user,
-          accessToken: response.accessToken,
-        })
-      );
-
-      router.push("/lobby");
-    } catch (error) {
-      console.log(error);
-    }
-    reset();
-  };
+  const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
+    useLoginForm();
 
   return (
-    <AppForm onSubmit={handleSubmit(onSubmit)}>
+    <AppForm onSubmit={handleSubmit}>
       <AppForm.RHFField
         name="email"
         label={t("email")}

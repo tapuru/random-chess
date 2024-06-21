@@ -1,57 +1,16 @@
 "use client";
 
 import { AppForm } from "@/shared/ui/app-form/app-form";
-import { Controller, useForm, Control } from "react-hook-form";
-import {
-  RegistrationFormData,
-  registrationSchema,
-} from "../../lib/schemas/registration-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { AppButton } from "@/shared/ui/app-button/app-button";
-import { useTranslations } from "next-intl";
-import { authActions, useRegisterMutation } from "@/entities/auth";
-import { useRouter } from "@/shared/config/navigation";
-import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
+import { useRegistrationForm } from "../../model/use-registration-form";
 
 export const RegistrationForm = () => {
-  const dispatch = useAppDispatch();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      passwordConfirm: "",
-      username: "",
-    },
-  });
-  const router = useRouter();
-  const [register, { isLoading }] = useRegisterMutation();
-  const t = useTranslations("Auth");
-
-  const onSubmit = async (data: RegistrationFormData) => {
-    try {
-      const response = await register(data).unwrap();
-      dispatch(
-        authActions.setCredentials({
-          user: response.user,
-          accessToken: response.accessToken,
-        })
-      );
-
-      router.push("/");
-    } catch (error) {
-      //TODO: handle error
-      console.log(error);
-    }
-  };
+  const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
+    useRegistrationForm();
 
   return (
-    <AppForm onSubmit={handleSubmit(onSubmit)}>
+    <AppForm onSubmit={handleSubmit}>
       <AppForm.RHFField
         name="email"
         label={t("email")}
