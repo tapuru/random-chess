@@ -84,7 +84,12 @@ export class AuthService {
     userId: string,
     refreshToken: string,
   ): Promise<{ tokens: Tokens; user: UserDto }> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!userId || !refreshToken) {
+      throw new ForbiddenException('Unauthorized');
+    }
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
     if (!user || !user.refreshToken) {
       throw new ForbiddenException('Unauthorized');
     }
@@ -125,12 +130,16 @@ export class AuthService {
       return { tokens, user: userDto };
     }
 
-    const tokens = await this.tokensService.getTokens(user.id, user.email);
+    const tokens = await this.tokensService.getTokens(
+      userFromDb.id,
+      userFromDb.email,
+    );
     await this.tokensService.updateRefreshToken(
       userFromDb.id,
       tokens.refreshToken,
     );
     const userDto = new UserDto(userFromDb);
+    console.log(userDto);
     return { tokens, user: userDto };
   }
 }
