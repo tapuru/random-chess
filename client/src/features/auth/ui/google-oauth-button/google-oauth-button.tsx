@@ -2,6 +2,7 @@
 
 import { useRouter } from "@/shared/config/navigation";
 import { AppButton } from "@/shared/ui/app-button/app-button";
+import { FaGoogle } from "react-icons/fa";
 
 export const GoogleOAuthButton = () => {
   const router = useRouter();
@@ -10,7 +11,12 @@ export const GoogleOAuthButton = () => {
   };
 
   return (
-    <AppButton variant="outlined" color="primary" onClick={hadleClick}>
+    <AppButton
+      variant="outlined"
+      color="primary"
+      onClick={hadleClick}
+      icon={<FaGoogle />}
+    >
       Login with google
     </AppButton>
   );

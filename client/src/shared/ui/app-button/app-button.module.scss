@@ -1,6 +1,6 @@
 .root {
   display: inline-flex;
-  gap: 8px;
+  gap: 10px;
   align-items: center;
   justify-content: center;
 
@@ -16,6 +16,12 @@
   }
 
   transition: all var(--transition-hover);
+
+  .icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 //size
