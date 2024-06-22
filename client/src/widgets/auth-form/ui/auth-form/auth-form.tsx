@@ -1,6 +1,10 @@
 "use client";
 
-import { LoginForm, RegistrationForm } from "@/features/auth";
+import {
+  GoogleOAuthButton,
+  LoginForm,
+  RegistrationForm,
+} from "@/features/auth";
 import { Link, usePathname } from "@/shared/config/navigation";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 import { AppText } from "@/shared/ui/app-text/app-text";
@@ -34,6 +38,7 @@ export const AuthForm = () => {
               </AppText>
             )
           }
+          oauth={isLogin ? <GoogleOAuthButton /> : null}
         />
       </AppCard.Content>
     </AppCard>

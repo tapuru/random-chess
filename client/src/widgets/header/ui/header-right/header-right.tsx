@@ -4,10 +4,11 @@ import { LanguageSelect } from "@/features/internationalization";
 import cl from "./header-right.module.scss";
 import { LoginButton, LogoutButton } from "@/features/auth";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectIsAuth } from "@/entities/auth";
+import { selectIsAuth, selectUser } from "@/entities/auth";
 
 export const HeaderRight = () => {
   const isAuth = useAppSelector(selectIsAuth);
+  const user = useAppSelector(selectUser);
 
   return (
     <div className={cl.root}>
@@ -15,7 +16,10 @@ export const HeaderRight = () => {
 
       {isAuth ? (
         <div className={cl.profilePlaceholder}>
-          <div className={cl.avatarPlaceholder}></div>
+          <div
+            className={cl.avatarPlaceholder}
+            onClick={() => console.log(user)}
+          ></div>
           <LogoutButton />
         </div>
       ) : (

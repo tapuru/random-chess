@@ -57,13 +57,13 @@ export const RegistrationForm = () => {
           !!errors.passwordConfirm ? [t(errors.passwordConfirm?.message)] : []
         }
       />
-      <div>
+      <AppForm.Submit>
         {isLoading ? (
           "Loading..."
         ) : (
           <AppButton type="submit">{t("register")}</AppButton>
         )}
-      </div>
+      </AppForm.Submit>
     </AppForm>
   );
 };

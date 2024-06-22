@@ -2,6 +2,12 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+  align-items: center;
 
   padding: 12px;
+}
+
+.form {
+  flex-grow: 1;
+  width: 100%;
 }

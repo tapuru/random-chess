@@ -9,7 +9,7 @@ import { useRouter } from "@/shared/config/navigation";
 import { authActions, useRegisterMutation } from "@/entities/auth";
 import { useTranslations } from "next-intl";
 
-export const useRegisterForm = () => {
+export const useRegistrationForm = () => {
   const dispatch = useAppDispatch();
   const {
     control,

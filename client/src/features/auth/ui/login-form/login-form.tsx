@@ -33,8 +33,7 @@ export const LoginForm = () => {
           <AppInput {...field} type="password" required disabled={isLoading} />
         )}
       />
-
-      <div>
+      <AppForm.Submit>
         {isLoading ? (
           // TODO: add loader component
           "Loading..."
@@ -43,7 +42,7 @@ export const LoginForm = () => {
             {t("loginSubmit")}
           </AppButton>
         )}
-      </div>
+      </AppForm.Submit>
     </AppForm>
   );
 };

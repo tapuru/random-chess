@@ -40,6 +40,11 @@ interface AppFormRHFFieldProps<T extends FieldValues>
   }) => ReactElement<any>;
 }
 
+interface AppFormSubmitProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
 export const AppForm = ({ children, ...props }: AppFormProps) => {
   return (
     <form className={cl.root} {...props}>
@@ -120,4 +125,8 @@ AppForm.RHFField = <T extends FieldValues>({
       <Controller name={name} control={control} render={render} />
     </AppForm.Field>
   );
+};
+
+AppForm.Submit = ({ children, className }: AppFormSubmitProps) => {
+  return <div className={cn(cl.submit, className)}>{children}</div>;
 };

@@ -14,8 +14,28 @@ import {
 } from "redux-persist";
 import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
-import storage from "redux-persist/lib/storage";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
+const createNoopStorage = () => {
+  return {
+    getItem(_key: any) {
+      return Promise.resolve(null);
+    },
+    setItem(_key: any, value: any) {
+      return Promise.resolve(value);
+    },
+    removeItem(_key: any) {
+      return Promise.resolve();
+    },
+  };
+};
+
+const storage =
+  typeof window !== "undefined"
+    ? createWebStorage("local")
+    : createNoopStorage();
+
+export default storage;
 const gamePersistConfig = {
   key: "game",
   storage: storage,
@@ -31,11 +51,16 @@ const playersPersistConfig = {
   storage: storage,
 };
 
+const authPersistConfig = {
+  key: "auth",
+  storage: storage,
+};
+
 const rootReducer = combineReducers({
   board: persistReducer(boardPersistConfig, boardReducer),
   game: persistReducer(gamePersistConfig, gameReducer),
   players: persistReducer(playersPersistConfig, playersReducer),
-  auth: authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
