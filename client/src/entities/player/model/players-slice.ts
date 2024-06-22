@@ -16,10 +16,10 @@ export const playersSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    setPlayerOne: (state, action: PayloadAction<Player>) => {
+    setPlayerOne: (state, action: PayloadAction<Player | null>) => {
       state.playerOne = action.payload;
     },
-    setPlayerTwo: (state, action: PayloadAction<Player>) => {
+    setPlayerTwo: (state, action: PayloadAction<Player | null>) => {
       state.playerTwo = action.payload;
     },
     setPlayersTime: (state, action: PayloadAction<number>) => {
@@ -28,7 +28,11 @@ export const playersSlice = createSlice({
     },
     changePlayerTime: (
       state,
-      action: PayloadAction<{ time: number; color: ChessColors }>
+      action: PayloadAction<{
+        time: number;
+        color: ChessColors;
+        maxTime: number | null;
+      }>
     ) => {
       const player = [state.playerOne, state.playerTwo].find(
         (p) => p?.color === action.payload.color
@@ -38,6 +42,19 @@ export const playersSlice = createSlice({
         player.timeLeft === 0
           ? (player.timeLeft = 0)
           : (player.timeLeft += action.payload.time);
+
+        if (
+          action.payload.maxTime &&
+          player.timeLeft > action.payload.maxTime
+        ) {
+          player.timeLeft = action.payload.maxTime;
+        }
+      }
+    },
+    swapPlayersColors: (state) => {
+      if (state.playerOne && state.playerTwo) {
+        state.playerOne.color = state.playerTwo.color;
+        state.playerTwo.color = state.playerOne.color;
       }
     },
   },

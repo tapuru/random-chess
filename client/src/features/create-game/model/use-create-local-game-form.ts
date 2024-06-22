@@ -5,6 +5,7 @@ import { useRouter } from "@/shared/config/navigation";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameModes } from "@/shared/types/game-modes";
+import { GameStatus } from "@/shared/types/game-status";
 import { GameTypes } from "@/shared/types/game-type";
 import { TimeControls } from "@/shared/types/time-controls";
 import { useTranslations } from "next-intl";
@@ -72,6 +73,14 @@ export const useCreateLocalGameForm = () => {
         loses: 0,
         wins: 0,
         isWinner: false,
+      })
+    );
+    dispatch(
+      gameActions.setGame({
+        currentTurn: ChessColors.WHITE,
+        initialFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        moves: [],
+        status: GameStatus.PENDING,
       })
     );
     router.push("/game/local");

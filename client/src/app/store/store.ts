@@ -36,6 +36,7 @@ const storage =
     : createNoopStorage();
 
 export default storage;
+
 const gamePersistConfig = {
   key: "game",
   storage: storage,

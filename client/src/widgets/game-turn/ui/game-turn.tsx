@@ -12,6 +12,7 @@ import { selectPlayerOne } from "@/entities/player";
 import { GameTypes } from "@/shared/types/game-type";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { AppButton } from "@/shared/ui/app-button/app-button";
+import { LocalRematchButton } from "@/features/local-game";
 
 export const GameTurn = () => {
   const game = useAppSelector(selectGame);
@@ -24,9 +25,7 @@ export const GameTurn = () => {
     return (
       <div className={cl.root}>
         <div className={cl.buttons}>
-          <AppButton size={"sm"} color="secondary">
-            {t("rematch")}
-          </AppButton>
+          <LocalRematchButton title={t("rematch")} />
           <AppButton size={"sm"} color="primary">
             {t("leave")}
           </AppButton>

@@ -8,4 +8,5 @@ export interface Game {
   currentTurn: ChessColors;
   status: GameStatus;
   initialFen: string | null;
+  currentPosition?: string;
 }

@@ -56,6 +56,7 @@ const PlayerInfo = ({ player }: { player: Player | null }) => {
                 playersActions.changePlayerTime({
                   color: player.color,
                   time: -1,
+                  maxTime: gameSettings.time,
                 })
               )
             }
