@@ -53,6 +53,7 @@ export const gameSlice = createSlice({
     addMove(state, action: PayloadAction<Move>) {
       if (state.game) {
         state.game.moves.push(action.payload);
+        state.game.currentPosition = action.payload.after;
       }
     },
     setGameSettings(state, action: PayloadAction<GameSettings>) {

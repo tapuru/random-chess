@@ -29,7 +29,12 @@ export const useLocalGameBoard = () => {
   );
 
   useEffect(() => {
-    start();
+    // bord will show current position if a page is reloaded
+    let persistedPosition: string | undefined;
+    if (game?.currentPosition) {
+      persistedPosition = game.currentPosition;
+    }
+    start(persistedPosition);
   }, []);
 
   useEffect(() => {
@@ -69,8 +74,8 @@ export const useLocalGameBoard = () => {
     }
   }, [playerOne, playerTwo]);
 
-  function start() {
-    const chess = new Chess(game?.initialFen || undefined);
+  function start(persistedPosition?: string) {
+    const chess = new Chess(persistedPosition || game?.initialFen || undefined);
     setChess(chess);
     dispatch(gameActions.setGameStatus(GameStatus.ACTIVE));
   }
