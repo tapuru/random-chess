@@ -64,7 +64,6 @@ export class AuthController {
     @GetCurrentUser('sub') userId: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
-    console.log(userId);
     const { tokens, user } = await this.authService.refresh(
       userId,
       refreshToken,
@@ -86,12 +85,5 @@ export class AuthController {
     } catch (error) {
       res.status(500).send(error.message);
     }
-  }
-
-  @Get('testPrivateRoute')
-  @UseGuards(AcessTokenGuard)
-  @HttpCode(HttpStatus.OK)
-  testPrivateRoute() {
-    return { message: 'testPrivateRoute' };
   }
 }

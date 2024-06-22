@@ -31,12 +31,6 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
-    testPrivateRoture: builder.query<{ message: string }, void>({
-      query: () => ({
-        url: "/auth/testPrivateRoute",
-        method: "GET",
-      }),
-    }),
   }),
 });
 
@@ -45,5 +39,4 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useRefreshMutation,
-  useTestPrivateRotureQuery,
 } = authApi;

@@ -139,7 +139,6 @@ export class AuthService {
       tokens.refreshToken,
     );
     const userDto = new UserDto(userFromDb);
-    console.log(userDto);
     return { tokens, user: userDto };
   }
 }
