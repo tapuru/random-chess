@@ -51,21 +51,19 @@ export class AuthController {
     @Res() res: Response,
     @GetCurrentUser() user: any,
   ) {
-    console.log(user);
     const response = await this.authService.logout(userId);
     this.cookieService.removeRefreshToken(res);
     res.json(response);
   }
 
-  @Post('refresh')
+  @Get('refresh')
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshTokenGuard)
   async refresh(
     @Res() res: Response,
-    @GetCurrentUser() userId: string,
+    @GetCurrentUser('sub') userId: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
   ) {
-    console.log(userId);
     const { tokens, user } = await this.authService.refresh(
       userId,
       refreshToken,
@@ -78,10 +76,12 @@ export class AuthController {
   @UseGuards(GoogleOauthGuard)
   async googleLogin(@Res() res: Response, @GetCurrentUser() user: any) {
     try {
-      const { refreshToken, accessToken } =
+      const { tokens, user: userDto } =
         await this.authService.googleLogin(user);
-      this.cookieService.setRefreshToken(res, refreshToken);
-      res.redirect(`http://localhost:3000/login?token=${accessToken}`);
+      this.cookieService.setRefreshToken(res, tokens.refreshToken);
+      res.redirect(
+        `${process.env.CLIENT_URL}/oauth-redirect?token=${tokens.accessToken}&user=${JSON.stringify(userDto)}`,
+      );
     } catch (error) {
       res.status(500).send(error.message);
     }

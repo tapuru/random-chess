@@ -101,12 +101,10 @@ export class AuthService {
     return { tokens, user: userDto };
   }
 
-  async googleLogin(user: any) {
+  async googleLogin(user: any): Promise<{ tokens: Tokens; user: UserDto }> {
     const userFromDb = await this.userRepository.findOne({
       where: { email: user.email },
     });
-
-    console.log(user);
 
     if (!userFromDb) {
       const newUser = this.userRepository.create({
@@ -123,11 +121,16 @@ export class AuthService {
         newUser.id,
         tokens.refreshToken,
       );
-      return tokens;
+      const userDto = new UserDto(newUser);
+      return { tokens, user: userDto };
     }
 
     const tokens = await this.tokensService.getTokens(user.id, user.email);
-    await this.tokensService.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    await this.tokensService.updateRefreshToken(
+      userFromDb.id,
+      tokens.refreshToken,
+    );
+    const userDto = new UserDto(userFromDb);
+    return { tokens, user: userDto };
   }
 }
