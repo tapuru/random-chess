@@ -59,6 +59,8 @@
     "passwordTooShortError": "Пароль не должен быть короче 6 символов",
     "passwordTooLongError": "Пароль не должен быть длинее 50 символов",
     "usernameTooLongError": "Имя не должно быть длинее 50 символов",
-    "usernameTooShortError": "Имя не должно быть короче 3 символов"
+    "usernameTooShortError": "Имя не должно быть короче 3 символов",
+
+    "loginWithGoogle": "Войти через Google"
   }
 }
