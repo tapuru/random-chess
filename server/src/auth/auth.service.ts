@@ -10,11 +10,13 @@ import * as bcrypt from 'bcrypt';
 import { TokensService } from './tokens.service';
 import { Tokens } from './types';
 import { LoginDto, RegisterDto, UserDto } from './dto';
+import { ProfileService } from 'src/profile/profile.service';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly tokensService: TokensService,
+    private readonly profileService: ProfileService,
   ) {}
 
   async register(dto: RegisterDto): Promise<{ tokens: Tokens; user: UserDto }> {
@@ -34,9 +36,11 @@ export class AuthService {
     const user = this.userRepository.create({
       email: dto.email,
       hashedPassword,
-      username: dto.username,
+      provider: 'local',
     });
     await this.userRepository.save(user);
+
+    await this.profileService.createProfile(user, dto.username);
 
     const userDto = new UserDto(user);
     const tokens = await this.tokensService.getTokens(user.id, user.email);
@@ -114,10 +118,10 @@ export class AuthService {
     if (!userFromDb) {
       const newUser = this.userRepository.create({
         email: user.email,
-        username: user.username,
         provider: 'google',
       });
       await this.userRepository.save(newUser);
+      await this.profileService.createProfile(newUser, user.username);
       const tokens = await this.tokensService.getTokens(
         newUser.id,
         newUser.email,

@@ -8,6 +8,7 @@ import { TokensService } from './tokens.service';
 import { AccessTokenStrategy, RefreshTokenStrategy } from './strategies';
 import { CookieService } from './cookie.service';
 import { GoogleStrategy } from './strategies/google-oauth.strategy';
+import { ProfileModule } from 'src/profile/profile.module';
 
 @Module({
   controllers: [AuthController],
@@ -19,6 +20,10 @@ import { GoogleStrategy } from './strategies/google-oauth.strategy';
     TokensService,
     CookieService,
   ],
-  imports: [TypeOrmModule.forFeature([User]), JwtModule.register({})],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({}),
+    ProfileModule,
+  ],
 })
 export class AuthModule {}
