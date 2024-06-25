@@ -1,5 +1,12 @@
 import { User } from 'src/auth/user.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Game } from 'src/game/enitites/game.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('profiles')
 export class Profile {
@@ -20,4 +27,10 @@ export class Profile {
 
   @OneToOne(() => User, (user) => user.profile)
   user: User;
+
+  @OneToMany(() => Game, (game) => game.playerWhite)
+  gamesAsWhite: Game[];
+
+  @OneToMany(() => Game, (game) => game.playerBlack)
+  gamesAsBlack: Game[];
 }
