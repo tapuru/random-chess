@@ -1,0 +1,141 @@
+import {
+  ConnectedSocket,
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { Socket, Server } from 'socket.io';
+import { GameMessages } from '../types';
+import { OnModuleInit } from '@nestjs/common';
+import { GameService } from './game.service';
+import { CreateGameDto, JoinGameDto } from '../dto';
+import { MoveDto } from '../dto/move.dto';
+import { BoardService } from './board.service';
+@WebSocketGateway(3002, {})
+export class GameGateway implements OnModuleInit {
+  constructor(
+    private gameService: GameService,
+    private boardService: BoardService,
+  ) {}
+  @WebSocketServer() server: Server;
+
+  onModuleInit() {
+    this.server.on('connection', (socket) => {
+      console.log('connected', socket.id);
+    });
+
+    this.server.on('disconnect', (socket) => {
+      console.log('disconnected', socket.id);
+    });
+  }
+
+  @SubscribeMessage(GameMessages.CREATE_GAME)
+  async handleCreateGame(
+    @MessageBody() payload: CreateGameDto,
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      const game = await this.gameService.createGame(payload);
+      this.server.emit(GameMessages.GAME_CREATED, {
+        game: game,
+      });
+    } catch (error) {
+      if (error.message === 'profile-not-found') {
+        this.server.emit(GameMessages.GAME_ALIERT, {
+          message: 'profile-not-found',
+        });
+      }
+      if (error.message === 'profile-already-in-game') {
+        this.server.emit(GameMessages.GAME_ALIERT, {
+          message: 'profile-already-in-game',
+        });
+      }
+      console.log(error);
+    }
+  }
+
+  @SubscribeMessage(GameMessages.JOIN_GAME)
+  async handleJoinGame(
+    @MessageBody() payload: JoinGameDto,
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      const game = await this.gameService.joinGame(payload);
+      this.server.emit(GameMessages.GAME_JOINED, {
+        game: game,
+      });
+      this.server.emit(GameMessages.GAME_ALIERT, {
+        message: 'game-started',
+        gameId: game.id,
+      });
+    } catch (error) {
+      switch (error.message) {
+        case 'game-not-found':
+          this.server.emit(GameMessages.GAME_ALIERT, {
+            message: 'game-not-found',
+          });
+          break;
+        case 'profile-not-found':
+          this.server.emit(GameMessages.GAME_ALIERT, {
+            message: 'profile-not-found',
+          });
+          break;
+        case 'game-already-started':
+          this.server.emit(GameMessages.GAME_ALIERT, {
+            message: 'game-already-started',
+          });
+          break;
+        case 'profile-already-in-game':
+          this.server.emit(GameMessages.GAME_ALIERT, {
+            message: 'profile-already-in-game',
+          });
+          break;
+        case 'game-full':
+          this.server.emit(GameMessages.GAME_ALIERT, {
+            message: 'game-full',
+          });
+          break;
+
+        default:
+          console.log(error);
+      }
+    }
+  }
+
+  @SubscribeMessage(GameMessages.LEAVE_GAME)
+  async handleLeaveGame(
+    @MessageBody() payload: { gameId: string; userId: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      await this.gameService.leaveGame(payload);
+      this.server.emit(GameMessages.GAME_ALIERT, {
+        message: 'game-left',
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  @SubscribeMessage(GameMessages.MOVE)
+  async handleMove(
+    @MessageBody() payload: MoveDto,
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      const { move, result } = await this.boardService.makeMove(payload);
+      this.server.emit(GameMessages.MOVE, move);
+      if (result) {
+        this.server.emit(GameMessages.GAME_FINISHED, result);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  @SubscribeMessage('log-validators')
+  async handleLogValidators() {
+    this.boardService.logValidators();
+  }
+}
