@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Game, GameResult, GameSettings } from './enitites';
 import { Repository } from 'typeorm';
@@ -25,6 +25,9 @@ export class GameService {
     if (!ownerProfile) {
       throw new Error('profile-not-found');
     }
+    if (ownerProfile.isInGame) {
+      throw new Error('profile-already-in-game');
+    }
     const gameSettings = this.gameSettingsRepository.create({
       type: GameTypes.ONLINE,
       mode: dto.settings.gameMode,
@@ -39,7 +42,6 @@ export class GameService {
       currentTurn: ChessColors.WHITE,
       whiteTimeLeft: dto.settings.time,
       blackTimeLeft: dto.settings.time,
-      startAt: new Date(),
     });
     dto.ownerColor === ChessColors.WHITE
       ? (game.playerWhite = ownerProfile)
@@ -47,6 +49,9 @@ export class GameService {
 
     await this.gameSettingsRepository.save(gameSettings);
     await this.gameRepository.save(game);
+    await this.profileService.updateProfile(ownerProfile.id, {
+      isInGame: true,
+    });
     return game;
   }
 }

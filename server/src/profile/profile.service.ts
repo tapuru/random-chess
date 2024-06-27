@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './profile.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/auth/user.entity';
+import { Game } from 'src/game/enitites';
 
 @Injectable()
 export class ProfileService {
@@ -25,9 +26,16 @@ export class ProfileService {
       photo,
       username,
       isOnline: false,
+      isInGame: false,
     });
     return this.profileRepository.save(profile);
   }
 
-  editProfile() {}
+  async updateProfile(profileId: string, dto: Partial<Profile>) {
+    const profile = await this.getProfileById(profileId);
+    if (!profile) {
+      throw new BadRequestException('profile-not-found');
+    }
+    await this.profileRepository.save({ ...profile, ...dto });
+  }
 }

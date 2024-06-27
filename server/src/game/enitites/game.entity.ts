@@ -1,7 +1,9 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -29,8 +31,11 @@ export class Game {
   @Column({ nullable: true })
   blackTimeLeft: number;
 
-  @Column()
-  startAt: Date;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
 
   @Column({ nullable: true })
   endAt: Date;

@@ -41,6 +41,11 @@ export class GameGateway implements OnModuleInit {
           message: 'profile-not-found',
         });
       }
+      if (error.message === 'profile-already-in-game') {
+        this.server.emit(GameMessages.GAME_ALIERT, {
+          message: 'profile-already-in-game',
+        });
+      }
       console.log(error);
     }
   }
@@ -49,14 +54,7 @@ export class GameGateway implements OnModuleInit {
   handleJoinGame(
     @MessageBody() payload: any,
     @ConnectedSocket() client: Socket,
-  ) {
-    console.log('join game');
-    console.log(payload);
-    this.server.emit(GameMessages.GAME_ALIERT, {
-      message: 'hello',
-      payload: payload,
-    });
-  }
+  ) {}
 
   @SubscribeMessage(GameMessages.LEAVE_GAME)
   handleLeaveGame(

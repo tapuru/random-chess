@@ -3,6 +3,7 @@ import { Game } from 'src/game/enitites/game.entity';
 import {
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -24,6 +25,9 @@ export class Profile {
 
   @Column({ nullable: true })
   lastOnline: Date;
+
+  @Column({})
+  isInGame: boolean;
 
   @OneToOne(() => User, (user) => user.profile)
   user: User;
