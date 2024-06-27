@@ -5,10 +5,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { GameStatus, ChessColors } from '../../../../shared/types';
 import { GameSettings } from './game-settings.entity';
 import { Profile } from 'src/profile/profile.entity';
 import { GameResult } from './game-result.entity';
+import { ChessColors, GameStatus } from '../types';
 @Entity('games')
 export class Game {
   @PrimaryGeneratedColumn('uuid')
@@ -36,7 +36,7 @@ export class Game {
   endAt: Date;
 
   @OneToOne(() => GameSettings, (gameSettings) => gameSettings.game)
-  gameSettings: GameSettings;
+  settings: GameSettings;
 
   @ManyToOne(() => Profile, (profile) => profile.gamesAsWhite)
   playerWhite: Profile;
