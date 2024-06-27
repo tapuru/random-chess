@@ -2,15 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Repository,
 } from 'typeorm';
 import { GameSettings } from './game-settings.entity';
 import { Profile } from 'src/profile/profile.entity';
 import { GameResult } from './game-result.entity';
 import { ChessColors, GameStatus } from '../types';
+import { MoveEntity } from './move.entity';
 @Entity('games')
 export class Game {
   @PrimaryGeneratedColumn('uuid')
@@ -46,9 +49,13 @@ export class Game {
   @ManyToOne(() => Profile, (profile) => profile.gamesAsWhite)
   playerWhite: Profile;
 
-  @OneToOne(() => Profile, (profile) => profile.gamesAsBlack)
+  @ManyToOne(() => Profile, (profile) => profile.gamesAsBlack)
   playerBlack: Profile;
 
   @OneToOne(() => GameResult, (gameResult) => gameResult.game)
+  @JoinColumn()
   result: GameResult;
+
+  @OneToMany(() => MoveEntity, (move) => move.game)
+  moves: MoveEntity[];
 }
