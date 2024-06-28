@@ -1,5 +1,5 @@
 "use client";
-import { gameActions, getTimeControlsFromSecods } from "@/entities/game";
+import { gameActions, getTimeControlFromSeconds } from "@/entities/game";
 import { playersActions } from "@/entities/player";
 import { useRouter } from "@/shared/config/navigation";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
@@ -36,7 +36,7 @@ export const useCreateLocalGameForm = () => {
   const t = useTranslations("CreateGame");
 
   const currentTime = watch("time");
-  const currentTimeControl = getTimeControlsFromSecods(parseInt(currentTime));
+  const currentTimeControl = getTimeControlFromSeconds(parseInt(currentTime));
 
   const submit: SubmitHandler<CreateLocalGameFormData> = (data) => {
     let time: number | null = parseInt(data.time);
@@ -52,7 +52,7 @@ export const useCreateLocalGameForm = () => {
         mode: data.mode,
         time,
         additionTime,
-        timeControl: timeControl || getTimeControlsFromSecods(time),
+        timeControl: timeControl || getTimeControlFromSeconds(time ?? -1),
       })
     );
     dispatch(

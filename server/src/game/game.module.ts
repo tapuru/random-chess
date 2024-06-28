@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Game, GameResult, GameSettings } from './enitites';
 import { ProfileModule } from 'src/profile/profile.module';
 import { MoveEntity } from './enitites/move.entity';
-import { GameGateway, GameService } from './providers';
+import { BoardService, GameGateway, GameService } from './providers';
 
 @Module({
-  providers: [GameGateway, GameService],
+  providers: [GameGateway, GameService, BoardService],
   imports: [
     TypeOrmModule.forFeature([Game, GameSettings, GameResult, MoveEntity]),
     ProfileModule,
