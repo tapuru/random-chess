@@ -16,7 +16,7 @@ interface AppTabsProps {
   listOnly?: boolean;
   defaultValue?: string;
   value?: string;
-  onValueChange: (value: string) => void;
+  onValueChange?: (value: string) => void;
   loop?: boolean;
 }
 
