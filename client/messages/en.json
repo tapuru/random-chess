@@ -32,7 +32,7 @@
   "CreateGame": {
     "mode": "Mode",
     "timeControl": "Time control",
-    "additionTime": "Addition time",
+    "timeIncrement": "Addition time",
     "createGame": "Create game",
     "back": "Back",
     "create": "Create"

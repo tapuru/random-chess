@@ -2,6 +2,7 @@ import { authReducer } from "@/entities/auth";
 import { boardReducer } from "@/entities/chess-board";
 import { gameReducer } from "@/entities/game";
 import { playersReducer } from "@/entities/player";
+import { createGameReducer } from "@/features/create-game";
 import { apiSlice } from "@/shared/api/api-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
@@ -62,6 +63,7 @@ const rootReducer = combineReducers({
   game: persistReducer(gamePersistConfig, gameReducer),
   players: persistReducer(playersPersistConfig, playersReducer),
   auth: persistReducer(authPersistConfig, authReducer),
+  createGame: createGameReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

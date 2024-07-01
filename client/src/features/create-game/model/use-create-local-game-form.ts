@@ -15,8 +15,8 @@ interface CreateLocalGameFormData {
   mode: GameModes;
   isWithTime: boolean;
   time: string;
-  isWithAdditionTime: boolean;
-  additionTime: string;
+  isWithTimeIncrement: boolean;
+  timeIncrement: string;
   timeControl: TimeControls | null;
 }
 
@@ -27,9 +27,9 @@ export const useCreateLocalGameForm = () => {
       defaultValues: {
         mode: GameModes.CLASSICAL,
         isWithTime: false,
-        isWithAdditionTime: false,
+        isWithTimeIncrement: false,
         time: "600",
-        additionTime: "50",
+        timeIncrement: "50",
       },
     });
   const router = useRouter();
@@ -41,7 +41,7 @@ export const useCreateLocalGameForm = () => {
   const submit: SubmitHandler<CreateLocalGameFormData> = (data) => {
     let time: number | null = parseInt(data.time);
 
-    let additionTime: number | null = parseInt(data.additionTime);
+    let additionTime: number | null = parseInt(data.timeIncrement);
     if (Number.isNaN(time)) time = null;
     if (Number.isNaN(additionTime)) additionTime = null;
     const timeControl = data.timeControl;
