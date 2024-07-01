@@ -1,5 +1,5 @@
 import cl from "./create-game-page.module.scss";
-import { CreateGameHeader, CreateLocalGameForm } from "@/features/create-game";
+import { CreateGameHeader, CreateGameTabs } from "@/features/create-game";
 import { Container } from "@/shared/ui/container/container";
 
 export const CreateGamePage = () => {
@@ -7,7 +7,7 @@ export const CreateGamePage = () => {
     <Container>
       <main className={cl.main}>
         <CreateGameHeader />
-        <CreateLocalGameForm />
+        <CreateGameTabs />
       </main>
     </Container>
   );

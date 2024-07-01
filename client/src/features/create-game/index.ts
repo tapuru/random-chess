@@ -1,2 +1,2 @@
-export { CreateLocalGameForm } from "./ui/create-game-form/create-local-game-from";
 export { CreateGameHeader } from "./ui/create-game-header/create-game-header";
+export { CreateGameTabs } from "./ui/create-game-tabs/create-game-tabs";
