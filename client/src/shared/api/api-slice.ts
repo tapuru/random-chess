@@ -1,5 +1,3 @@
-// TODO: rewrite this. Shared should not import entities.
-import { authActions } from "@/entities/auth";
 import {
   BaseQueryFn,
   FetchArgs,
@@ -31,10 +29,14 @@ const baseQueryWithReauth: BaseQueryFn<
     if (refreshResult?.data) {
       const user = (api.getState() as RootState).auth.user;
 
-      api.dispatch(authActions.setCredentials({ ...refreshResult.data, user }));
+      api.dispatch({
+        type: "auth/setCredentials",
+        payload: { ...refreshResult.data, user },
+      });
+
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(authActions.logout());
+      api.dispatch({ type: "auth/logout" });
     }
   }
   return result;
@@ -44,4 +46,5 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
+  tagTypes: ["Game"],
 });
