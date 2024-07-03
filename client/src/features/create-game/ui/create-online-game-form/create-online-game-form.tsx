@@ -7,13 +7,15 @@ import { AppCard } from "@/shared/ui/app-card/app-card";
 import { useTranslations } from "next-intl";
 import { TimeControlField } from "../time-control-field/time-control-field";
 import { TimeIncrementField } from "../time-control-field/time-increment-field";
+import { AppButton } from "@/shared/ui/app-button/app-button";
 
 export const CreateOnlineGameForm = () => {
-  const { control, formState, currentTimeControl } = useCreateOnlineGameForm();
+  const { control, currentTimeControl, handleSubmit } =
+    useCreateOnlineGameForm();
   const t = useTranslations("CreateGame");
   return (
     <AppCard.Content>
-      <AppForm>
+      <AppForm onSubmit={handleSubmit}>
         <AppForm.RHFField
           name="settings.gameMode"
           label={t("mode")}
@@ -37,6 +39,9 @@ export const CreateOnlineGameForm = () => {
           name="settings.time"
         />
         <TimeIncrementField control={control} name="settings.timeIncrement" />
+        <AppForm.Submit>
+          <AppButton>create game</AppButton>
+        </AppForm.Submit>
       </AppForm>
     </AppCard.Content>
   );
