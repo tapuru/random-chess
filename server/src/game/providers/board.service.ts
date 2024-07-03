@@ -76,6 +76,7 @@ export class BoardService {
     const moveEntity = this.moveRepository.create({
       ...move,
       moveNumber: 1,
+      game,
     });
     game.moves.push(moveEntity);
     game.currentFen = move.after;
