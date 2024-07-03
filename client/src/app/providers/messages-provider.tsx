@@ -1,12 +1,16 @@
 import { NextIntlClientProvider, useMessages } from "next-intl";
-import { ReduxProvider } from "./store";
+import React from "react";
 
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+export const MessagesProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const messages = useMessages();
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <ReduxProvider>{children}</ReduxProvider>
+      {children}
     </NextIntlClientProvider>
   );
 };
