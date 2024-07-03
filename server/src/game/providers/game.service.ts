@@ -29,8 +29,6 @@ export class GameService {
   }
 
   async createGame(dto: CreateGameDto) {
-    console.log(dto.ownerId);
-
     const ownerProfile = await this.profileService.getProfileByUserId(
       dto.ownerId,
     );
@@ -53,6 +51,7 @@ export class GameService {
       initialFen: dto.initialFen,
       status: GameStatus.PENDING,
       currentTurn: ChessColors.WHITE,
+      currentFen: dto.initialFen,
       whiteTimeLeft: dto.settings.time,
       blackTimeLeft: dto.settings.time,
     });
@@ -72,7 +71,7 @@ export class GameService {
   async joinGame({ userId, gameId }: JoinGameDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
-      relations: { playerBlack: true, playerWhite: true },
+      relations: { playerBlack: true, playerWhite: true, settings: true },
     });
     const profile = await this.profileService.getProfileByUserId(userId);
 

@@ -46,7 +46,12 @@ export class BoardService {
   public async makeMove({ gameId, from, to, promotion }: MakeMoveDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
-      relations: { playerBlack: true, playerWhite: true, moves: true },
+      relations: {
+        playerBlack: true,
+        playerWhite: true,
+        moves: true,
+        settings: true,
+      },
     });
     if (!game) {
       throw new Error('game-not-found');
@@ -73,6 +78,7 @@ export class BoardService {
       moveNumber: 1,
     });
     game.moves.push(moveEntity);
+    game.currentFen = move.after;
 
     const result = this.checkForResult(validator);
     if (result) {
@@ -88,7 +94,7 @@ export class BoardService {
     }
     await this.gameRepository.save(game);
     await this.moveRepository.save(moveEntity);
-    return { move: moveEntity, result: result };
+    return game;
   }
 
   logValidators() {

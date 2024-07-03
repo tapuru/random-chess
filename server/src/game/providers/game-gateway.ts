@@ -73,13 +73,8 @@ export class GameGateway implements OnModuleInit {
   ) {
     try {
       const game = await this.gameService.joinGame(payload);
-      this.server.emit(GameMessages.GAME_JOINED, {
-        game: game,
-      });
-      this.server.emit(GameMessages.GAME_ALIERT, {
-        message: 'game-started',
-        gameId: game.id,
-      });
+      this.server.emit(GameMessages.GAME_JOINED, game);
+      return game;
     } catch (error) {
       this.server.emit(GameMessages.GAME_ALIERT, { error: error.message });
     }
@@ -106,10 +101,10 @@ export class GameGateway implements OnModuleInit {
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      const { move, result } = await this.boardService.makeMove(payload);
-      this.server.emit(GameMessages.MOVE, move);
-      if (result) {
-        this.server.emit(GameMessages.GAME_FINISHED, result);
+      const game = await this.boardService.makeMove(payload);
+      this.server.emit(GameMessages.MOVE, game);
+      if (game.result) {
+        this.server.emit(GameMessages.GAME_FINISHED, game.result);
       }
     } catch (error) {
       console.log(error);

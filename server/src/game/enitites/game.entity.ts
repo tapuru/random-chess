@@ -28,6 +28,9 @@ export class Game {
   @Column({ nullable: true })
   currentTurn: ChessColors;
 
+  @Column()
+  currentFen: string;
+
   @Column({ nullable: true })
   whiteTimeLeft: number;
 
