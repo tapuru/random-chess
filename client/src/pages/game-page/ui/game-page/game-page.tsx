@@ -25,8 +25,6 @@ export const GamePage = () => {
     return <PendingGameScreen game={game} />;
   }
 
-  console.log(game);
-
   return (
     <Container>
       {isGameLoading ? (

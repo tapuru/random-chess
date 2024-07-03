@@ -3,7 +3,6 @@
 import NavLink from "@/shared/ui/nav-link/nav-link";
 import cl from "./navbar.module.scss";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const t = useTranslations("Navigation");
