@@ -21,7 +21,16 @@ export class GameService {
     private boardService: BoardService,
   ) {}
 
+  async getGameById(id: string) {
+    return this.gameRepository.findOne({
+      where: { id },
+      relations: { settings: true, playerBlack: true, playerWhite: true },
+    });
+  }
+
   async createGame(dto: CreateGameDto) {
+    console.log(dto.ownerId);
+
     const ownerProfile = await this.profileService.getProfileByUserId(
       dto.ownerId,
     );
@@ -50,6 +59,7 @@ export class GameService {
     dto.ownerColor === ChessColors.WHITE
       ? (game.playerWhite = ownerProfile)
       : (game.playerBlack = ownerProfile);
+    game.settings = gameSettings;
 
     await this.gameSettingsRepository.save(gameSettings);
     await this.gameRepository.save(game);

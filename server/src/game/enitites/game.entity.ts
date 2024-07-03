@@ -44,6 +44,7 @@ export class Game {
   endAt: Date;
 
   @OneToOne(() => GameSettings, (gameSettings) => gameSettings.game)
+  @JoinColumn()
   settings: GameSettings;
 
   @ManyToOne(() => Profile, (profile) => profile.gamesAsWhite)

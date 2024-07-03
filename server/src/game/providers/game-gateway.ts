@@ -12,7 +12,9 @@ import { GameService } from './game.service';
 import { CreateGameDto, JoinGameDto } from '../dto';
 import { MoveDto } from '../dto/move.dto';
 import { BoardService } from './board.service';
-@WebSocketGateway(3002, {})
+@WebSocketGateway(3002, {
+  cors: { origin: 'http://localhost:3000', credentials: true },
+})
 export class GameGateway implements OnModuleInit {
   constructor(
     private gameService: GameService,
@@ -30,6 +32,17 @@ export class GameGateway implements OnModuleInit {
     });
   }
 
+  @SubscribeMessage(GameMessages.GET_GAME)
+  async handleGetGame(
+    @MessageBody() payload: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      const game = await this.gameService.getGameById(payload);
+      client.emit(GameMessages.GET_GAME);
+    } catch (error) {}
+  }
+
   @SubscribeMessage(GameMessages.CREATE_GAME)
   async handleCreateGame(
     @MessageBody() payload: CreateGameDto,
@@ -37,9 +50,7 @@ export class GameGateway implements OnModuleInit {
   ) {
     try {
       const game = await this.gameService.createGame(payload);
-      this.server.emit(GameMessages.GAME_CREATED, {
-        game: game,
-      });
+      return game;
     } catch (error) {
       if (error.message === 'profile-not-found') {
         this.server.emit(GameMessages.GAME_ALIERT, {
@@ -70,36 +81,7 @@ export class GameGateway implements OnModuleInit {
         gameId: game.id,
       });
     } catch (error) {
-      switch (error.message) {
-        case 'game-not-found':
-          this.server.emit(GameMessages.GAME_ALIERT, {
-            message: 'game-not-found',
-          });
-          break;
-        case 'profile-not-found':
-          this.server.emit(GameMessages.GAME_ALIERT, {
-            message: 'profile-not-found',
-          });
-          break;
-        case 'game-already-started':
-          this.server.emit(GameMessages.GAME_ALIERT, {
-            message: 'game-already-started',
-          });
-          break;
-        case 'profile-already-in-game':
-          this.server.emit(GameMessages.GAME_ALIERT, {
-            message: 'profile-already-in-game',
-          });
-          break;
-        case 'game-full':
-          this.server.emit(GameMessages.GAME_ALIERT, {
-            message: 'game-full',
-          });
-          break;
-
-        default:
-          console.log(error);
-      }
+      this.server.emit(GameMessages.GAME_ALIERT, { error: error.message });
     }
   }
 

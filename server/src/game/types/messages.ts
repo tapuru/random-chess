@@ -11,4 +11,5 @@ export enum GameMessages {
   MOVE = 'game.move',
   OPPONENT_DISCONNECTED = 'game.opponentDisconnected',
   GAME_CREATED = 'game.created',
+  GET_GAME = 'game.get',
 }
