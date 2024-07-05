@@ -43,6 +43,12 @@ interface AppFormRHFFieldProps<T extends FieldValues>
 interface AppFormSubmitProps {
   children: React.ReactNode;
   className?: string;
+  justifyContent?:
+    | "center"
+    | "space-between"
+    | "space-around"
+    | "flex-start"
+    | "flex-end";
 }
 
 export const AppForm = ({ children, ...props }: AppFormProps) => {
@@ -127,6 +133,17 @@ AppForm.RHFField = <T extends FieldValues>({
   );
 };
 
-AppForm.Submit = ({ children, className }: AppFormSubmitProps) => {
-  return <div className={cn(cl.submit, className)}>{children}</div>;
+AppForm.Submit = ({
+  children,
+  className,
+  justifyContent = "center",
+}: AppFormSubmitProps) => {
+  return (
+    <div
+      className={cn(cl.submit, className)}
+      style={{ justifyContent: justifyContent }}
+    >
+      {children}
+    </div>
+  );
 };

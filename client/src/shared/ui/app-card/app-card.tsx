@@ -29,6 +29,12 @@ export const AppCard = ({
   );
 };
 
-AppCard.Content = ({ children }: { children?: React.ReactNode }) => {
-  return <div className={cl.content}>{children}</div>;
+AppCard.Content = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) => {
+  return <div className={cn(cl.content, className)}>{children}</div>;
 };
