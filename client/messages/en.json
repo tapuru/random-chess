@@ -35,7 +35,10 @@
     "timeIncrement": "Addition time",
     "createGame": "Create game",
     "back": "Back",
-    "create": "Create"
+    "create": "Create",
+    "ownerColor": "Color",
+    "white": "White",
+    "black": "Black"
   },
   "Auth": {
     "login": "Login",

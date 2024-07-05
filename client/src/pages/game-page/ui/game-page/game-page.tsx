@@ -28,6 +28,7 @@ export const GamePage = () => {
   return (
     <Container>
       {isGameLoading ? (
+        //TODO: add loader
         <div>loading...</div>
       ) : (
         <>
@@ -48,7 +49,7 @@ export const GamePage = () => {
             playerOneInfo={<PlayerOneInfo />}
             playerTwoInfo={<PlayerTwoInfo />}
           />
-          <GameResult />
+          <GameResult gameType={game.settings.type} />
         </>
       )}
     </Container>

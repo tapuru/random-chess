@@ -1,45 +1,16 @@
-"use client";
+import { GameTypes } from "@/shared/types/game-type";
+import { LocalGameResult } from "./local-game-result/local-game-result";
+import { OnlineGameResult } from "./online-game-result/online-game-result";
 
-import cn from "classnames";
-import cl from "./game-result.module.scss";
-import { AppModal } from "@/shared/ui/app-modal/app-modal";
-import { AppButton } from "@/shared/ui/app-button/app-button";
-import { useGameResult } from "../model/use-game-result";
-import { useRouter } from "@/shared/config/navigation";
-import { LocalAbortButton, LocalRematchButton } from "@/features/local-game";
-
-export const GameResult = () => {
-  const {
-    open,
-    setOpen,
-    reason,
-    title,
-    playerOne,
-    gameResult,
-    playerTwo,
-    titleColor,
-    t,
-  } = useGameResult();
-  const router = useRouter();
-  if (!gameResult || !playerOne || !playerTwo) return null;
-
-  return (
-    <AppModal open={open} onOpenChange={() => setOpen(false)}>
-      <div className={cl.content}>
-        <div
-          className={cn(cl.title, {
-            [cl.winner]: titleColor === "s",
-            [cl.looser]: titleColor === "e",
-          })}
-        >
-          {title}
-        </div>
-        {!!reason && <div className={cl.reason}>{t(reason)}</div>}
-        <div className={cl.actions}>
-          <LocalRematchButton title={t("rematch")} />
-          <LocalAbortButton title={t("leave")} />
-        </div>
-      </div>
-    </AppModal>
-  );
+export const GameResult = ({ gameType }: { gameType: GameTypes }) => {
+  switch (gameType) {
+    case GameTypes.LOCAL:
+      return <LocalGameResult />;
+    case GameTypes.ENGINE:
+      return <LocalGameResult />;
+    case GameTypes.ONLINE:
+      return <OnlineGameResult />;
+    default:
+      return null;
+  }
 };

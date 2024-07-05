@@ -4,6 +4,7 @@ import { GetProfileDto } from "@/entities/profile/lib/schemas/get-profile-schema
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameStatus } from "@/shared/types/game-status";
 import { Move } from "chess.js";
+import { GameEndReason, GameResult } from "./game-result";
 
 export interface GameDto {
   id: string;
@@ -18,4 +19,8 @@ export interface GameDto {
   playerWhite: GetProfileDto | null;
   playerBlack: GetProfileDto | null;
   moves: Move[];
+  result: {
+    reason: GameEndReason;
+    winner?: ChessColors;
+  };
 }

@@ -35,7 +35,10 @@
     "additionTime": "Добавление за ход",
     "createGame": "Создать игру",
     "back": "Назад",
-    "create": "Создать"
+    "create": "Создать",
+    "ownerColor": "Цвет",
+    "white": "Белые",
+    "black": "Чёрные"
   },
   "Auth": {
     "login": "Вход",
