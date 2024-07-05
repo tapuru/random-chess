@@ -2,7 +2,6 @@
 
 import { Container } from "@/shared/ui/container/container";
 import { GameBoard } from "@/widgets/game-board";
-import { PlayerOneInfo, PlayerTwoInfo } from "@/widgets/player-info";
 import { GameResult } from "@/widgets/game-result";
 import { GameInfoLayout, gameApi } from "@/entities/game";
 import { GameTurn } from "@/widgets/game-turn";
@@ -13,6 +12,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { GameStatus } from "@/shared/types/game-status";
 import { PendingGameScreen } from "@/widgets/pending-game-screen";
 import { GameMovesFactory } from "@/widgets/game-moves-factory";
+import { PlayerInfo } from "@/widgets/player-info";
 
 export const GamePage = () => {
   const params = useParams<{ gameId: string }>();
@@ -46,8 +46,12 @@ export const GamePage = () => {
                 gameTurn={<GameTurn gameType={game.settings.type} />}
               />
             }
-            playerOneInfo={<PlayerOneInfo />}
-            playerTwoInfo={<PlayerTwoInfo />}
+            enemyPlayerInfo={
+              <PlayerInfo gameType={game.settings.type} side="enemy" />
+            }
+            frendlyPlayerInfo={
+              <PlayerInfo gameType={game.settings.type} side="frendly" />
+            }
           />
           <GameResult gameType={game.settings.type} />
         </>

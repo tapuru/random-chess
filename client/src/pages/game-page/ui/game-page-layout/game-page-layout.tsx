@@ -3,25 +3,25 @@ import cl from "./game-page-layout.module.scss";
 
 interface GamePageLayoutProps {
   board: React.ReactNode;
-  playerTwoInfo: React.ReactNode;
-  playerOneInfo: React.ReactNode;
+  enemyPlayerInfo: React.ReactNode;
+  frendlyPlayerInfo: React.ReactNode;
   gameInfo: React.ReactNode;
 }
 
 export const GamePageLayout = ({
   board,
   gameInfo,
-  playerOneInfo,
-  playerTwoInfo,
+  frendlyPlayerInfo,
+  enemyPlayerInfo,
 }: GamePageLayoutProps) => {
   return (
     <main className={cl.root}>
       <div className={cl.content}>
         <div className={cl.board}>{board}</div>
         <div className={cl.info}>
-          {playerTwoInfo}
+          {enemyPlayerInfo}
           {gameInfo}
-          {playerOneInfo}
+          {frendlyPlayerInfo}
         </div>
       </div>
     </main>
