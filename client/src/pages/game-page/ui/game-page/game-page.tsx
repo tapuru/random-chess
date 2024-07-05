@@ -43,7 +43,7 @@ export const GamePage = () => {
                   </>
                 }
                 gameMoves={<GameMovesFactory gameType={game.settings.type} />}
-                gameTurn={<GameTurn />}
+                gameTurn={<GameTurn gameType={game.settings.type} />}
               />
             }
             playerOneInfo={<PlayerOneInfo />}

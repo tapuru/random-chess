@@ -12,6 +12,7 @@ export type { GameResult } from "./types/game-result";
 export { GameEndReason } from "./types/game-result";
 export { GameMoves } from "./ui/game-moves/game-moves";
 export { GameInfoLayout } from "./ui/game-info-layout/game-info-layout";
+export { GameTurnUI } from "./ui/game-turn-ui/game-turn-ui";
 export { getTimeControlFromSeconds } from "./lib/get-time-control-from-seconds";
 export { getFrendlyPlayerColor } from "./lib/get-frendly-player-color";
 export { getGameResultDetails } from "./lib/get-game-result-details";

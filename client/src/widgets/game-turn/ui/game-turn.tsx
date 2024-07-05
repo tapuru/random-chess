@@ -1,58 +1,13 @@
-"use client";
-
-import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import cl from "./game-turn.module.scss";
-import { useTranslations } from "next-intl";
-import {
-  selectGame,
-  selectGameResult,
-  selectGameSettings,
-} from "@/entities/game";
-import { selectPlayerOne } from "@/entities/player";
 import { GameTypes } from "@/shared/types/game-type";
-import { ChessColors } from "@/shared/types/chess-colors";
-import { AppButton } from "@/shared/ui/app-button/app-button";
-import { LocalRematchButton } from "@/features/local-game";
+import { OnlineGameTurn } from "@/features/online-game";
 
-export const GameTurn = () => {
-  const game = useAppSelector(selectGame);
-  const gameSettings = useAppSelector(selectGameSettings);
-  const gameResult = useAppSelector(selectGameResult);
-  const playerOne = useAppSelector(selectPlayerOne);
-  const t = useTranslations("Game");
-
-  if (gameResult) {
-    return (
-      <div className={cl.root}>
-        <div className={cl.buttons}>
-          <LocalRematchButton title={t("rematch")} />
-          <AppButton size={"sm"} color="primary">
-            {t("leave")}
-          </AppButton>
-        </div>
-      </div>
-    );
+export const GameTurn = ({ gameType }: { gameType: GameTypes }) => {
+  switch (gameType) {
+    case GameTypes.ONLINE:
+      return <OnlineGameTurn />;
+    case GameTypes.ENGINE:
+      return <div>engine turn</div>;
+    case GameTypes.LOCAL:
+      return <div>local turn</div>;
   }
-
-  if (gameSettings.type === GameTypes.LOCAL) {
-    return (
-      <div className={cl.root}>
-        <p>
-          {game?.currentTurn === ChessColors.WHITE
-            ? t("whiteTurn")
-            : t("blackTurn")}
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className={cl.root}>
-      <p>
-        {playerOne?.color === game?.currentTurn
-          ? t("yourTurn")
-          : t("waitingOpponent")}
-      </p>
-    </div>
-  );
 };
