@@ -6,6 +6,7 @@ import { MoveEntity } from '../enitites/move.entity';
 import { Chess } from 'chess.js';
 import { MakeMoveDto } from '../dto/make-move.dto';
 import { ChessColors, GameEndReason, GameStatus } from '../types';
+import { ProfileService } from 'src/profile/profile.service';
 
 @Injectable()
 export class BoardService {
@@ -19,6 +20,7 @@ export class BoardService {
     private gameResultRepository: Repository<GameResult>,
     @InjectRepository(MoveEntity)
     private moveRepository: Repository<MoveEntity>,
+    private profileService: ProfileService,
   ) {}
 
   private getValidarorByGameId(gameId: string, position?: string) {
@@ -69,7 +71,6 @@ export class BoardService {
       to,
       promotion,
     });
-    console.log(move);
     if (move === null) {
       throw new Error('invalid-move');
     }
@@ -83,13 +84,7 @@ export class BoardService {
 
     const result = this.checkForResult(validator);
     if (result) {
-      const gameResult = this.gameResultRepository.create({
-        reason: result.reason,
-        winner: result.winner,
-      });
-      game.result = gameResult;
-      game.status = GameStatus.FINISHED;
-      await this.gameResultRepository.save(gameResult);
+      this.endGame({ game, result });
     } else {
       this.toggleGameCurrentTurn(game);
     }
@@ -108,7 +103,10 @@ export class BoardService {
       : (game.currentTurn = ChessColors.BLACK);
   }
 
-  private checkForResult(chess: Chess) {
+  private checkForResult(chess: Chess): {
+    reason: GameEndReason;
+    winner?: string;
+  } {
     if (chess.isGameOver()) {
       if (chess.isCheckmate()) {
         return { winner: chess.turn(), reason: GameEndReason.CHECKMATE };
@@ -120,5 +118,31 @@ export class BoardService {
         return null;
       }
     }
+  }
+
+  private async endGame({
+    game,
+    result,
+  }: {
+    game: Game;
+    result: { reason: GameEndReason; winner?: string };
+  }) {
+    const gameResult = this.gameResultRepository.create({
+      reason: result.reason,
+      winner: result.winner,
+    });
+    game.status = GameStatus.FINISHED;
+    game.endAt = new Date();
+    game.result = gameResult;
+
+    await this.profileService.updateProfile(game.playerBlack.id, {
+      isInGame: false,
+    });
+    await this.profileService.updateProfile(game.playerWhite.id, {
+      isInGame: false,
+    });
+    await this.gameResultRepository.save(gameResult);
+
+    return gameResult;
   }
 }

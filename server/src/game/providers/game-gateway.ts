@@ -95,6 +95,11 @@ export class GameGateway implements OnModuleInit {
     }
   }
 
+  @SubscribeMessage(GameMessages.CANCEL_GAME)
+  async handleCancelGame(
+    @MessageBody() payload: { gameId: string; userId: string },
+  ) {}
+
   @SubscribeMessage(GameMessages.MOVE)
   async handleMove(
     @MessageBody() payload: MoveDto,
