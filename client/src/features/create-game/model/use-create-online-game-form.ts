@@ -13,6 +13,7 @@ import { TimeControls } from "@/shared/types/time-controls";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectUser } from "@/entities/auth";
 import { useRouter } from "@/shared/config/navigation";
+import { useId } from "react";
 
 export const useCreateOnlineGameForm = () => {
   const user = useAppSelector(selectUser);
@@ -21,7 +22,7 @@ export const useCreateOnlineGameForm = () => {
       resolver: zodResolver(createOnlineGameSchema),
       defaultValues: {
         initialFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-        ownerColor: ChessColors.BLACK,
+        ownerColor: ChessColors.WHITE,
         ownerId: user?.id,
         settings: {
           gameMode: GameModes.CLASSICAL,

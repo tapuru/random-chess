@@ -8,17 +8,18 @@ import { useTranslations } from "next-intl";
 import { TimeControlField } from "../time-control-field/time-control-field";
 import { TimeIncrementField } from "../time-control-field/time-increment-field";
 import { AppButton } from "@/shared/ui/app-button/app-button";
-
+import { ChessColors } from "@/shared/types/chess-colors";
+import cl from "./create-online-game-form.module.scss";
 export const CreateOnlineGameForm = () => {
-  const { control, currentTimeControl, handleSubmit } =
+  const { control, currentTimeControl, handleSubmit, isLoading } =
     useCreateOnlineGameForm();
   const t = useTranslations("CreateGame");
   return (
-    <AppCard.Content>
+    <AppCard.Content className={cl.root}>
       <AppForm onSubmit={handleSubmit}>
         <AppForm.RHFField
           name="settings.gameMode"
-          label={t("mode")}
+          label={t("mode") + ":"}
           labelPosition="left"
           control={control}
           render={({ field }) => (
@@ -39,8 +40,31 @@ export const CreateOnlineGameForm = () => {
           name="settings.time"
         />
         <TimeIncrementField control={control} name="settings.timeIncrement" />
-        <AppForm.Submit>
-          <AppButton>create game</AppButton>
+        <AppForm.RHFField
+          name="ownerColor"
+          control={control}
+          label={t("ownerColor") + ":"}
+          labelPosition="left"
+          render={({ field }) => (
+            <AppSelect
+              {...field}
+              onValueChange={field.onChange}
+              value={field.value as string}
+              options={[
+                {
+                  title: t("white"),
+                  value: ChessColors.WHITE,
+                },
+                {
+                  title: t("black"),
+                  value: ChessColors.BLACK,
+                },
+              ]}
+            />
+          )}
+        />
+        <AppForm.Submit justifyContent="flex-start">
+          <AppButton disabled={isLoading}>create game</AppButton>
         </AppForm.Submit>
       </AppForm>
     </AppCard.Content>
