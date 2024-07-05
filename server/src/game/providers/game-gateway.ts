@@ -109,7 +109,7 @@ export class GameGateway implements OnModuleInit {
       const game = await this.boardService.makeMove(payload);
       this.server.emit(GameMessages.MOVE, game);
       if (game.result) {
-        this.server.emit(GameMessages.GAME_FINISHED, game.result);
+        this.server.emit(GameMessages.GAME_FINISHED, game);
       }
     } catch (error) {
       console.log(error);

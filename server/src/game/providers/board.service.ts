@@ -109,7 +109,11 @@ export class BoardService {
   } {
     if (chess.isGameOver()) {
       if (chess.isCheckmate()) {
-        return { winner: chess.turn(), reason: GameEndReason.CHECKMATE };
+        const winner =
+          chess.turn() === ChessColors.BLACK
+            ? ChessColors.WHITE
+            : ChessColors.BLACK;
+        return { winner, reason: GameEndReason.CHECKMATE };
       } else if (chess.isDraw()) {
         return { reason: GameEndReason.DRAW };
       } else if (chess.isStalemate()) {
