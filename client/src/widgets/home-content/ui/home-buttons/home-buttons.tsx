@@ -14,7 +14,7 @@ export const HomeButtons = () => {
         size="lg"
         variant="filled"
         color="primary"
-        onClick={() => router.push("/create")}
+        onClick={() => router.push("/create/online")}
       >
         {t("createGame")}
       </AppButton>
