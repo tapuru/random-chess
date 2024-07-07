@@ -101,8 +101,18 @@ export const gameApi = apiSlice.injectEndpoints({
       queryFn: (payload) => {
         const socket = getSocket();
 
-        return new Promise((resolve) => {
+        return new Promise(() => {
           socket.emit(GameMessages.RESIGN, payload);
+        });
+      },
+    }),
+    abort: builder.mutation<string, { gameId: string; userId: string }>({
+      queryFn: (payload) => {
+        const socket = getSocket();
+        return new Promise((resolve) => {
+          socket.emit(GameMessages.ABORT_GAME, payload, (message: string) => {
+            resolve({ data: message });
+          });
         });
       },
     }),

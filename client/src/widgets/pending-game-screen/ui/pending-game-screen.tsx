@@ -4,16 +4,19 @@ import { selectUser } from "@/entities/auth";
 import { gameApi } from "@/entities/game";
 import { GameDto } from "@/entities/game/types/game-dto";
 import { profileApi } from "@/entities/profile";
+import { OnlineGameAbortButton } from "@/features/online-game";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 import { AppText } from "@/shared/ui/app-text/app-text";
 import { Container } from "@/shared/ui/container/container";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 export const PendingGameScreen = ({ game }: { game: GameDto }) => {
   const { data: me, isLoading } = profileApi.useGetMeQuery();
   const [joinGame] = gameApi.useJoinGameMutation();
   const user = useAppSelector(selectUser);
+  const t = useTranslations("Game");
 
   useEffect(() => {
     if (
@@ -27,6 +30,7 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
           console.log("JOIN SUCCESS", joinedGame);
         })
         .catch((error) => {
+          //TODO: handle error
           console.log(error);
         });
     }
@@ -40,6 +44,7 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
             <AppText tag="h2">Game: {game.id}</AppText>
             <AppText>Status: Pending</AppText>
             <AppText>Link: {`http://localhost:3000/game/${game.id}`}</AppText>
+            <OnlineGameAbortButton title={t("abortGame")} />
           </AppCard.Content>
         </AppCard>
       </main>
