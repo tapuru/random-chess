@@ -1,8 +1,14 @@
 "use client";
 
-import { gameApi, GameTurnUI, getFrendlyPlayerColor } from "@/entities/game";
+import {
+  gameApi,
+  GameTurnUI,
+  getFrendlyPlayerColor,
+  LeaveGameButton,
+} from "@/entities/game";
 import { profileApi } from "@/entities/profile";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 export const OnlineGameTurn = () => {
@@ -11,6 +17,7 @@ export const OnlineGameTurn = () => {
     params?.gameId || skipToken
   );
   const { data: profile } = profileApi.useGetMeQuery();
+  const t = useTranslations("Game");
 
   if (!game || !profile) return null;
   const frendlyPlayerColor = getFrendlyPlayerColor(game, profile.id);
@@ -27,7 +34,7 @@ export const OnlineGameTurn = () => {
       gameType={game.settings.type}
       resultContent={
         <>
-          <button>result</button>
+          <LeaveGameButton title={t("leave")} />
         </>
       }
       result={game.result}

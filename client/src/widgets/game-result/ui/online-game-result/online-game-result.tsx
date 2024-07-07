@@ -6,6 +6,7 @@ import cn from "classnames";
 import { useOnlineGameResult } from "../../model/use-online-game-result";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useTranslations } from "use-intl";
+import { LeaveGameButton } from "@/entities/game";
 
 export const OnlineGameResult = () => {
   const result = useOnlineGameResult();
@@ -26,7 +27,7 @@ export const OnlineGameResult = () => {
         </div>
         {!!reason && <div className={cl.reason}>{t(reason)}</div>}
         <div className={cl.actions}>
-          <AppButton /> <AppButton></AppButton>
+          <AppButton>Rematch</AppButton> <LeaveGameButton title={t("leave")} />
         </div>
       </div>
     </AppModal>

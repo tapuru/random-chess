@@ -20,3 +20,4 @@ export { getOppositeColor } from "./lib/get-opposite-color";
 export { gameApi } from "./api/game-api";
 export { createOnlineGameSchema } from "./lib/schemas/create-online-game-schema";
 export type { CreateOnlineGameFormData } from "./lib/schemas/create-online-game-schema";
+export { LeaveGameButton } from "./ui/leave-game-button/leave-game-button";
