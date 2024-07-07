@@ -7,6 +7,7 @@ import { Game, GameResult, GameSettings } from '../enitites';
 import { CreateGameDto, JoinGameDto } from '../dto';
 import { ChessColors, GameStatus, GameTypes } from '../types';
 import { BoardService } from './board.service';
+import { ResignDto } from '../dto/resing-dto';
 
 @Injectable()
 export class GameService {
@@ -107,7 +108,12 @@ export class GameService {
   async leaveGame({ gameId, userId }: JoinGameDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
-      relations: { playerBlack: true, playerWhite: true },
+      relations: {
+        playerBlack: true,
+        playerWhite: true,
+        result: true,
+        settings: true,
+      },
     });
     const profile = await this.profileService.getProfileByUserId(userId);
 

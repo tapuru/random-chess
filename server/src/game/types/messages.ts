@@ -13,4 +13,5 @@ export enum GameMessages {
   GAME_CREATED = 'game.created',
   GET_GAME = 'game.get',
   CANCEL_GAME = 'game.cancel',
+  RESIGN = 'game.resign',
 }

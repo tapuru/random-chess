@@ -7,6 +7,7 @@ import { Chess } from 'chess.js';
 import { MakeMoveDto } from '../dto/make-move.dto';
 import { ChessColors, GameEndReason, GameStatus } from '../types';
 import { ProfileService } from 'src/profile/profile.service';
+import { ResignDto } from '../dto/resing-dto';
 
 @Injectable()
 export class BoardService {
@@ -93,6 +94,42 @@ export class BoardService {
     return game;
   }
 
+  async resign({ gameId, userId }: ResignDto) {
+    const game = await this.gameRepository.findOne({
+      where: { id: gameId },
+      relations: {
+        playerBlack: true,
+        playerWhite: true,
+        result: true,
+        settings: true,
+      },
+    });
+    if (!game) throw new Error('game-not-found');
+    const profile = await this.profileService.getProfileByUserId(userId);
+    if (!profile) throw new Error('profile-does-not-exist');
+    if (
+      profile.id !== game.playerBlack.id &&
+      profile.id !== game.playerWhite.id
+    )
+      throw new Error('profile-is-not-in-this-game');
+    if (game.status !== GameStatus.ACTIVE)
+      throw new Error('game-is-not-active');
+
+    const reason =
+      profile.id === game.playerBlack.id
+        ? GameEndReason.BLACK_RESIGNED
+        : GameEndReason.WHITE_RESIGNED;
+    const winner =
+      profile.id === game.playerBlack.id
+        ? ChessColors.WHITE
+        : ChessColors.BLACK;
+    const result = { reason, winner };
+    await this.endGame({ game, result });
+    await this.gameRepository.save(game);
+
+    return game;
+  }
+
   logValidators() {
     console.log(this.validators);
   }
@@ -146,6 +183,7 @@ export class BoardService {
       isInGame: false,
     });
     await this.gameResultRepository.save(gameResult);
+    this.deleteValidatorByGameId(game.id);
 
     return gameResult;
   }

@@ -12,6 +12,7 @@ import { GameService } from './game.service';
 import { CreateGameDto, JoinGameDto } from '../dto';
 import { MoveDto } from '../dto/move.dto';
 import { BoardService } from './board.service';
+import { ResignDto } from '../dto/resing-dto';
 @WebSocketGateway(3002, {
   cors: { origin: 'http://localhost:3000', credentials: true },
 })
@@ -95,11 +96,6 @@ export class GameGateway implements OnModuleInit {
     }
   }
 
-  @SubscribeMessage(GameMessages.CANCEL_GAME)
-  async handleCancelGame(
-    @MessageBody() payload: { gameId: string; userId: string },
-  ) {}
-
   @SubscribeMessage(GameMessages.MOVE)
   async handleMove(
     @MessageBody() payload: MoveDto,
@@ -113,6 +109,17 @@ export class GameGateway implements OnModuleInit {
       }
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  @SubscribeMessage(GameMessages.RESIGN)
+  async handleResign(@MessageBody() payload: ResignDto) {
+    try {
+      const game = await this.boardService.resign(payload);
+      this.server.emit(GameMessages.GAME_FINISHED, game);
+    } catch (error) {
+      console.log(error);
+      this.server.emit(GameMessages.GAME_ALIERT, { error });
     }
   }
 
