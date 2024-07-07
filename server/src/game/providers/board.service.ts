@@ -4,10 +4,9 @@ import { Game, GameResult, GameSettings } from '../enitites';
 import { Repository } from 'typeorm';
 import { MoveEntity } from '../enitites/move.entity';
 import { Chess } from 'chess.js';
-import { MakeMoveDto } from '../dto/make-move.dto';
 import { ChessColors, GameEndReason, GameStatus } from '../types';
 import { ProfileService } from 'src/profile/profile.service';
-import { ResignDto } from '../dto/resing-dto';
+import { MakeMoveDto, ManipulateGameDto } from '../dto';
 
 @Injectable()
 export class BoardService {
@@ -24,29 +23,7 @@ export class BoardService {
     private profileService: ProfileService,
   ) {}
 
-  private getValidarorByGameId(gameId: string, position?: string) {
-    const validator = this.validators.get(gameId);
-    if (!validator) {
-      this.setValidatorByGameId(
-        gameId,
-        new Chess(
-          position ??
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-        ),
-      );
-    }
-    return this.validators.get(gameId);
-  }
-
-  public setValidatorByGameId(gameId: string, validator: Chess) {
-    this.validators.set(gameId, validator);
-  }
-
-  public deleteValidatorByGameId(gameId: string) {
-    return this.validators.delete(gameId);
-  }
-
-  public async makeMove({ gameId, from, to, promotion }: MakeMoveDto) {
+  async makeMove({ gameId, from, to, promotion }: MakeMoveDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
       relations: {
@@ -94,7 +71,7 @@ export class BoardService {
     return game;
   }
 
-  async resign({ gameId, userId }: ResignDto) {
+  async resign({ gameId, userId }: ManipulateGameDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
       relations: {
@@ -130,8 +107,26 @@ export class BoardService {
     return game;
   }
 
-  logValidators() {
-    console.log(this.validators);
+  private getValidarorByGameId(gameId: string, position?: string) {
+    const validator = this.validators.get(gameId);
+    if (!validator) {
+      this.setValidatorByGameId(
+        gameId,
+        new Chess(
+          position ??
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        ),
+      );
+    }
+    return this.validators.get(gameId);
+  }
+
+  public setValidatorByGameId(gameId: string, validator: Chess) {
+    this.validators.set(gameId, validator);
+  }
+
+  public deleteValidatorByGameId(gameId: string) {
+    return this.validators.delete(gameId);
   }
 
   private toggleGameCurrentTurn(game: Game) {

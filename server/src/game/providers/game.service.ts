@@ -4,10 +4,9 @@ import { Repository } from 'typeorm';
 import { ProfileService } from 'src/profile/profile.service';
 import { Chess } from 'chess.js';
 import { Game, GameResult, GameSettings } from '../enitites';
-import { CreateGameDto, JoinGameDto } from '../dto';
+import { CreateGameDto, ManipulateGameDto } from '../dto';
 import { ChessColors, GameStatus, GameTypes } from '../types';
 import { BoardService } from './board.service';
-import { ResignDto } from '../dto/resing-dto';
 
 @Injectable()
 export class GameService {
@@ -22,18 +21,10 @@ export class GameService {
     private boardService: BoardService,
   ) {}
 
-  async getGameById(id: string) {
-    return this.gameRepository.findOne({
-      where: { id },
-      relations: { settings: true, playerBlack: true, playerWhite: true },
-    });
-  }
-
   async createGame(dto: CreateGameDto) {
     const ownerProfile = await this.profileService.getProfileByUserId(
       dto.ownerId,
     );
-    console.log(ownerProfile);
     if (!ownerProfile) {
       throw new Error('profile-not-found');
     }
@@ -69,7 +60,7 @@ export class GameService {
     return game;
   }
 
-  async joinGame({ userId, gameId }: JoinGameDto) {
+  async joinGame({ userId, gameId }: ManipulateGameDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
       relations: { playerBlack: true, playerWhite: true, settings: true },
@@ -105,7 +96,7 @@ export class GameService {
     return game;
   }
 
-  async leaveGame({ gameId, userId }: JoinGameDto) {
+  async leaveGame({ gameId, userId }: ManipulateGameDto) {
     const game = await this.gameRepository.findOne({
       where: { id: gameId },
       relations: {
@@ -140,6 +131,43 @@ export class GameService {
     await this.profileService.updateProfile(profile.id, {
       isInGame: false,
     });
+    return game;
+  }
+
+  async AbortGame({ gameId, userId }: ManipulateGameDto) {
+    const game = await this.getGameById(gameId);
+    if (game.status !== GameStatus.PENDING) {
+      throw new Error('game-is-not-in-pending-state');
+    }
+    const profile = await this.profileService.getProfileByUserId(userId);
+
+    if (
+      !profile ||
+      !profile.isInGame ||
+      (game.playerBlack?.id !== profile.id &&
+        game?.playerWhite.id !== profile.id)
+    ) {
+      throw new Error('trying-to-abort-wrong-game');
+    }
+
+    await this.gameRepository.remove(game);
+    await this.profileService.updateProfile(profile.id, { isInGame: false });
+    return 'game aborted';
+  }
+
+  async getGameById(id: string) {
+    const game = await this.gameRepository.findOne({
+      where: { id },
+      relations: {
+        playerBlack: true,
+        playerWhite: true,
+        settings: true,
+        result: true,
+      },
+    });
+    if (!game) {
+      throw new Error('game-not-found');
+    }
     return game;
   }
 }

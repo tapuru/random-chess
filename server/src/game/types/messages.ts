@@ -12,6 +12,8 @@ export enum GameMessages {
   OPPONENT_DISCONNECTED = 'game.opponentDisconnected',
   GAME_CREATED = 'game.created',
   GET_GAME = 'game.get',
-  CANCEL_GAME = 'game.cancel',
   RESIGN = 'game.resign',
+  ABORT_GAME = 'game.abort',
+  OFFER_REMATCH = 'game.offerRematch',
+  ACCEPT_REMATCH = 'game.acceptRematch',
 }

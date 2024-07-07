@@ -1,4 +1,4 @@
-export class JoinGameDto {
+export class ManipulateGameDto {
   gameId: string;
   userId: string;
 }

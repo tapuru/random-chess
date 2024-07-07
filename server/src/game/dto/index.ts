@@ -1,2 +1,3 @@
 export { CreateGameDto } from './create-game.dto';
-export { JoinGameDto } from './join-game.dto';
+export { ManipulateGameDto } from './manipulate-game.dto';
+export { MakeMoveDto } from './make-move.dto';

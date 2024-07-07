@@ -1,6 +1,5 @@
-export class MakeMoveDto {
-  from: string;
-  to: string;
-  promotion?: string;
+import { MoveDto } from './move.dto';
+
+export class MakeMoveDto extends MoveDto {
   gameId: string;
 }
