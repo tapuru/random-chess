@@ -13,6 +13,7 @@ import { GameStatus } from "@/shared/types/game-status";
 import { PendingGameScreen } from "@/widgets/pending-game-screen";
 import { GameMovesFactory } from "@/widgets/game-moves-factory";
 import { PlayerInfo } from "@/widgets/player-info";
+import { GameActions } from "@/widgets/game-actions";
 
 export const GamePage = () => {
   const params = useParams<{ gameId: string }>();
@@ -25,6 +26,8 @@ export const GamePage = () => {
     return <PendingGameScreen game={game} />;
   }
 
+  console.log(game);
+
   return (
     <Container>
       {isGameLoading ? (
@@ -36,12 +39,7 @@ export const GamePage = () => {
             board={<GameBoard gameType={game.settings.type} />}
             gameInfo={
               <GameInfoLayout
-                gameActions={
-                  <>
-                    <LocalResignButton />
-                    <LocalAbortButton />
-                  </>
-                }
+                gameActions={<GameActions gameType={game.settings.type} />}
                 gameMoves={<GameMovesFactory gameType={game.settings.type} />}
                 gameTurn={<GameTurn gameType={game.settings.type} />}
               />

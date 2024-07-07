@@ -9,4 +9,5 @@ export enum GameMessages {
   LEAVE_GAME = "game.leave",
   MOVE = "game.move",
   GAME_CREATED = "game.created",
+  RESIGN = "game.resign",
 }

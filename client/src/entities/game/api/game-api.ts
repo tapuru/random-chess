@@ -97,5 +97,14 @@ export const gameApi = apiSlice.injectEndpoints({
         });
       },
     }),
+    resign: builder.mutation<GameDto, { gameId: string; userId: string }>({
+      queryFn: (payload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit(GameMessages.RESIGN, payload);
+        });
+      },
+    }),
   }),
 });

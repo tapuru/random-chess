@@ -2,7 +2,7 @@ import { AppButton } from "@/shared/ui/app-button/app-button";
 import cl from "./local-resign-button.module.scss";
 import { FaRegFlag } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { gameActions, selectGame } from "@/entities/game";
+import { gameActions, GameEndReason, selectGame } from "@/entities/game";
 import { GameStatus } from "@/shared/types/game-status";
 import { selectPlayerOne, selectPlayerTwo } from "@/entities/player";
 import { ChessColors } from "@/shared/types/chess-colors";
@@ -29,8 +29,8 @@ export const LocalResignButton = () => {
         moves: game.moves,
         reason:
           currentPlayer?.color === ChessColors.BLACK
-            ? "blackResigned"
-            : "whiteResigned",
+            ? GameEndReason.BLACK_RESIGNED
+            : GameEndReason.WHITE_RESIGNED,
         winner,
       })
     );
