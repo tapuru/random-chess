@@ -6,7 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { GameMessages } from '../types';
+import { ChessColors, GameMessages } from '../types';
 import { OnModuleInit } from '@nestjs/common';
 import { GameService } from './game.service';
 import { CreateGameDto, MakeMoveDto, ManipulateGameDto } from '../dto';
@@ -124,11 +124,55 @@ export class GameGateway implements OnModuleInit {
   @SubscribeMessage(GameMessages.ABORT_GAME)
   async handleAbortGame(@MessageBody() payload: ManipulateGameDto) {
     try {
-      const message = await this.gameService.AbortGame(payload);
+      const message = await this.gameService.abortGame(payload);
       return message;
     } catch (error) {
       //TODO : handle error
       console.log(error);
     }
   }
+
+  @SubscribeMessage(GameMessages.OFFER_REMATCH)
+  async handleOfferRematch(@MessageBody() payload: ManipulateGameDto) {
+    try {
+      const result = await this.gameService.offerRematch(payload);
+      if (result) {
+        this.server.emit(GameMessages.REMATCH_ACCEPTED, {
+          upForRematchIds: [result.playerBlack.id, result.playerWhite.id],
+          rematchGameId: result.id,
+        });
+      } else {
+        this.server.emit(GameMessages.OFFER_REMATCH, {
+          upForRematchIds: [payload.userId],
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      //TODO: handle error
+    }
+  }
+
+  // @SubscribeMessage(GameMessages.ACCEPT_REMATCH)
+  // async handleAcceptRematch(
+  //   @MessageBody()
+  //   payload: {
+  //     newGameData: CreateGameDto;
+  //     userId: string;
+  //   },
+  // ) {
+  //   try {
+  //     const createdGame = await this.gameService.createGame(
+  //       payload.newGameData,
+  //     );
+  //     const game = await this.gameService.joinGame({
+  //       gameId: createdGame.id,
+  //       userId: payload.userId,
+  //     });
+  //     this.server.emit(GameMessages.GAME_JOINED, game);
+  //     return game;
+  //   } catch (error) {
+  //     //TODO: handle error
+  //     console.log(error);
+  //   }
+  // }
 }

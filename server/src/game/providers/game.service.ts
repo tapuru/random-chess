@@ -134,7 +134,7 @@ export class GameService {
     return game;
   }
 
-  async AbortGame({ gameId, userId }: ManipulateGameDto) {
+  async abortGame({ gameId, userId }: ManipulateGameDto) {
     const game = await this.getGameById(gameId);
     if (game.status !== GameStatus.PENDING) {
       throw new Error('game-is-not-in-pending-state');
@@ -153,6 +153,60 @@ export class GameService {
     await this.gameRepository.remove(game);
     await this.profileService.updateProfile(profile.id, { isInGame: false });
     return 'game aborted';
+  }
+
+  async offerRematch({ gameId, userId }: ManipulateGameDto) {
+    console.log(gameId, userId);
+    const game = await this.getGameById(gameId);
+    const profile = await this.profileService.getProfileByUserId(userId);
+    if (!profile || profile.isInGame || profile.upForRematch) {
+      console.log(profile);
+      throw new Error('wrong-profile-data');
+      //TODO: handle error
+    }
+    if (game.status !== GameStatus.FINISHED) {
+      throw new Error('game-not-finished');
+    }
+
+    const updatedProfile = await this.profileService.updateProfile(profile.id, {
+      upForRematch: true,
+    });
+    const enemyProfile = [game.playerBlack, game.playerWhite].find(
+      (p) => p.id !== profile.id,
+    );
+
+    if (enemyProfile.upForRematch && updatedProfile.upForRematch) {
+      const ownerColor =
+        updatedProfile.id === game.playerBlack.id
+          ? ChessColors.WHITE
+          : ChessColors.BLACK;
+      const newGame = await this.createGame({
+        initialFen: game.initialFen,
+        ownerColor,
+        ownerId: userId,
+        settings: {
+          gameMode: game.settings.mode,
+          gameType: game.settings.type,
+          ...game.settings,
+        },
+      });
+      ownerColor === ChessColors.BLACK
+        ? (newGame.playerWhite = enemyProfile)
+        : (newGame.playerBlack = enemyProfile);
+      newGame.status = GameStatus.ACTIVE;
+      await this.gameRepository.save(newGame);
+      await this.profileService.updateProfile(enemyProfile.id, {
+        upForRematch: false,
+        isInGame: true,
+      });
+      await this.profileService.updateProfile(updatedProfile.id, {
+        upForRematch: false,
+        isInGame: true,
+      });
+      return newGame;
+    } else {
+      return false;
+    }
   }
 
   async getGameById(id: string) {

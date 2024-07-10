@@ -35,6 +35,6 @@ export class ProfileService {
     if (!profile) {
       throw new BadRequestException('profile-not-found');
     }
-    await this.profileRepository.save({ ...profile, ...dto });
+    return await this.profileRepository.save({ ...profile, ...dto });
   }
 }

@@ -61,8 +61,9 @@ export class BoardService {
     game.currentFen = move.after;
 
     const result = this.checkForResult(validator);
+    console.log(result);
     if (result) {
-      this.endGame({ game, result });
+      await this.endGame({ game, result });
     } else {
       this.toggleGameCurrentTurn(game);
     }
@@ -167,6 +168,9 @@ export class BoardService {
       reason: result.reason,
       winner: result.winner,
     });
+    console.log(game);
+    console.log(gameResult);
+    console.log(gameResult.id);
     game.status = GameStatus.FINISHED;
     game.endAt = new Date();
     game.result = gameResult;

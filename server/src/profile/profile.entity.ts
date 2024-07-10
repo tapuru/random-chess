@@ -29,6 +29,9 @@ export class Profile {
   @Column({})
   isInGame: boolean;
 
+  @Column({ nullable: true })
+  upForRematch: boolean;
+
   @OneToOne(() => User, (user) => user.profile)
   user: User;
 

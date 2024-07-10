@@ -46,7 +46,9 @@ export class Game {
   @Column({ nullable: true })
   endAt: Date;
 
-  @OneToOne(() => GameSettings, (gameSettings) => gameSettings.game)
+  @OneToOne(() => GameSettings, (gameSettings) => gameSettings.game, {
+    cascade: true,
+  })
   @JoinColumn()
   settings: GameSettings;
 
@@ -56,10 +58,12 @@ export class Game {
   @ManyToOne(() => Profile, (profile) => profile.gamesAsBlack)
   playerBlack: Profile;
 
-  @OneToOne(() => GameResult, (gameResult) => gameResult.game)
+  @OneToOne(() => GameResult, (gameResult) => gameResult.game, {
+    cascade: true,
+  })
   @JoinColumn()
   result: GameResult;
 
-  @OneToMany(() => MoveEntity, (move) => move.game)
+  @OneToMany(() => MoveEntity, (move) => move.game, { cascade: true })
   moves: MoveEntity[];
 }

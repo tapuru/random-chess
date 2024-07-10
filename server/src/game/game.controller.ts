@@ -1,12 +1,17 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { GameService } from './providers';
 
-@Controller('/game')
+@Controller()
 export class GameController {
   constructor(private gameService: GameService) {}
 
-  @Get('/:id')
+  @Get('game/:id')
   getGame(@Param('id') id: string) {
     return this.gameService.getGameById(id);
+  }
+
+  @Get('/rematch-data')
+  getRematchData() {
+    return { upForRematchIds: [] };
   }
 }
