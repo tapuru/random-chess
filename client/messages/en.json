@@ -27,7 +27,8 @@
     "whiteOutOfTime": "White is out of time",
     "blackOutOfTime": "Black is out of time",
     "rematch": "Rematch",
-    "leave": "Leave"
+    "leave": "Leave",
+    "abortGame": "Abort game"
   },
   "CreateGame": {
     "mode": "Mode",

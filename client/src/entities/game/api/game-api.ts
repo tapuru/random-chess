@@ -4,9 +4,8 @@ import { getSocket } from "@/shared/api/ws-base-api";
 import { GameMessages } from "../types/game-messages";
 import { GameDto } from "../types/game-dto";
 import { MoveDto } from "../types/move-dto";
-import { Move } from "chess.js";
-import { GameEndReason } from "../types/game-result";
-import { ChessColors } from "@/shared/types/chess-colors";
+import { RematchData } from "../types/rematch-data";
+import { ManipulateGameDto } from "../types/manipuldate-game-dto";
 
 export const gameApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,7 +31,6 @@ export const gameApi = apiSlice.injectEndpoints({
           const socket = getSocket();
 
           socket.on(GameMessages.GAME_JOINED, (game: GameDto) => {
-            console.log(game);
             updateCachedData(() => game);
           });
 
@@ -106,13 +104,51 @@ export const gameApi = apiSlice.injectEndpoints({
         });
       },
     }),
-    abort: builder.mutation<string, { gameId: string; userId: string }>({
+    abort: builder.mutation<string, ManipulateGameDto>({
       queryFn: (payload) => {
         const socket = getSocket();
         return new Promise((resolve) => {
           socket.emit(GameMessages.ABORT_GAME, payload, (message: string) => {
             resolve({ data: message });
           });
+        });
+      },
+    }),
+    getRematchData: builder.query<RematchData | null, void>({
+      query: () => "/rematch-data",
+      async onCacheEntryAdded(
+        arg,
+        { cacheDataLoaded, cacheEntryRemoved, updateCachedData }
+      ) {
+        await cacheDataLoaded;
+
+        const socket = getSocket();
+
+        socket.on(GameMessages.REMATCH_ACCEPTED, (rematchData: RematchData) => {
+          updateCachedData(() => rematchData);
+        });
+
+        socket.on(GameMessages.OFFER_REMATCH, (rematchData: RematchData) => {
+          updateCachedData(() => rematchData);
+        });
+
+        await cacheEntryRemoved;
+        socket.off(GameMessages.REMATCH_ACCEPTED);
+        socket.off(GameMessages.OFFER_REMATCH);
+      },
+    }),
+    offerRematch: builder.mutation<RematchData, ManipulateGameDto>({
+      queryFn: (payload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit(
+            GameMessages.OFFER_REMATCH,
+            payload,
+            (data: RematchData) => {
+              resolve({ data });
+            }
+          );
         });
       },
     }),

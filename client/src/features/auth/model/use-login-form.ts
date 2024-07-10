@@ -24,7 +24,6 @@ export const useLoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login(data).unwrap();
-      console.log(response.accessToken);
       dispatch(
         authActions.setCredentials({
           user: response.user,
