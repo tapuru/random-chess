@@ -1,0 +1,40 @@
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.sm {
+    svg {
+      width: 40px;
+    }
+  }
+
+  &.md {
+    svg {
+      width: 70px;
+    }
+  }
+
+  &.lg {
+    svg {
+      width: 120px;
+    }
+  }
+
+  &.fullscreen {
+    width: 100%;
+    height: calc(100vh - var(--header-height));
+
+    svg {
+      width: 160px;
+    }
+  }
+
+  &.primary {
+    color: var(--primary-500);
+  }
+
+  &.secondary {
+    color: var(--secondary-500);
+  }
+}
