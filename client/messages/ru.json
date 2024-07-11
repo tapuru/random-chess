@@ -27,6 +27,8 @@
     "whiteOutOfTime": "У белых закончилось время",
     "blackOutOfTime": "У чёрных закончилось время",
     "rematch": "Реванш",
+    "acceptRematch": "Принять реванш",
+    "cancelRematch": "Отменить реванш",
     "leave": "Выйти",
     "abortGame": "Отменить игру"
   },

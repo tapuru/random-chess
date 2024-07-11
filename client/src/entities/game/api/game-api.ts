@@ -51,29 +51,7 @@ export const gameApi = apiSlice.injectEndpoints({
 
       providesTags: ["Game"],
     }),
-    /* getGameResult: builder.query<
-      { reason: GameEndReason; winner?: ChessColors },
-      void
-    >({
-      query: () => "/",
-      async onCacheEntryAdded(
-        arg,
-        { cacheDataLoaded, cacheEntryRemoved, updateCachedData }
-      ) {
-        try {
-          await cacheDataLoaded;
 
-          const socket = getSocket();
-
-          socket.on(GameMessages.GAME_FINISHED, (result) => {
-            updateCachedData(() => result);
-          });
-
-          await cacheEntryRemoved;
-          socket.off(GameMessages.GAME_FINISHED);
-        } catch (error) {}
-      },
-    }), */
     joinGame: builder.mutation<GameDto, { gameId: string; userId: string }>({
       queryFn: (payload) => {
         const socket = getSocket();
@@ -114,8 +92,9 @@ export const gameApi = apiSlice.injectEndpoints({
         });
       },
     }),
-    getRematchData: builder.query<RematchData | null, void>({
-      query: () => "/rematch-data",
+    getRematchData: builder.query<RematchData | undefined, string>({
+      query: (gameId) => `/rematch/${gameId}`,
+      providesTags: ["Rematch"],
       async onCacheEntryAdded(
         arg,
         { cacheDataLoaded, cacheEntryRemoved, updateCachedData }
@@ -151,6 +130,23 @@ export const gameApi = apiSlice.injectEndpoints({
           );
         });
       },
+      invalidatesTags: ["Rematch"],
+    }),
+    cancelRematch: builder.mutation<RematchData, ManipulateGameDto>({
+      queryFn: (payload) => {
+        const socket = getSocket();
+
+        return new Promise((resolve) => {
+          socket.emit(
+            GameMessages.CANCEL_REMATCH,
+            payload,
+            (data: RematchData) => {
+              resolve({ data });
+            }
+          );
+        });
+      },
+      invalidatesTags: ["Rematch"],
     }),
   }),
 });

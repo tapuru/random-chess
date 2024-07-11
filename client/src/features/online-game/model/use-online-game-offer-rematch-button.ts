@@ -5,6 +5,7 @@ import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameStatus } from "@/shared/types/game-status";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { profile } from "console";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
@@ -26,7 +27,9 @@ export const useOnlineGameOfferRematchButton = (
     isLoading: isPlayerDataLoading,
   } = profileApi.useGetMeQuery();
   const { data: rematchData, isLoading: isRematchDataLoading } =
-    gameApi.useGetRematchDataQuery();
+    gameApi.useGetRematchDataQuery(params?.gameId ?? skipToken);
+
+  console.log(rematchData);
 
   if (!user || !game || game.status !== GameStatus.FINISHED || !frendlyPlayer)
     return null;
@@ -39,11 +42,11 @@ export const useOnlineGameOfferRematchButton = (
 
   const isLoading =
     isGameLoading ||
-    isRematchDataLoading ||
+    isRematchOfferMutationLoading ||
     isRematchDataLoading ||
     isPlayerDataLoading;
 
-  const handleClick = async () => {
+  const handleRematchClick = async () => {
     try {
       const message = await offerRematch({
         gameId: game.id,
@@ -57,19 +60,28 @@ export const useOnlineGameOfferRematchButton = (
       //TODO: handle error
     }
   };
+
+  const handleCancelCick = () => {
+    // try {
+    //   const data = await;
+    // } catch (error) {}
+  };
   let title = t("rematch");
   let rematchOfferSent = false;
-  if (rematchData?.upForRematchIds.includes(user.id)) {
-    rematchOfferSent = true;
-  } else if (
-    !!rematchData?.upForRematchIds?.length &&
-    rematchData.upForRematchIds.length > 0
+  if (
+    (rematchData?.blackUpForRematch &&
+      frendlyPlayerColor === ChessColors.BLACK) ||
+    (rematchData?.whiteUpForRematch && frendlyPlayerColor === ChessColors.WHITE)
   ) {
+    rematchOfferSent = true;
+    title = t("cancelRematch");
+  } else if (rematchData?.blackUpForRematch || rematchData?.whiteUpForRematch) {
     title = t("acceptRematch");
   }
 
   return {
-    handleClick,
+    handleCancelCick,
+    handleRematchClick,
     isLoading,
     rematchOfferSent,
     title,

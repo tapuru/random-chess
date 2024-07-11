@@ -11,14 +11,32 @@ export const OnlineGameOfferRematchButton = ({
   const result = useOnlineGameOfferRematchButton(onOfferRematch);
 
   if (!result) return null;
-  const { handleClick, isLoading, rematchOfferSent, title } = result;
+  const {
+    handleCancelCick,
+    handleRematchClick,
+    isLoading,
+    rematchOfferSent,
+    title,
+  } = result;
 
   if (rematchOfferSent) {
-    return <AppText tag="p">rematch offer sent</AppText>;
+    return (
+      <AppButton
+        variant="outlined"
+        color="secondary"
+        onClick={handleCancelCick}
+      >
+        {title}
+      </AppButton>
+    );
   }
 
   return (
-    <AppButton disabled={isLoading} onClick={handleClick}>
+    <AppButton
+      disabled={isLoading}
+      onClick={handleRematchClick}
+      color="secondary"
+    >
       {title}
     </AppButton>
   );

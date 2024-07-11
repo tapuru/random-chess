@@ -1,4 +1,6 @@
 export interface RematchData {
-  upForRematchIds: string[];
-  rematchGameId?: string;
+  id: string;
+  blackUpForRematch?: boolean;
+  whiteUpForRematch?: boolean;
+  newGameId?: string;
 }

@@ -8,6 +8,7 @@ import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectUser } from "@/entities/auth";
 import { useParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { IoFlagSharp } from "react-icons/io5";
 
 export const OnlineGameResignButton = () => {
   const [resign, { isLoading }] = gameApi.useResignMutation();
@@ -28,7 +29,7 @@ export const OnlineGameResignButton = () => {
   return (
     <AppButton
       className={cl.root}
-      icon={<FaRegFlag />}
+      icon={<IoFlagSharp color="#ffffff" />}
       size="sm"
       variant="filled"
       color="secondary"

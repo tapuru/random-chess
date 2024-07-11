@@ -1,40 +1,13 @@
 "use client";
 
-import {
-  gameApi,
-  GameTurnUI,
-  getFrendlyPlayerColor,
-  LeaveGameButton,
-} from "@/entities/game";
-import { profileApi } from "@/entities/profile";
-import { skipToken } from "@reduxjs/toolkit/query";
-import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
+import { GameTurnUI, LeaveGameButton } from "@/entities/game";
 import { OnlineGameOfferRematchButton } from "../online-game-offer-rematch-button/online-game-offer-rematch-button";
-import { useRouter } from "@/shared/config/navigation";
-import { useEffect } from "react";
+import { useOnlineGameTurn } from "../../model/use-online-game-turn";
 
 export const OnlineGameTurn = () => {
-  const params = useParams<{ gameId: string }>();
-  const { data: game, isLoading } = gameApi.useGetGameQuery(
-    params?.gameId || skipToken
-  );
-  const { data: profile } = profileApi.useGetMeQuery();
-  const { data: rematchData, isLoading: isRematchDataLoading } =
-    gameApi.useGetRematchDataQuery();
-  const t = useTranslations("Game");
-  const router = useRouter();
-
-  useEffect(() => {
-    if (rematchData?.rematchGameId) {
-      router.push(`/game/${rematchData.rematchGameId}`);
-    }
-  }, [rematchData]);
-
-  console.log(rematchData);
-
-  if (!game || !profile) return null;
-  const frendlyPlayerColor = getFrendlyPlayerColor(game, profile.id);
+  const result = useOnlineGameTurn();
+  if (!result) return null;
+  const { frendlyPlayerColor, isLoading, t, game } = result;
 
   if (isLoading) {
     //TODO: make loader

@@ -27,6 +27,8 @@
     "whiteOutOfTime": "White is out of time",
     "blackOutOfTime": "Black is out of time",
     "rematch": "Rematch",
+    "acceptRematch": "Accept rematch",
+    "cancelRematch": "Cancel rematch",
     "leave": "Leave",
     "abortGame": "Abort game"
   },
