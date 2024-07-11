@@ -48,7 +48,11 @@ export const AppTabs = ({
       </Tabs.List>
       {!listOnly &&
         tabs.map((tab) => (
-          <Tabs.Content className={cl.content} value={tab.value}>
+          <Tabs.Content
+            className={cl.content}
+            value={tab.value}
+            key={tab.value}
+          >
             {tab.content}
           </Tabs.Content>
         ))}
