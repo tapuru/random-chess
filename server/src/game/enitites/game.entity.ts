@@ -14,6 +14,7 @@ import { Profile } from 'src/profile/profile.entity';
 import { GameResult } from './game-result.entity';
 import { ChessColors, GameStatus } from '../types';
 import { MoveEntity } from './move.entity';
+import { Rematch } from 'src/rematch/rematch.entity';
 @Entity('games')
 export class Game {
   @PrimaryGeneratedColumn('uuid')
@@ -66,4 +67,7 @@ export class Game {
 
   @OneToMany(() => MoveEntity, (move) => move.game, { cascade: true })
   moves: MoveEntity[];
+
+  @OneToOne(() => Rematch, (rematch) => rematch.game)
+  rematch: Rematch;
 }

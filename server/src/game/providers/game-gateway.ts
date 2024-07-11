@@ -7,10 +7,18 @@ import {
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { ChessColors, GameMessages } from '../types';
-import { OnModuleInit } from '@nestjs/common';
+import { OnModuleInit, UseGuards } from '@nestjs/common';
 import { GameService } from './game.service';
-import { CreateGameDto, MakeMoveDto, ManipulateGameDto } from '../dto';
+import {
+  CreateGameDto,
+  MakeMoveDto,
+  ManipulateGameDto,
+  RematchDataDto,
+} from '../dto';
 import { BoardService } from './board.service';
+import { AccessTokenStrategy } from 'src/auth/strategies';
+import { AcessTokenGuard } from 'src/common/guards';
+import { GetCurrentUser } from 'src/common/decorators';
 @WebSocketGateway(3002, {
   cors: { origin: 'http://localhost:3000', credentials: true },
 })
@@ -135,15 +143,13 @@ export class GameGateway implements OnModuleInit {
   @SubscribeMessage(GameMessages.OFFER_REMATCH)
   async handleOfferRematch(@MessageBody() payload: ManipulateGameDto) {
     try {
-      const result = await this.gameService.offerRematch(payload);
-      if (result) {
+      const { newGame, rematch } = await this.gameService.offerRematch(payload);
+      if (rematch) {
+        this.server.emit(GameMessages.OFFER_REMATCH, rematch);
+      }
+      if (newGame) {
         this.server.emit(GameMessages.REMATCH_ACCEPTED, {
-          upForRematchIds: [result.playerBlack.id, result.playerWhite.id],
-          rematchGameId: result.id,
-        });
-      } else {
-        this.server.emit(GameMessages.OFFER_REMATCH, {
-          upForRematchIds: [payload.userId],
+          newGameId: newGame.id,
         });
       }
     } catch (error) {
@@ -152,27 +158,16 @@ export class GameGateway implements OnModuleInit {
     }
   }
 
-  // @SubscribeMessage(GameMessages.ACCEPT_REMATCH)
-  // async handleAcceptRematch(
-  //   @MessageBody()
-  //   payload: {
-  //     newGameData: CreateGameDto;
-  //     userId: string;
-  //   },
-  // ) {
-  //   try {
-  //     const createdGame = await this.gameService.createGame(
-  //       payload.newGameData,
-  //     );
-  //     const game = await this.gameService.joinGame({
-  //       gameId: createdGame.id,
-  //       userId: payload.userId,
-  //     });
-  //     this.server.emit(GameMessages.GAME_JOINED, game);
-  //     return game;
-  //   } catch (error) {
-  //     //TODO: handle error
-  //     console.log(error);
-  //   }
-  // }
+  @SubscribeMessage(GameMessages.CANCEL_REMATCH)
+  @UseGuards(AcessTokenGuard)
+  async handleCancelRematch(@MessageBody() payload: ManipulateGameDto) {
+    try {
+      const rematch = await this.gameService.cancelRematch(payload);
+
+      this.server.emit(GameMessages.CANCEL_REMATCH, rematch);
+    } catch (error) {
+      //TODO: handle error
+      console.log(error);
+    }
+  }
 }

@@ -17,4 +17,5 @@ export enum GameMessages {
   OFFER_REMATCH = 'game.offerRematch',
   ACCEPT_REMATCH = 'game.acceptRematch',
   REMATCH_ACCEPTED = 'game.rematchAccepted',
+  CANCEL_REMATCH = 'game.cancelRematch',
 }

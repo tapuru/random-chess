@@ -9,9 +9,4 @@ export class GameController {
   getGame(@Param('id') id: string) {
     return this.gameService.getGameById(id);
   }
-
-  @Get('/rematch-data')
-  getRematchData() {
-    return { upForRematchIds: [] };
-  }
 }

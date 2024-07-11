@@ -4,9 +4,11 @@ import { Repository } from 'typeorm';
 import { ProfileService } from 'src/profile/profile.service';
 import { Chess } from 'chess.js';
 import { Game, GameResult, GameSettings } from '../enitites';
-import { CreateGameDto, ManipulateGameDto } from '../dto';
+import { CreateGameDto, ManipulateGameDto, RematchDataDto } from '../dto';
 import { ChessColors, GameStatus, GameTypes } from '../types';
 import { BoardService } from './board.service';
+import { RematchService } from 'src/rematch/rematch.service';
+import { Rematch } from 'src/rematch/rematch.entity';
 
 @Injectable()
 export class GameService {
@@ -19,6 +21,7 @@ export class GameService {
     private gameResultRepository: Repository<GameResult>,
     private profileService: ProfileService,
     private boardService: BoardService,
+    private rematchService: RematchService,
   ) {}
 
   async createGame(dto: CreateGameDto) {
@@ -155,12 +158,13 @@ export class GameService {
     return 'game aborted';
   }
 
-  async offerRematch({ gameId, userId }: ManipulateGameDto) {
-    console.log(gameId, userId);
+  async offerRematch({ gameId, userId }: ManipulateGameDto): Promise<{
+    newGame?: Game;
+    rematch?: Rematch;
+  }> {
     const game = await this.getGameById(gameId);
     const profile = await this.profileService.getProfileByUserId(userId);
-    if (!profile || profile.isInGame || profile.upForRematch) {
-      console.log(profile);
+    if (!profile || profile.isInGame) {
       throw new Error('wrong-profile-data');
       //TODO: handle error
     }
@@ -168,45 +172,63 @@ export class GameService {
       throw new Error('game-not-finished');
     }
 
-    const updatedProfile = await this.profileService.updateProfile(profile.id, {
-      upForRematch: true,
-    });
+    const userColor = this.getPlayerColor(game, profile.id);
+
+    if (!game.rematch) {
+      const rematch = await this.rematchService.createRematch({
+        userColor,
+      });
+      game.rematch = rematch;
+      await this.gameRepository.save(game);
+
+      return { rematch };
+    }
+
     const enemyProfile = [game.playerBlack, game.playerWhite].find(
       (p) => p.id !== profile.id,
     );
 
-    if (enemyProfile.upForRematch && updatedProfile.upForRematch) {
-      const ownerColor =
-        updatedProfile.id === game.playerBlack.id
-          ? ChessColors.WHITE
-          : ChessColors.BLACK;
-      const newGame = await this.createGame({
-        initialFen: game.initialFen,
-        ownerColor,
-        ownerId: userId,
-        settings: {
-          gameMode: game.settings.mode,
-          gameType: game.settings.type,
-          ...game.settings,
-        },
-      });
-      ownerColor === ChessColors.BLACK
-        ? (newGame.playerWhite = enemyProfile)
-        : (newGame.playerBlack = enemyProfile);
-      newGame.status = GameStatus.ACTIVE;
-      await this.gameRepository.save(newGame);
-      await this.profileService.updateProfile(enemyProfile.id, {
-        upForRematch: false,
-        isInGame: true,
-      });
-      await this.profileService.updateProfile(updatedProfile.id, {
-        upForRematch: false,
-        isInGame: true,
-      });
-      return newGame;
-    } else {
-      return false;
+    const newGame = await this.createGame({
+      initialFen: game.initialFen,
+      ownerColor: userColor,
+      ownerId: userId,
+      settings: {
+        gameMode: game.settings.mode,
+        gameType: game.settings.type,
+        ...game.settings,
+      },
+    });
+    userColor === ChessColors.BLACK
+      ? (newGame.playerWhite = enemyProfile)
+      : (newGame.playerBlack = enemyProfile);
+    newGame.status = GameStatus.ACTIVE;
+    await this.gameRepository.save(newGame);
+    await this.profileService.updateProfile(enemyProfile.id, {
+      isInGame: true,
+    });
+    await this.profileService.updateProfile(profile.id, {
+      isInGame: true,
+    });
+    await this.rematchService.removeRematch(game.rematch.id);
+    return { newGame };
+  }
+
+  async cancelRematch({ gameId, userId }: ManipulateGameDto): Promise<Rematch> {
+    const game = await this.getGameById(gameId);
+    if (!game.rematch) {
+      throw new Error('gama-has-no-remathc-data');
     }
+    const profile = await this.profileService.getProfileByUserId(userId);
+    if (!profile || profile.isInGame) throw new Error('wrong-profile-data');
+
+    const userColor = this.getPlayerColor(game, profile.id);
+    if (!userColor) throw new Error('user-is-not-in-this-game');
+
+    const updatedRematch = await this.rematchService.cancelRematch({
+      rematchId: game.rematch.id,
+      userColor,
+    });
+    return updatedRematch;
   }
 
   async getGameById(id: string) {
@@ -217,11 +239,20 @@ export class GameService {
         playerWhite: true,
         settings: true,
         result: true,
+        rematch: true,
       },
     });
     if (!game) {
       throw new Error('game-not-found');
     }
     return game;
+  }
+
+  getPlayerColor(game: Game, playerId: string) {
+    if (game.playerBlack.id !== playerId && game.playerWhite.id !== playerId)
+      return undefined;
+    return game.playerBlack.id === playerId
+      ? ChessColors.BLACK
+      : ChessColors.WHITE;
   }
 }

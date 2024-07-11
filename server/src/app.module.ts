@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { GameModule } from './game/game.module';
+import { RematchModule } from './rematch/rematch.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GameModule } from './game/game.module';
     AuthModule,
     ProfileModule,
     GameModule,
+    RematchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
