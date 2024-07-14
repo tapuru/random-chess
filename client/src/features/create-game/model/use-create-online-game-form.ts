@@ -33,7 +33,7 @@ export const useCreateOnlineGameForm = () => {
       },
     });
   const router = useRouter();
-  const [createGame, { isLoading }] = gameApi.useCreateOnlineGameMutation();
+  const [createGame, { isLoading }] = gameApi.useCreateGameMutation();
 
   const currentTime = watch("settings.time");
   const currentTimeControl = currentTime

@@ -9,16 +9,13 @@ import { ManipulateGameDto } from "../types/manipuldate-game-dto";
 
 export const gameApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    createOnlineGame: builder.mutation<GameDto, CreateOnlineGameFormData>({
-      queryFn: (payload) => {
-        const socket = getSocket();
-
-        return new Promise((resolve) => {
-          socket.emit(GameMessages.CREATE_GAME, payload, (game: GameDto) => {
-            resolve({ data: game });
-          });
-        });
-      },
+    createGame: builder.mutation<GameDto, CreateOnlineGameFormData>({
+      query: (body) => ({
+        url: "game/create",
+        body: body,
+        method: "POST",
+      }),
+      invalidatesTags: ["Game"],
     }),
     getGame: builder.query<GameDto, string>({
       query: (id) => `/game/${id}`,
