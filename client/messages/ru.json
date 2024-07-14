@@ -30,7 +30,8 @@
     "acceptRematch": "Принять реванш",
     "cancelRematch": "Отменить реванш",
     "leave": "Выйти",
-    "abortGame": "Отменить игру"
+    "abortGame": "Отменить игру",
+    "shareLink": "Поделитесь ссылкой на игру"
   },
   "CreateGame": {
     "mode": "Режим",

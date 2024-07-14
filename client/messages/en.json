@@ -30,7 +30,8 @@
     "acceptRematch": "Accept rematch",
     "cancelRematch": "Cancel rematch",
     "leave": "Leave",
-    "abortGame": "Abort game"
+    "abortGame": "Abort game",
+    "shareLink": "Share this link "
   },
   "CreateGame": {
     "mode": "Mode",

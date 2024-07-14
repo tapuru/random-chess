@@ -11,6 +11,8 @@ import { AppText } from "@/shared/ui/app-text/app-text";
 import { Container } from "@/shared/ui/container/container";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import cl from "./pending-game-screen.module.scss";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 
 export const PendingGameScreen = ({ game }: { game: GameDto }) => {
   const { data: me, isLoading } = profileApi.useGetMeQuery();
@@ -38,13 +40,29 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
 
   return (
     <Container>
-      <main>
+      <main className={cl.root}>
         <AppCard>
-          <AppCard.Content>
-            <AppText tag="h2">Game: {game.id}</AppText>
-            <AppText>Status: Pending</AppText>
-            <AppText>Link: {`http://localhost:3000/game/${game.id}`}</AppText>
-            <OnlineGameAbortButton title={t("abortGame")} />
+          <AppCard.Content className={cl.content}>
+            <AppText align="center" tag="h1">
+              {t("waitOpponent")}
+            </AppText>
+            {/* <AppText tag="h2" align="center">
+              {game.id}
+            </AppText> */}
+            <AppText>
+              <AppLoader size="md" />
+            </AppText>
+            <AppText tag="span">
+              {t("shareLink")}:{"  "}
+              <AppText
+                tag="span"
+                color="secondary"
+              >{`http://localhost:3000/game/${game.id}`}</AppText>
+            </AppText>
+
+            <div className={cl.actions}>
+              <OnlineGameAbortButton title={t("abortGame")} />
+            </div>
           </AppCard.Content>
         </AppCard>
       </main>
