@@ -1,11 +1,14 @@
 import { apiSlice } from "@/shared/api/api-slice";
-import { GetProfileDto } from "../lib/schemas/get-profile-schema";
+import { ProfileDto } from "../types/profile-dto";
 
 export const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getMe: builder.query<GetProfileDto, void>({
+    getMe: builder.query<ProfileDto, void>({
       query: () => "/profile/me",
       providesTags: ["Me"],
+    }),
+    getProfile: builder.query<ProfileDto, string>({
+      query: (id) => `/profile/${id}`,
     }),
   }),
 });

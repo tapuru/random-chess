@@ -1,5 +1,4 @@
-import { Player } from "@/entities/player";
-import { Move } from "chess.js";
+import { ChessColors } from "@/shared/types/chess-colors";
 
 export enum GameEndReason {
   CHECKMATE = "checkmate",
@@ -12,7 +11,6 @@ export enum GameEndReason {
 }
 
 export interface GameResult {
-  winner?: Player | null;
-  moves: Move[];
+  winner?: ChessColors;
   reason: GameEndReason;
 }

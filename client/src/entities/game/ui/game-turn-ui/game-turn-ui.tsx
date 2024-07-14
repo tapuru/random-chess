@@ -1,5 +1,5 @@
 import { ChessColors } from "@/shared/types/chess-colors";
-import { GameEndReason } from "../../types/game-result";
+import { GameResult } from "../../types/game-result";
 import cl from "./game-turn-ui.module.scss";
 import React from "react";
 import { GameTypes } from "@/shared/types/game-type";
@@ -8,8 +8,7 @@ import { AppText } from "@/shared/ui/app-text/app-text";
 
 interface GameTurnUIProps {
   currentTurn: ChessColors;
-  //TODO: make game result type
-  result?: { winner?: ChessColors; reason: GameEndReason };
+  result?: GameResult;
   resultContent: React.ReactNode;
   gameType: GameTypes;
   frendlyPlayerColor: ChessColors;

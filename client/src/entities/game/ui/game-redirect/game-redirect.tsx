@@ -13,6 +13,5 @@ export const GameRedirect = () => {
     if (pathname) router.push(`/${cookies.NEXT_LOCALE ?? "en"}/${pathname}`);
   }, []);
 
-  //TODO: add loader
   return <AppLoader fullscreen />;
 };
