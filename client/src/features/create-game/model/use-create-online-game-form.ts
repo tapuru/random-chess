@@ -13,7 +13,6 @@ import { TimeControls } from "@/shared/types/time-controls";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectUser } from "@/entities/auth";
 import { useRouter } from "@/shared/config/navigation";
-import { useId } from "react";
 
 export const useCreateOnlineGameForm = () => {
   const user = useAppSelector(selectUser);

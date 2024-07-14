@@ -9,7 +9,6 @@ import { GameStatus } from "@/shared/types/game-status";
 import { GameTypes } from "@/shared/types/game-type";
 import { TimeControls } from "@/shared/types/time-controls";
 import { useTranslations } from "next-intl";
-import { useId } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface CreateLocalGameFormData {
