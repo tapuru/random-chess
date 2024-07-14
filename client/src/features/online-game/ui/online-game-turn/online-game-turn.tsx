@@ -21,7 +21,6 @@ export const OnlineGameTurn = () => {
       gameType={game.settings.type}
       resultContent={
         <>
-          {/*TODO: make loader */}
           <OnlineGameOfferRematchButton />
           <LeaveGameButton title={t("leave")} />
         </>
