@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProfileService } from 'src/profile/profile.service';
@@ -17,8 +17,6 @@ export class GameService {
     private gameRepository: Repository<Game>,
     @InjectRepository(GameSettings)
     private gameSettingsRepository: Repository<GameSettings>,
-    @InjectRepository(GameResult)
-    private gameResultRepository: Repository<GameResult>,
     private profileService: ProfileService,
     private boardService: BoardService,
     private rematchService: RematchService,
@@ -29,10 +27,10 @@ export class GameService {
       dto.ownerId,
     );
     if (!ownerProfile) {
-      throw new Error('profile-not-found');
+      throw new BadRequestException('profile not found');
     }
     if (ownerProfile.isInGame) {
-      throw new Error('profile-already-in-game');
+      throw new BadRequestException('profile is alerady in game');
     }
     const gameSettings = this.gameSettingsRepository.create({
       type: GameTypes.ONLINE,

@@ -39,39 +39,28 @@ export class GameGateway implements OnModuleInit {
     });
   }
 
-  @SubscribeMessage(GameMessages.GET_GAME)
-  async handleGetGame(
-    @MessageBody() payload: string,
-    @ConnectedSocket() client: Socket,
-  ) {
-    try {
-      const game = await this.gameService.getGameById(payload);
-      client.emit(GameMessages.GET_GAME);
-    } catch (error) {}
-  }
-
-  @SubscribeMessage(GameMessages.CREATE_GAME)
-  async handleCreateGame(
-    @MessageBody() payload: CreateGameDto,
-    @ConnectedSocket() client: Socket,
-  ) {
-    try {
-      const game = await this.gameService.createGame(payload);
-      return game;
-    } catch (error) {
-      if (error.message === 'profile-not-found') {
-        this.server.emit(GameMessages.GAME_ALIERT, {
-          message: 'profile-not-found',
-        });
-      }
-      if (error.message === 'profile-already-in-game') {
-        this.server.emit(GameMessages.GAME_ALIERT, {
-          message: 'profile-already-in-game',
-        });
-      }
-      console.log(error);
-    }
-  }
+  // @SubscribeMessage(GameMessages.CREATE_GAME)
+  // async handleCreateGame(
+  //   @MessageBody() payload: CreateGameDto,
+  //   @ConnectedSocket() client: Socket,
+  // ) {
+  //   try {
+  //     const game = await this.gameService.createGame(payload);
+  //     return game;
+  //   } catch (error) {
+  //     if (error.message === 'profile-not-found') {
+  //       this.server.emit(GameMessages.GAME_ALIERT, {
+  //         message: 'profile-not-found',
+  //       });
+  //     }
+  //     if (error.message === 'profile-already-in-game') {
+  //       this.server.emit(GameMessages.GAME_ALIERT, {
+  //         message: 'profile-already-in-game',
+  //       });
+  //     }
+  //     console.log(error);
+  //   }
+  // }
 
   @SubscribeMessage(GameMessages.JOIN_GAME)
   async handleJoinGame(
@@ -103,10 +92,7 @@ export class GameGateway implements OnModuleInit {
   }
 
   @SubscribeMessage(GameMessages.MOVE)
-  async handleMove(
-    @MessageBody() payload: MakeMoveDto,
-    @ConnectedSocket() client: Socket,
-  ) {
+  async handleMove(@MessageBody() payload: MakeMoveDto) {
     try {
       const game = await this.boardService.makeMove(payload);
       this.server.emit(GameMessages.MOVE, game);
