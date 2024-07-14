@@ -25,7 +25,9 @@ interface AppTextProps {
     | "text-600"
     | "text-700"
     | "text-800"
-    | "text-900";
+    | "text-900"
+    | "primary"
+    | "secondary";
   className?: string;
   children?: React.ReactNode;
 }
@@ -69,6 +71,8 @@ export const AppText = ({
       [cl.text700]: color === "text-700",
       [cl.text800]: color === "text-800",
       [cl.text900]: color === "text-900",
+      [cl.primary]: color === "primary",
+      [cl.secondary]: color === "secondary",
     },
     {
       [cl.h1]: tag === "h1",
