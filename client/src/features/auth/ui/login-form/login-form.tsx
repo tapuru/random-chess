@@ -4,6 +4,7 @@ import { AppButton } from "@/shared/ui/app-button/app-button";
 import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { useLoginForm } from "../../model/use-login-form";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 
 export const LoginForm = () => {
   const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
@@ -35,8 +36,7 @@ export const LoginForm = () => {
       />
       <AppForm.Submit>
         {isLoading ? (
-          // TODO: add loader component
-          "Loading..."
+          <AppLoader />
         ) : (
           <AppButton type="submit" disabled={isLoading}>
             {t("loginSubmit")}

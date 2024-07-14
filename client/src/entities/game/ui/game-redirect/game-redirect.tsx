@@ -1,4 +1,5 @@
 "use client";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
@@ -13,5 +14,5 @@ export const GameRedirect = () => {
   }, []);
 
   //TODO: add loader
-  return null;
+  return <AppLoader fullscreen />;
 };

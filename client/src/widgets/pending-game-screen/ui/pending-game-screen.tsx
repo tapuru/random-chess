@@ -38,6 +38,8 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
     }
   }, [joinGame, me, game]);
 
+  if (isLoading) return <AppLoader fullscreen />;
+
   return (
     <Container>
       <main className={cl.root}>
@@ -46,9 +48,6 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
             <AppText align="center" tag="h1">
               {t("waitOpponent")}
             </AppText>
-            {/* <AppText tag="h2" align="center">
-              {game.id}
-            </AppText> */}
             <AppText>
               <AppLoader size="md" />
             </AppText>

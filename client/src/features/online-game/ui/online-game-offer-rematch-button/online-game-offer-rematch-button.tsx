@@ -1,4 +1,3 @@
-import { AppText } from "@/shared/ui/app-text/app-text";
 import { useOnlineGameOfferRematchButton } from "../../model/use-online-game-offer-rematch-button";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 

@@ -10,6 +10,7 @@ import { TimeIncrementField } from "../time-control-field/time-increment-field";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { ChessColors } from "@/shared/types/chess-colors";
 import cl from "./create-online-game-form.module.scss";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 export const CreateOnlineGameForm = () => {
   const { control, currentTimeControl, handleSubmit, isLoading } =
     useCreateOnlineGameForm();
@@ -65,6 +66,7 @@ export const CreateOnlineGameForm = () => {
         />
         <AppForm.Submit justifyContent="flex-start">
           <AppButton disabled={isLoading}>create game</AppButton>
+          {isLoading && <AppLoader size="sm" />}
         </AppForm.Submit>
       </AppForm>
     </AppCard.Content>

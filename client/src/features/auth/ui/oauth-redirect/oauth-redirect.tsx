@@ -2,6 +2,7 @@
 
 import { authActions } from "@/entities/auth";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -30,5 +31,5 @@ export const OAuthRedirect = () => {
 
   if (!accessToken || !userString) router.push("/");
 
-  return null;
+  return <AppLoader fullscreen />;
 };

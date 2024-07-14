@@ -5,7 +5,6 @@ import { GameBoard } from "@/widgets/game-board";
 import { GameResult } from "@/widgets/game-result";
 import { GameInfoLayout, gameApi } from "@/entities/game";
 import { GameTurn } from "@/widgets/game-turn";
-import { LocalAbortButton, LocalResignButton } from "@/features/local-game";
 import { GamePageLayout } from "../game-page-layout/game-page-layout";
 import { useParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
@@ -14,6 +13,7 @@ import { PendingGameScreen } from "@/widgets/pending-game-screen";
 import { GameMovesFactory } from "@/widgets/game-moves-factory";
 import { PlayerInfo } from "@/widgets/player-info";
 import { GameActions } from "@/widgets/game-actions";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 
 export const GamePage = () => {
   const params = useParams<{ gameId: string }>();
@@ -26,13 +26,10 @@ export const GamePage = () => {
     return <PendingGameScreen game={game} />;
   }
 
-  console.log(game);
-
   return (
     <Container>
       {isGameLoading ? (
-        //TODO: add loader
-        <div>loading...</div>
+        <AppLoader fullscreen />
       ) : (
         <>
           <GamePageLayout

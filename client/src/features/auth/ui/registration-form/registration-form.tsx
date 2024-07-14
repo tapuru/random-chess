@@ -4,6 +4,7 @@ import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useRegistrationForm } from "../../model/use-registration-form";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 
 export const RegistrationForm = () => {
   const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
@@ -59,7 +60,7 @@ export const RegistrationForm = () => {
       />
       <AppForm.Submit>
         {isLoading ? (
-          "Loading..."
+          <AppLoader />
         ) : (
           <AppButton type="submit">{t("register")}</AppButton>
         )}

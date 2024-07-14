@@ -3,6 +3,7 @@
 import { GameTurnUI, LeaveGameButton } from "@/entities/game";
 import { OnlineGameOfferRematchButton } from "../online-game-offer-rematch-button/online-game-offer-rematch-button";
 import { useOnlineGameTurn } from "../../model/use-online-game-turn";
+import { AppLoader } from "@/shared/ui/app-loader/app-loader";
 
 export const OnlineGameTurn = () => {
   const result = useOnlineGameTurn();
@@ -10,8 +11,7 @@ export const OnlineGameTurn = () => {
   const { frendlyPlayerColor, isLoading, t, game } = result;
 
   if (isLoading) {
-    //TODO: make loader
-    return <div>Loading</div>;
+    return <AppLoader />;
   }
 
   return (
