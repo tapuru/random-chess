@@ -69,5 +69,9 @@
     "usernameTooShortError": "Имя не должно быть короче 3 символов",
 
     "loginWithGoogle": "Войти через Google"
+  },
+  "ApiErrors": {
+    "profile-not-found": "Профиль не найден",
+    "profile-already-in-game": "У вас уже есть активная игра"
   }
 }
