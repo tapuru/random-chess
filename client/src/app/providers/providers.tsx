@@ -1,6 +1,7 @@
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { ReduxProvider } from "../store";
 import { ConnectionProvider } from "./connection-provider";
+import { ToastContainer } from "react-toastify";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   const messages = useMessages();
@@ -9,6 +10,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     <NextIntlClientProvider messages={messages}>
       <ReduxProvider>
         <ConnectionProvider>{children}</ConnectionProvider>
+        <ToastContainer />
       </ReduxProvider>
     </NextIntlClientProvider>
   );
