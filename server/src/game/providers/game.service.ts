@@ -9,6 +9,9 @@ import { ChessColors, GameStatus, GameTypes } from '../types';
 import { BoardService } from './board.service';
 import { RematchService } from 'src/rematch/rematch.service';
 import { Rematch } from 'src/rematch/rematch.entity';
+import { WsException } from '@nestjs/websockets';
+import { GameErrors } from 'src/common/types/game-errors';
+import { ProfileErrors } from 'src/common/types/profile-errors';
 
 @Injectable()
 export class GameService {
@@ -27,10 +30,10 @@ export class GameService {
       dto.ownerId,
     );
     if (!ownerProfile) {
-      throw new BadRequestException('profile not found');
+      throw new BadRequestException(ProfileErrors.PROFILE_NOT_FOUND);
     }
     if (ownerProfile.isInGame) {
-      throw new BadRequestException('profile is alerady in game');
+      throw new BadRequestException(GameErrors.PROFILE_ALREADY_IN_GAME);
     }
     const gameSettings = this.gameSettingsRepository.create({
       type: GameTypes.ONLINE,
@@ -69,16 +72,16 @@ export class GameService {
     const profile = await this.profileService.getProfileByUserId(userId);
 
     if (!game) {
-      throw new Error('game-not-found');
+      throw new WsException('game-not-found');
     }
     if (!profile) {
-      throw new Error('profile-not-found');
+      throw new WsException('profile-not-found');
     }
     if (game.status !== GameStatus.PENDING) {
-      throw new Error('game-already-started');
+      throw new WsException('game-already-started');
     }
     if (profile.isInGame) {
-      throw new Error('profile-already-in-game');
+      throw new WsException('you-are-already-in-game');
     }
 
     if (game.playerBlack === null && game.playerWhite !== null) {
@@ -86,7 +89,7 @@ export class GameService {
     } else if (game.playerBlack !== null && game.playerWhite === null) {
       game.playerWhite = profile;
     } else {
-      throw new Error('game-full');
+      throw new WsException('game-full');
     }
     game.status = GameStatus.ACTIVE;
     await this.gameRepository.save(game);
@@ -110,13 +113,13 @@ export class GameService {
     const profile = await this.profileService.getProfileByUserId(userId);
 
     if (!game) {
-      throw new Error('game-not-found');
+      throw new WsException('game-not-found');
     }
     if (!profile) {
-      throw new Error('profile-not-found');
+      throw new WsException('profile-not-found');
     }
     if (!profile.isInGame) {
-      throw new Error('profile-not-in-game');
+      throw new WsException('profile-not-in-game');
     }
 
     if (game.playerBlack.id === profile.id) {
@@ -126,7 +129,7 @@ export class GameService {
       game.playerWhite = null;
       game.status = GameStatus.FINISHED;
     } else {
-      throw new Error('profile-not-in-game');
+      throw new WsException('profile-not-in-game');
     }
     await this.gameRepository.save(game);
     await this.profileService.updateProfile(profile.id, {
@@ -138,7 +141,7 @@ export class GameService {
   async abortGame({ gameId, userId }: ManipulateGameDto) {
     const game = await this.getGameById(gameId);
     if (game.status !== GameStatus.PENDING) {
-      throw new Error('game-is-not-in-pending-state');
+      throw new WsException('game-is-not-in-pending-state');
     }
     const profile = await this.profileService.getProfileByUserId(userId);
 
@@ -148,7 +151,7 @@ export class GameService {
       (game.playerBlack?.id !== profile.id &&
         game?.playerWhite.id !== profile.id)
     ) {
-      throw new Error('trying-to-abort-wrong-game');
+      throw new WsException('trying-to-abort-wrong-game');
     }
 
     await this.gameRepository.remove(game);
@@ -163,11 +166,11 @@ export class GameService {
     const game = await this.getGameById(gameId);
     const profile = await this.profileService.getProfileByUserId(userId);
     if (!profile || profile.isInGame) {
-      throw new Error('wrong-profile-data');
+      throw new WsException('wrong-profile-data');
       //TODO: handle error
     }
     if (game.status !== GameStatus.FINISHED) {
-      throw new Error('game-not-finished');
+      throw new WsException('game-not-finished');
     }
 
     const userColor = this.getPlayerColor(game, profile.id);
@@ -214,13 +217,13 @@ export class GameService {
   async cancelRematch({ gameId, userId }: ManipulateGameDto): Promise<Rematch> {
     const game = await this.getGameById(gameId);
     if (!game.rematch) {
-      throw new Error('gama-has-no-remathc-data');
+      throw new WsException('game-has-no-rematch-data');
     }
     const profile = await this.profileService.getProfileByUserId(userId);
     if (!profile || profile.isInGame) throw new Error('wrong-profile-data');
 
     const userColor = this.getPlayerColor(game, profile.id);
-    if (!userColor) throw new Error('user-is-not-in-this-game');
+    if (!userColor) throw new WsException('user-is-not-in-this-game');
 
     const updatedRematch = await this.rematchService.cancelRematch({
       rematchId: game.rematch.id,
@@ -241,7 +244,7 @@ export class GameService {
       },
     });
     if (!game) {
-      throw new Error('game-not-found');
+      throw new WsException('game-not-found');
     }
     return game;
   }
