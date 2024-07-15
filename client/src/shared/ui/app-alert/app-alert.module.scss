@@ -1,0 +1,19 @@
+.root {
+  padding: 14px;
+  border-radius: var(--border-radius);
+
+  &.success {
+    background-color: var(--success-200);
+    border: 1px solid var(--success-600);
+  }
+
+  &.error {
+    background-color: var(--error-100);
+    border: 1px solid var(--error-500);
+  }
+
+  &.warning {
+    background-color: var(--warning-100);
+    border: 1px solid var(--warning-600);
+  }
+}
