@@ -1,4 +1,5 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { z } from "zod";
 
 export interface ApiErrorResponse {
   status: number;
@@ -25,3 +26,10 @@ export function isErrorWithMessage(
     typeof (error as any).message === "string"
   );
 }
+
+enum ApiErrors {
+  PROFILE_NOT_FOUND = "profile-not-found",
+  PROFILE_ALREADY_IN_GAME = "profile-already-in-game",
+}
+
+export const apiErrorSchema = z.nativeEnum(ApiErrors);

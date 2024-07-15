@@ -13,9 +13,20 @@ import { TimeControls } from "@/shared/types/time-controls";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectUser } from "@/entities/auth";
 import { useRouter } from "@/shared/config/navigation";
+import { useState } from "react";
+import { Slide, toast } from "react-toastify";
+import {
+  apiErrorSchema,
+  isApiError,
+  isErrorWithMessage,
+  isFetchBaseQueryError,
+} from "@/shared/lib/api-helpers";
+import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
+import { useTranslations } from "use-intl";
 
 export const useCreateOnlineGameForm = () => {
   const user = useAppSelector(selectUser);
+  const [serverError, setServerError] = useState<string | null>(null);
   const { control, formState, watch, handleSubmit } =
     useForm<CreateOnlineGameFormData>({
       resolver: zodResolver(createOnlineGameSchema),
@@ -35,6 +46,8 @@ export const useCreateOnlineGameForm = () => {
   const router = useRouter();
   const [createGame, { isLoading }] = gameApi.useCreateGameMutation();
 
+  const t = useTranslations("ApiErrors");
+
   const currentTime = watch("settings.time");
   const currentTimeControl = currentTime
     ? getTimeControlFromSeconds(currentTime)
@@ -44,8 +57,20 @@ export const useCreateOnlineGameForm = () => {
     try {
       const game = await createGame(data).unwrap();
       router.push(`/game/${game.id}`);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (isApiError(error)) {
+        let message: string;
+        const result = apiErrorSchema.safeParse(error.data.message);
+        if (result.success) {
+          message = t(result.data);
+        } else {
+          message = error.data.message;
+        }
+        setServerError(message);
+        toast.error(message, getErrorToastConfig());
+      } else {
+        console.log(error);
+      }
     }
   };
 
@@ -55,5 +80,6 @@ export const useCreateOnlineGameForm = () => {
     currentTimeControl,
     handleSubmit: handleSubmit(submit),
     isLoading,
+    serverError,
   };
 };
