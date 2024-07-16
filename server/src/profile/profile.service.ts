@@ -37,4 +37,8 @@ export class ProfileService {
     }
     return await this.profileRepository.save({ ...profile, ...dto });
   }
+
+  async getProfileByUsername(username: string) {
+    return this.profileRepository.findOne({ where: { username } });
+  }
 }

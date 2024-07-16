@@ -11,6 +11,7 @@ import { TokensService } from './tokens.service';
 import { Tokens } from './types';
 import { LoginDto, RegisterDto, UserDto } from './dto';
 import { ProfileService } from 'src/profile/profile.service';
+import { AppErrors } from 'src/common/types/app-errors';
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,11 +25,16 @@ export class AuthService {
       where: { email: dto.email },
     });
     if (userExists) {
-      throw new BadRequestException({ type: 'email-exists' });
+      throw new BadRequestException(AppErrors.EMAIL_EXISTS);
     }
 
+    const usernameExsists = await this.profileService.getProfileByUsername(
+      dto.username,
+    );
+    if (usernameExsists)
+      throw new BadRequestException(AppErrors.USERNAME_EXISTS);
     if (!dto.passwordConfirm || dto.password !== dto.passwordConfirm) {
-      throw new BadRequestException({ type: 'password-mismatch' });
+      throw new BadRequestException(AppErrors.PASSWORD_MISMATCH);
     }
 
     const hashedPassword = await this.tokensService.hashData(dto.password);
@@ -53,7 +59,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.INCORRECT_CREDENTIALS);
     }
 
     const passwordMatches = await bcrypt.compare(
@@ -61,7 +67,7 @@ export class AuthService {
       user.hashedPassword,
     );
     if (!passwordMatches) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.INCORRECT_CREDENTIALS);
     }
 
     const userDto = new UserDto(user);
@@ -76,7 +82,7 @@ export class AuthService {
   async logout(userId: string) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user || !user.refreshToken) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.UNAUTHORIZED);
     }
     user.refreshToken = null;
     this.userRepository.save(user);
@@ -89,19 +95,19 @@ export class AuthService {
     refreshToken: string,
   ): Promise<{ tokens: Tokens; user: UserDto }> {
     if (!userId || !refreshToken) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.UNAUTHORIZED);
     }
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
     if (!user || !user.refreshToken) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.UNAUTHORIZED);
     }
 
     const refreshTokenMatches = refreshToken === user.refreshToken;
 
     if (!refreshTokenMatches) {
-      throw new ForbiddenException('Unauthorized');
+      throw new ForbiddenException(AppErrors.UNAUTHORIZED);
     }
 
     const tokens = await this.tokensService.getTokens(user.id, user.email);

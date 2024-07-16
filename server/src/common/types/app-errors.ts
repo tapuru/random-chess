@@ -1,6 +1,11 @@
 export enum AppErrors {
   // auth related errors ---
   PERMISSION_DENIED = 'permission-denied',
+  EMAIL_EXISTS = 'email-exists',
+  USERNAME_EXISTS = 'username-exists',
+  PASSWORD_MISMATCH = 'password-mismatch',
+  UNAUTHORIZED = 'unauthorized',
+  INCORRECT_CREDENTIALS = 'incorrect-credentials',
 
   //profile related errors ---
   PROFILE_NOT_FOUND = 'profile-not-found',
