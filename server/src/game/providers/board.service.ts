@@ -7,6 +7,8 @@ import { Chess } from 'chess.js';
 import { ChessColors, GameEndReason, GameStatus } from '../types';
 import { ProfileService } from 'src/profile/profile.service';
 import { MakeMoveDto, ManipulateGameDto } from '../dto';
+import { WsException } from '@nestjs/websockets';
+import { AppErrors } from 'src/common/types/app-errors';
 
 @Injectable()
 export class BoardService {
@@ -34,23 +36,21 @@ export class BoardService {
       },
     });
     if (!game) {
-      throw new Error('game-not-found');
+      throw new WsException(AppErrors.GAME_NOT_FOUND);
     }
     if (game.status !== GameStatus.ACTIVE) {
-      throw new Error('game-not-active');
+      throw new WsException(AppErrors.GAME_NOT_ACTIVE);
     }
 
     const validator = this.getValidarorByGameId(gameId);
-    if (!validator) {
-      throw new Error('validator-not-found');
-    }
+
     const move = validator.move({
       from,
       to,
       promotion,
     });
     if (move === null) {
-      throw new Error('invalid-move');
+      throw new WsException(AppErrors.INVALID_MOVE);
     }
     const moveEntity = this.moveRepository.create({
       ...move,
@@ -82,16 +82,16 @@ export class BoardService {
         settings: true,
       },
     });
-    if (!game) throw new Error('game-not-found');
+    if (!game) throw new WsException(AppErrors.GAME_NOT_FOUND);
     const profile = await this.profileService.getProfileByUserId(userId);
-    if (!profile) throw new Error('profile-does-not-exist');
+    if (!profile) throw new WsException(AppErrors.PROFILE_NOT_FOUND);
     if (
       profile.id !== game.playerBlack.id &&
       profile.id !== game.playerWhite.id
     )
-      throw new Error('profile-is-not-in-this-game');
+      throw new WsException(AppErrors.PERMISSION_DENIED);
     if (game.status !== GameStatus.ACTIVE)
-      throw new Error('game-is-not-active');
+      throw new WsException(AppErrors.GAME_NOT_ACTIVE);
 
     const reason =
       profile.id === game.playerBlack.id

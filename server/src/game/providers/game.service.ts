@@ -10,8 +10,7 @@ import { BoardService } from './board.service';
 import { RematchService } from 'src/rematch/rematch.service';
 import { Rematch } from 'src/rematch/rematch.entity';
 import { WsException } from '@nestjs/websockets';
-import { GameErrors } from 'src/common/types/game-errors';
-import { ProfileErrors } from 'src/common/types/profile-errors';
+import { AppErrors } from 'src/common/types/app-errors';
 
 @Injectable()
 export class GameService {
@@ -30,10 +29,10 @@ export class GameService {
       dto.ownerId,
     );
     if (!ownerProfile) {
-      throw new BadRequestException(ProfileErrors.PROFILE_NOT_FOUND);
+      throw new BadRequestException(AppErrors.PROFILE_NOT_FOUND);
     }
     if (ownerProfile.isInGame) {
-      throw new BadRequestException(GameErrors.PROFILE_ALREADY_IN_GAME);
+      throw new BadRequestException(AppErrors.PROFILE_ALREADY_IN_GAME);
     }
     const gameSettings = this.gameSettingsRepository.create({
       type: GameTypes.ONLINE,
@@ -72,16 +71,17 @@ export class GameService {
     const profile = await this.profileService.getProfileByUserId(userId);
 
     if (!game) {
-      throw new WsException('game-not-found');
+      throw new WsException(AppErrors.GAME_NOT_FOUND);
     }
     if (!profile) {
-      throw new WsException('profile-not-found');
+      throw new WsException(AppErrors.PROFILE_NOT_FOUND);
     }
+
     if (game.status !== GameStatus.PENDING) {
-      throw new WsException('game-already-started');
+      throw new WsException(AppErrors.GAME_ALREADY_STARTED);
     }
     if (profile.isInGame) {
-      throw new WsException('you-are-already-in-game');
+      throw new WsException(AppErrors.PROFILE_ALREADY_IN_GAME);
     }
 
     if (game.playerBlack === null && game.playerWhite !== null) {
@@ -89,7 +89,7 @@ export class GameService {
     } else if (game.playerBlack !== null && game.playerWhite === null) {
       game.playerWhite = profile;
     } else {
-      throw new WsException('game-full');
+      throw new WsException(AppErrors.GAME_FULL);
     }
     game.status = GameStatus.ACTIVE;
     await this.gameRepository.save(game);
@@ -113,13 +113,13 @@ export class GameService {
     const profile = await this.profileService.getProfileByUserId(userId);
 
     if (!game) {
-      throw new WsException('game-not-found');
+      throw new WsException(AppErrors.GAME_NOT_FOUND);
     }
     if (!profile) {
-      throw new WsException('profile-not-found');
+      throw new WsException(AppErrors.PROFILE_NOT_FOUND);
     }
     if (!profile.isInGame) {
-      throw new WsException('profile-not-in-game');
+      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
     }
 
     if (game.playerBlack.id === profile.id) {
@@ -129,7 +129,7 @@ export class GameService {
       game.playerWhite = null;
       game.status = GameStatus.FINISHED;
     } else {
-      throw new WsException('profile-not-in-game');
+      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
     }
     await this.gameRepository.save(game);
     await this.profileService.updateProfile(profile.id, {
@@ -141,7 +141,7 @@ export class GameService {
   async abortGame({ gameId, userId }: ManipulateGameDto) {
     const game = await this.getGameById(gameId);
     if (game.status !== GameStatus.PENDING) {
-      throw new WsException('game-is-not-in-pending-state');
+      throw new WsException(AppErrors.GAME_ALREADY_STARTED);
     }
     const profile = await this.profileService.getProfileByUserId(userId);
 
@@ -151,7 +151,7 @@ export class GameService {
       (game.playerBlack?.id !== profile.id &&
         game?.playerWhite.id !== profile.id)
     ) {
-      throw new WsException('trying-to-abort-wrong-game');
+      throw new WsException(AppErrors.PERMISSION_DENIED);
     }
 
     await this.gameRepository.remove(game);
@@ -165,13 +165,11 @@ export class GameService {
   }> {
     const game = await this.getGameById(gameId);
     const profile = await this.profileService.getProfileByUserId(userId);
-    if (!profile || profile.isInGame) {
-      throw new WsException('wrong-profile-data');
-      //TODO: handle error
-    }
-    if (game.status !== GameStatus.FINISHED) {
-      throw new WsException('game-not-finished');
-    }
+    if (!profile) throw new WsException(AppErrors.PROFILE_NOT_FOUND);
+    if (!profile.isInGame)
+      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
+    if (game.status !== GameStatus.FINISHED)
+      throw new WsException(AppErrors.GAME_NOT_FINISHED);
 
     const userColor = this.getPlayerColor(game, profile.id);
 
@@ -217,13 +215,15 @@ export class GameService {
   async cancelRematch({ gameId, userId }: ManipulateGameDto): Promise<Rematch> {
     const game = await this.getGameById(gameId);
     if (!game.rematch) {
-      throw new WsException('game-has-no-rematch-data');
+      throw new WsException(AppErrors.GAME_HAS_NO_REMATCH_DATA);
     }
     const profile = await this.profileService.getProfileByUserId(userId);
-    if (!profile || profile.isInGame) throw new Error('wrong-profile-data');
+    if (!profile) throw new WsException(AppErrors.PROFILE_NOT_FOUND);
+    if (!profile.isInGame)
+      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
 
     const userColor = this.getPlayerColor(game, profile.id);
-    if (!userColor) throw new WsException('user-is-not-in-this-game');
+    if (!userColor) throw new WsException(AppErrors.PERMISSION_DENIED);
 
     const updatedRematch = await this.rematchService.cancelRematch({
       rematchId: game.rematch.id,
@@ -244,8 +244,29 @@ export class GameService {
       },
     });
     if (!game) {
-      throw new WsException('game-not-found');
+      throw new WsException(AppErrors.GAME_NOT_FOUND);
     }
+    return game;
+  }
+
+  async getGame(id: string, userId: string) {
+    const game = await this.getGameById(id);
+    if (!game) {
+      throw new BadRequestException(AppErrors.GAME_NOT_FOUND);
+    }
+    const profile = await this.profileService.getProfileByUserId(userId);
+
+    if (!profile) {
+      throw new BadRequestException(AppErrors.PROFILE_NOT_FOUND);
+    }
+    if (
+      profile.id !== game.playerBlack?.id &&
+      profile.id !== game.playerWhite?.id &&
+      game.status === GameStatus.ACTIVE
+    ) {
+      throw new BadRequestException(AppErrors.PERMISSION_DENIED);
+    }
+
     return game;
   }
 

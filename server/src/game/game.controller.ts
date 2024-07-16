@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { GameService } from './providers';
 import { AcessTokenGuard } from 'src/common/guards';
 import { CreateGameDto } from './dto';
+import { GetCurrentUser } from 'src/common/decorators';
 
 @Controller('/game')
 export class GameController {
@@ -9,8 +10,8 @@ export class GameController {
 
   @UseGuards(AcessTokenGuard)
   @Get('/:id')
-  getGame(@Param('id') id: string) {
-    return this.gameService.getGameById(id);
+  getGame(@Param('id') id: string, @GetCurrentUser('sub') userId: string) {
+    return this.gameService.getGame(id, userId);
   }
 
   @UseGuards(AcessTokenGuard)
