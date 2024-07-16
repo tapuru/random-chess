@@ -71,7 +71,18 @@
     "loginWithGoogle": "Войти через Google"
   },
   "ApiErrors": {
+    "permission-denied": "Нет доступа",
+
     "profile-not-found": "Профиль не найден",
-    "profile-already-in-game": "У вас уже есть активная игра"
+    "profile-already-in-game": "У вас уже есть активная игра",
+    "profile-is-not-in-game": "У вас нет активных игр",
+
+    "game-not-found": "Игра не найдена",
+    "game-already-started": "Игра уже началась",
+    "game-full": "Игра заполнена",
+    "game-not-finished": "Игра ещё не закончилась",
+    "game-not-active": "Игра не активна",
+    "invalid-move": "Некорректный ход",
+    "game-has-no-rematch-data": "У игры нет активных реваншей"
   }
 }

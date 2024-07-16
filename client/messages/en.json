@@ -71,7 +71,18 @@
     "loginWithGoogle": "Login with Google"
   },
   "ApiErrors": {
+    "permission-denied": "Permission denied",
+
     "profile-not-found": "Profile not found",
-    "profile-already-in-game": "You already have an active game"
+    "profile-already-in-game": "You already have an active game",
+    "profile-is-not-in-game": "You don't have any active game",
+
+    "game-not-found": "Game not found",
+    "game-already-started": "Game has already started",
+    "game-full": "Game is full",
+    "game-not-finished": "Game is not finished",
+    "game-not-active": "Game is not active",
+    "invalid-move": "Invalid move",
+    "game-has-no-rematch-data": "Game has no active rematches"
   }
 }
