@@ -1,13 +1,20 @@
 import { selectUser } from "@/entities/auth";
 import { gameApi, getFrendlyPlayerColor } from "@/entities/game";
 import { profileApi } from "@/entities/profile";
+import {
+  ApiErrors,
+  apiErrorSchema,
+  isApiError,
+} from "@/shared/lib/api-helpers";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
+import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameStatus } from "@/shared/types/game-status";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { profile } from "console";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const useOnlineGameOfferRematchButton = (
   onOfferRematch?: () => void
@@ -28,8 +35,7 @@ export const useOnlineGameOfferRematchButton = (
   } = profileApi.useGetMeQuery();
   const { data: rematchData, isLoading: isRematchDataLoading } =
     gameApi.useGetRematchDataQuery(params?.gameId ?? skipToken);
-
-  console.log(rematchData);
+  const errorT = useTranslations("ApiErrors");
 
   if (!user || !game || game.status !== GameStatus.FINISHED || !frendlyPlayer)
     return null;
@@ -57,11 +63,22 @@ export const useOnlineGameOfferRematchButton = (
       refetchProfile();
       onOfferRematch?.();
     } catch (error) {
-      //TODO: handle error
+      if (isApiError(error)) {
+        let message: string;
+        const result = apiErrorSchema.safeParse(error.data.message);
+        result.success
+          ? (message = errorT(result.data))
+          : (message = errorT(ApiErrors.UNEXPECTED));
+        toast.error(message, getErrorToastConfig());
+      } else {
+        toast.error(errorT(ApiErrors.UNEXPECTED), getErrorToastConfig());
+        console.log(error);
+      }
     }
   };
 
   const handleCancelCick = () => {
+    //TODO: handle rematch cancel
     // try {
     //   const data = await;
     // } catch (error) {}
