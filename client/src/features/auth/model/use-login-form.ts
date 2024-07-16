@@ -5,6 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authActions, useLoginMutation } from "@/entities/auth";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/shared/config/navigation";
+import { useState } from "react";
+import {
+  ApiErrors,
+  apiErrorSchema,
+  isApiError,
+} from "@/shared/lib/api-helpers";
 
 export const useLoginForm = () => {
   const dispatch = useAppDispatch();
@@ -19,8 +25,9 @@ export const useLoginForm = () => {
   });
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
+  const [serverError, setServerError] = useState<null | string>(null);
   const t = useTranslations("Auth");
-
+  const errorT = useTranslations("ApiErrors");
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await login(data).unwrap();
@@ -31,11 +38,21 @@ export const useLoginForm = () => {
         })
       );
 
+      reset();
       router.push("/lobby");
     } catch (error) {
-      console.log(error);
+      if (isApiError(error)) {
+        let message: string;
+        const result = apiErrorSchema.safeParse(error.data.message);
+        result.success
+          ? (message = errorT(result.data))
+          : (message = errorT(ApiErrors.UNEXPECTED));
+        setServerError(message);
+      } else {
+        setServerError(errorT(ApiErrors.UNEXPECTED));
+        console.log(error);
+      }
     }
-    reset();
   };
 
   return {
@@ -45,5 +62,6 @@ export const useLoginForm = () => {
     isLoading,
     isSubmitting,
     t,
+    serverError,
   };
 };

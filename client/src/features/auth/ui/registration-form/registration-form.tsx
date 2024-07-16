@@ -5,9 +5,10 @@ import { AppInput } from "@/shared/ui/app-input/app-input";
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import { useRegistrationForm } from "../../model/use-registration-form";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
+import { AppAlert } from "@/shared/ui/app-alert/app-alert";
 
 export const RegistrationForm = () => {
-  const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
+  const { control, errors, handleSubmit, isLoading, serverError, t } =
     useRegistrationForm();
 
   return (
@@ -58,6 +59,7 @@ export const RegistrationForm = () => {
           !!errors.passwordConfirm ? [t(errors.passwordConfirm?.message)] : []
         }
       />
+      {serverError && <AppAlert variant="error">{serverError}</AppAlert>}
       <AppForm.Submit>
         {isLoading ? (
           <AppLoader />

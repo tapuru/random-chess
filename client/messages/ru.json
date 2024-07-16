@@ -71,7 +71,14 @@
     "loginWithGoogle": "Войти через Google"
   },
   "ApiErrors": {
+    "unexpected-error": "Произошла непредвиденная ошибка",
+
     "permission-denied": "Нет доступа",
+    "email-exists": "Пользователь с таким email уже существует",
+    "username-exists": "Это имя уже занято",
+    "password-mismatch": "Пароли не совпадают",
+    "unauthorized": "Пользователь не авторизован",
+    "incorrect-credentials": "Неверный email или пароль",
 
     "profile-not-found": "Профиль не найден",
     "profile-already-in-game": "У вас уже есть активная игра",

@@ -5,9 +5,10 @@ import { AppForm } from "@/shared/ui/app-form/app-form";
 import { AppInput } from "@/shared/ui/app-input/app-input";
 import { useLoginForm } from "../../model/use-login-form";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
+import { AppAlert } from "@/shared/ui/app-alert/app-alert";
 
 export const LoginForm = () => {
-  const { control, errors, handleSubmit, isLoading, isSubmitting, t } =
+  const { control, errors, handleSubmit, isLoading, serverError, t } =
     useLoginForm();
 
   return (
@@ -34,6 +35,7 @@ export const LoginForm = () => {
           <AppInput {...field} type="password" required disabled={isLoading} />
         )}
       />
+      {!!serverError && <AppAlert variant="error">{serverError}</AppAlert>}
       <AppForm.Submit>
         {isLoading ? (
           <AppLoader />

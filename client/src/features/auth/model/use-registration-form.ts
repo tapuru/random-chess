@@ -8,6 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@/shared/config/navigation";
 import { authActions, useRegisterMutation } from "@/entities/auth";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import {
+  ApiErrors,
+  apiErrorSchema,
+  isApiError,
+} from "@/shared/lib/api-helpers";
 
 export const useRegistrationForm = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +32,9 @@ export const useRegistrationForm = () => {
   });
   const router = useRouter();
   const [register, { isLoading }] = useRegisterMutation();
+  const [serverError, setServerError] = useState<string | null>(null);
   const t = useTranslations("Auth");
+  const errorT = useTranslations("ApiErrors");
 
   const onSubmit = async (data: RegistrationFormData) => {
     try {
@@ -40,8 +48,17 @@ export const useRegistrationForm = () => {
 
       router.push("/");
     } catch (error) {
-      //TODO: handle error
-      console.log(error);
+      if (isApiError(error)) {
+        let message: string;
+        const result = apiErrorSchema.safeParse(error.data.message);
+        result.success
+          ? (message = errorT(result.data))
+          : (message = errorT(ApiErrors.UNEXPECTED));
+        setServerError(message);
+      } else {
+        setServerError(errorT(ApiErrors.UNEXPECTED));
+        console.log(error);
+      }
     }
   };
   return {
@@ -51,5 +68,6 @@ export const useRegistrationForm = () => {
     isLoading,
     isSubmitting,
     t,
+    serverError,
   };
 };
