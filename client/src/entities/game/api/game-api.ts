@@ -115,6 +115,7 @@ export const gameApi = apiSlice.injectEndpoints({
         await cacheEntryRemoved;
         socket.off(GameMessages.REMATCH_ACCEPTED);
         socket.off(GameMessages.OFFER_REMATCH);
+        socket.off(GameMessages.CANCEL_REMATCH);
       },
     }),
     offerRematch: builder.mutation<RematchData, ManipulateGameDto>({

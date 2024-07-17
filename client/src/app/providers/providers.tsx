@@ -10,9 +10,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <NextIntlClientProvider messages={messages}>
       <ReduxProvider>
-        <ConnectionProvider>
-          <WsExceptionNotifier>{children}</WsExceptionNotifier>
-        </ConnectionProvider>
+        <ConnectionProvider>{children}</ConnectionProvider>
         <ToastContainer />
       </ReduxProvider>
     </NextIntlClientProvider>

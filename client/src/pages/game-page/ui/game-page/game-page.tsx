@@ -3,23 +3,19 @@
 import { Container } from "@/shared/ui/container/container";
 import { GameBoard } from "@/widgets/game-board";
 import { GameResult } from "@/widgets/game-result";
-import { GameInfoLayout, gameApi } from "@/entities/game";
+import { GameInfoLayout } from "@/entities/game";
 import { GameTurn } from "@/widgets/game-turn";
 import { GamePageLayout } from "../game-page-layout/game-page-layout";
-import { useParams } from "next/navigation";
-import { skipToken } from "@reduxjs/toolkit/query";
 import { GameStatus } from "@/shared/types/game-status";
 import { PendingGameScreen } from "@/widgets/pending-game-screen";
 import { GameMovesFactory } from "@/widgets/game-moves-factory";
 import { PlayerInfo } from "@/widgets/player-info";
 import { GameActions } from "@/widgets/game-actions";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
+import { useGamePage } from "../../model/use-game-page";
 
 export const GamePage = () => {
-  const params = useParams<{ gameId: string }>();
-  const { data: game, isLoading: isGameLoading } = gameApi.useGetGameQuery(
-    params?.gameId ?? skipToken
-  );
+  const { game, isGameLoading } = useGamePage();
 
   if (!game) return <div>game not found</div>;
   if (game.status === GameStatus.PENDING) {

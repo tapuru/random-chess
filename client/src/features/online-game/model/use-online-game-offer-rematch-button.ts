@@ -87,15 +87,6 @@ export const useOnlineGameOfferRematchButton = (
     title = t("acceptRematch");
   }
 
-  console.log("start");
-  console.log(isGameLoading);
-  console.log(isPlayerDataLoading);
-  console.log(isRematchCancelLoading);
-  console.log(isRematchDataLoading);
-  console.log(isRematchOfferMutationLoading);
-  console.log("finish");
-  console.log(isSuccess);
-
   return {
     handleCancelClick,
     handleRematchClick,
