@@ -166,8 +166,8 @@ export class GameService {
     const game = await this.getGameById(gameId);
     const profile = await this.profileService.getProfileByUserId(userId);
     if (!profile) throw new WsException(AppErrors.PROFILE_NOT_FOUND);
-    if (!profile.isInGame)
-      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
+    if (profile.isInGame)
+      throw new WsException(AppErrors.PROFILE_ALREADY_IN_GAME);
     if (game.status !== GameStatus.FINISHED)
       throw new WsException(AppErrors.GAME_NOT_FINISHED);
 
@@ -181,6 +181,16 @@ export class GameService {
       await this.gameRepository.save(game);
 
       return { rematch };
+    } else if (
+      !game.rematch.blackUpForRematch &&
+      !game.rematch.whiteUpForRematch
+    ) {
+      const updatedRematch = await this.rematchService.addUpForRematchUser({
+        rematchId: game.rematch.id,
+        userColor,
+      });
+
+      return { rematch: updatedRematch };
     }
 
     const enemyProfile = [game.playerBlack, game.playerWhite].find(
@@ -219,8 +229,6 @@ export class GameService {
     }
     const profile = await this.profileService.getProfileByUserId(userId);
     if (!profile) throw new WsException(AppErrors.PROFILE_NOT_FOUND);
-    if (!profile.isInGame)
-      throw new WsException(AppErrors.PROFILE_IS_NOT_IN_GAME);
 
     const userColor = this.getPlayerColor(game, profile.id);
     if (!userColor) throw new WsException(AppErrors.PERMISSION_DENIED);

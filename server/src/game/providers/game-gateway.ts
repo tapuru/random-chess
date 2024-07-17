@@ -103,18 +103,20 @@ export class GameGateway implements OnModuleInit {
     const { newGame, rematch } = await this.gameService.offerRematch(payload);
     if (rematch) {
       this.server.emit(GameMessages.OFFER_REMATCH, rematch);
+      return rematch;
     }
     if (newGame) {
       this.server.emit(GameMessages.REMATCH_ACCEPTED, {
         newGameId: newGame.id,
       });
+      return rematch;
     }
   }
 
   @SubscribeMessage(GameMessages.CANCEL_REMATCH)
-  @UseGuards(AcessTokenGuard)
   async handleCancelRematch(@MessageBody() payload: ManipulateGameDto) {
     const rematch = await this.gameService.cancelRematch(payload);
     this.server.emit(GameMessages.CANCEL_REMATCH, rematch);
+    return rematch;
   }
 }

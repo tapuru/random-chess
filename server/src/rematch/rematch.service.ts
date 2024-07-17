@@ -38,6 +38,20 @@ export class RematchService {
     return this.rematchRepository.delete(id);
   }
 
+  async addUpForRematchUser({
+    rematchId,
+    userColor,
+  }: {
+    userColor: ChessColors;
+    rematchId: string;
+  }) {
+    const updateData: Partial<Rematch> = {};
+    userColor === ChessColors.WHITE
+      ? (updateData.whiteUpForRematch = true)
+      : (updateData.blackUpForRematch = true);
+    return this.updateRematchData(rematchId, updateData);
+  }
+
   async cancelRematch({
     rematchId,
     userColor,
@@ -48,6 +62,6 @@ export class RematchService {
     const updateData: Partial<Rematch> = {};
     if (userColor === ChessColors.BLACK) updateData.blackUpForRematch = false;
     if (userColor === ChessColors.WHITE) updateData.whiteUpForRematch = false;
-    return await this.updateRematchData(rematchId, updateData);
+    return this.updateRematchData(rematchId, updateData);
   }
 }
