@@ -7,6 +7,7 @@ import {
   isApiError,
 } from "@/shared/lib/api-helpers";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameStatus } from "@/shared/types/game-status";
@@ -35,10 +36,12 @@ export const useOnlineGameOfferRematchButton = (
   } = profileApi.useGetMeQuery();
   const { data: rematchData, isLoading: isRematchDataLoading } =
     gameApi.useGetRematchDataQuery(params?.gameId ?? skipToken);
-  const errorT = useTranslations("ApiErrors");
+
+  const { handleApiError } = useHandleApiError();
 
   if (!user || !game || game.status !== GameStatus.FINISHED || !frendlyPlayer)
     return null;
+
   const frendlyPlayerColor = getFrendlyPlayerColor(game, frendlyPlayer.id);
   const enemyPlayer =
     frendlyPlayerColor === ChessColors.BLACK
@@ -63,17 +66,9 @@ export const useOnlineGameOfferRematchButton = (
       refetchProfile();
       onOfferRematch?.();
     } catch (error) {
-      if (isApiError(error)) {
-        let message: string;
-        const result = apiErrorSchema.safeParse(error.data.message);
-        result.success
-          ? (message = errorT(result.data))
-          : (message = errorT(ApiErrors.UNEXPECTED));
+      handleApiError(error, (message) => {
         toast.error(message, getErrorToastConfig());
-      } else {
-        toast.error(errorT(ApiErrors.UNEXPECTED), getErrorToastConfig());
-        console.log(error);
-      }
+      });
     }
   };
 

@@ -8,6 +8,7 @@ import {
   isApiError,
 } from "@/shared/lib/api-helpers";
 import { useAppDispatch } from "@/shared/lib/hooks/redux-hooks";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { AppText } from "@/shared/ui/app-text/app-text";
 import { useTranslations } from "next-intl";
@@ -18,7 +19,7 @@ export const LogoutButton = () => {
   const [logout, { isLoading }] = useLogoutMutation();
   const router = useRouter();
   const t = useTranslations("Auth");
-  const errorT = useTranslations("ApiErrors");
+  const { handleApiError } = useHandleApiError();
 
   const handleLogout = async () => {
     try {
@@ -26,17 +27,9 @@ export const LogoutButton = () => {
       dispatch(authActions.logout());
       router.push("/");
     } catch (error) {
-      if (isApiError(error)) {
-        let message: string;
-        const result = apiErrorSchema.safeParse(error.data.message);
-        result.success
-          ? (message = errorT(result.data))
-          : (message = errorT(ApiErrors.UNEXPECTED));
-        toast.error(message, getErrorToastConfig());
-      } else {
-        toast.error(ApiErrors.UNEXPECTED, getErrorToastConfig());
-        console.log(error);
-      }
+      handleApiError(error, (message) => {
+        toast(message, getErrorToastConfig());
+      });
     }
   };
   return (

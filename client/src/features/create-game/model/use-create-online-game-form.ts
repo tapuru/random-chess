@@ -23,6 +23,7 @@ import {
 } from "@/shared/lib/api-helpers";
 import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { useTranslations } from "use-intl";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 
 export const useCreateOnlineGameForm = () => {
   const user = useAppSelector(selectUser);
@@ -46,8 +47,7 @@ export const useCreateOnlineGameForm = () => {
   const router = useRouter();
   const [createGame, { isLoading }] = gameApi.useCreateGameMutation();
 
-  const t = useTranslations("ApiErrors");
-
+  const { handleApiError } = useHandleApiError();
   const currentTime = watch("settings.time");
   const currentTimeControl = currentTime
     ? getTimeControlFromSeconds(currentTime)
@@ -57,20 +57,10 @@ export const useCreateOnlineGameForm = () => {
     try {
       const game = await createGame(data).unwrap();
       router.push(`/game/${game.id}`);
-    } catch (error: any) {
-      if (isApiError(error)) {
-        let message: string;
-        const result = apiErrorSchema.safeParse(error.data.message);
-        if (result.success) {
-          message = t(result.data);
-        } else {
-          message = error.data.message;
-        }
+    } catch (error) {
+      handleApiError(error, (message) => {
         setServerError(message);
-        toast.error(message, getErrorToastConfig());
-      } else {
-        console.log(error);
-      }
+      });
     }
   };
 

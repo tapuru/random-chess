@@ -1,10 +1,13 @@
 import { gameApi } from "@/entities/game";
 import { profileApi } from "@/entities/profile";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
+import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { Chess, Move } from "chess.js";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useOnlineGameBoard = () => {
   const params = useParams<{ gameId: string }>();
@@ -18,6 +21,7 @@ export const useOnlineGameBoard = () => {
     game?.playerBlack?.id === profile?.id
       ? ChessColors.BLACK
       : ChessColors.WHITE;
+  const { handleApiError } = useHandleApiError();
 
   useEffect(() => {
     start();
@@ -38,7 +42,11 @@ export const useOnlineGameBoard = () => {
       if (!game) return;
       makeMove({ ...move, gameId: game.id })
         .unwrap()
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          handleApiError(e, (message) => {
+            toast.error(message, getErrorToastConfig());
+          });
+        });
     },
     [chess, game]
   );

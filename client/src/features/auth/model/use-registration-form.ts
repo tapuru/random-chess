@@ -14,6 +14,7 @@ import {
   apiErrorSchema,
   isApiError,
 } from "@/shared/lib/api-helpers";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 
 export const useRegistrationForm = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ export const useRegistrationForm = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const [serverError, setServerError] = useState<string | null>(null);
   const t = useTranslations("Auth");
-  const errorT = useTranslations("ApiErrors");
+  const { handleApiError } = useHandleApiError();
 
   const onSubmit = async (data: RegistrationFormData) => {
     try {
@@ -48,17 +49,9 @@ export const useRegistrationForm = () => {
 
       router.push("/");
     } catch (error) {
-      if (isApiError(error)) {
-        let message: string;
-        const result = apiErrorSchema.safeParse(error.data.message);
-        result.success
-          ? (message = errorT(result.data))
-          : (message = errorT(ApiErrors.UNEXPECTED));
+      handleApiError(error, (message: string) => {
         setServerError(message);
-      } else {
-        setServerError(errorT(ApiErrors.UNEXPECTED));
-        console.log(error);
-      }
+      });
     }
   };
   return {
