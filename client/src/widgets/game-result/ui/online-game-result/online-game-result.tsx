@@ -28,7 +28,7 @@ export const OnlineGameResult = () => {
         </div>
         {!!reason && <div className={cl.reason}>{t(reason)}</div>}
         <div className={cl.actions}>
-          <OnlineGameOfferRematchButton />
+          <OnlineGameOfferRematchButton onOfferRematch={() => setOpen(false)} />
           <LeaveGameButton title={t("leave")} />
         </div>
       </div>

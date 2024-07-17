@@ -11,7 +11,7 @@ export const OnlineGameOfferRematchButton = ({
 
   if (!result) return null;
   const {
-    handleCancelCick,
+    handleCancelClick,
     handleRematchClick,
     isLoading,
     rematchOfferSent,
@@ -23,7 +23,7 @@ export const OnlineGameOfferRematchButton = ({
       <AppButton
         variant="outlined"
         color="secondary"
-        onClick={handleCancelCick}
+        onClick={handleCancelClick}
       >
         {title}
       </AppButton>

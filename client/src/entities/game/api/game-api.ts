@@ -108,6 +108,10 @@ export const gameApi = apiSlice.injectEndpoints({
           updateCachedData(() => rematchData);
         });
 
+        socket.on(GameMessages.CANCEL_REMATCH, (rematchData: RematchData) => {
+          updateCachedData(() => rematchData);
+        });
+
         await cacheEntryRemoved;
         socket.off(GameMessages.REMATCH_ACCEPTED);
         socket.off(GameMessages.OFFER_REMATCH);

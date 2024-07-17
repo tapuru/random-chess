@@ -1,18 +1,12 @@
 import { selectUser } from "@/entities/auth";
 import { gameApi, getFrendlyPlayerColor } from "@/entities/game";
 import { profileApi } from "@/entities/profile";
-import {
-  ApiErrors,
-  apiErrorSchema,
-  isApiError,
-} from "@/shared/lib/api-helpers";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { ChessColors } from "@/shared/types/chess-colors";
 import { GameStatus } from "@/shared/types/game-status";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { profile } from "console";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
@@ -26,14 +20,15 @@ export const useOnlineGameOfferRematchButton = (
   const { data: game, isLoading: isGameLoading } = gameApi.useGetGameQuery(
     params?.gameId || skipToken
   );
-  const [offerRematch, { isLoading: isRematchOfferMutationLoading }] =
-    gameApi.useOfferRematchMutation();
+  const [
+    offerRematch,
+    { isLoading: isRematchOfferMutationLoading, reset: resetOfferRematch },
+  ] = gameApi.useOfferRematchMutation();
+  const [cancelRematch, { isLoading: isRematchCancelLoading, isSuccess }] =
+    gameApi.useCancelRematchMutation();
   const user = useAppSelector(selectUser);
-  const {
-    data: frendlyPlayer,
-    refetch: refetchProfile,
-    isLoading: isPlayerDataLoading,
-  } = profileApi.useGetMeQuery();
+  const { data: frendlyPlayer, isLoading: isPlayerDataLoading } =
+    profileApi.useGetMeQuery();
   const { data: rematchData, isLoading: isRematchDataLoading } =
     gameApi.useGetRematchDataQuery(params?.gameId ?? skipToken);
 
@@ -53,7 +48,8 @@ export const useOnlineGameOfferRematchButton = (
     isGameLoading ||
     isRematchOfferMutationLoading ||
     isRematchDataLoading ||
-    isPlayerDataLoading;
+    isPlayerDataLoading ||
+    isRematchCancelLoading;
 
   const handleRematchClick = async () => {
     try {
@@ -61,9 +57,6 @@ export const useOnlineGameOfferRematchButton = (
         gameId: game.id,
         userId: user.id,
       }).unwrap();
-      console.log("HERE");
-      console.log(message);
-      refetchProfile();
       onOfferRematch?.();
     } catch (error) {
       handleApiError(error, (message) => {
@@ -72,11 +65,14 @@ export const useOnlineGameOfferRematchButton = (
     }
   };
 
-  const handleCancelCick = () => {
-    //TODO: handle rematch cancel
-    // try {
-    //   const data = await;
-    // } catch (error) {}
+  const handleCancelClick = async () => {
+    try {
+      const message = await cancelRematch({ gameId: game.id, userId: user.id });
+    } catch (error) {
+      handleApiError(error, (message) => {
+        toast.error(message, getErrorToastConfig());
+      });
+    }
   };
   let title = t("rematch");
   let rematchOfferSent = false;
@@ -91,8 +87,17 @@ export const useOnlineGameOfferRematchButton = (
     title = t("acceptRematch");
   }
 
+  console.log("start");
+  console.log(isGameLoading);
+  console.log(isPlayerDataLoading);
+  console.log(isRematchCancelLoading);
+  console.log(isRematchDataLoading);
+  console.log(isRematchOfferMutationLoading);
+  console.log("finish");
+  console.log(isSuccess);
+
   return {
-    handleCancelCick,
+    handleCancelClick,
     handleRematchClick,
     isLoading,
     rematchOfferSent,
