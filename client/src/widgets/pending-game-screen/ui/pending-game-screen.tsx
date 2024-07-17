@@ -13,12 +13,18 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import cl from "./pending-game-screen.module.scss";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
+import { useRouter } from "@/shared/config/navigation";
+import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
+import { toast } from "react-toastify";
+import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 
 export const PendingGameScreen = ({ game }: { game: GameDto }) => {
   const { data: me, isLoading } = profileApi.useGetMeQuery();
   const [joinGame] = gameApi.useJoinGameMutation();
   const user = useAppSelector(selectUser);
   const t = useTranslations("Game");
+  const router = useRouter();
+  const { handleApiError } = useHandleApiError();
 
   useEffect(() => {
     if (
@@ -32,8 +38,10 @@ export const PendingGameScreen = ({ game }: { game: GameDto }) => {
           console.log("JOIN SUCCESS", joinedGame);
         })
         .catch((error) => {
-          //TODO: handle error
-          console.log(error);
+          handleApiError(error, (message) => {
+            toast.error(message, getErrorToastConfig());
+          });
+          router.push("/");
         });
     }
   }, [joinGame, me, game]);
