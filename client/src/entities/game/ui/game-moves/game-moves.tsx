@@ -10,8 +10,6 @@ const SingleMove = ({ move }: { move: Move }) => {
 export const GameMoves = ({ moves }: { moves: Move[] }) => {
   const moveRows: Move[][] = [[]];
 
-  console.log(moves);
-
   !!moves &&
     moves.forEach((move, index) => {
       if (moveRows[moveRows.length - 1].length < 2) {

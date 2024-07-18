@@ -28,7 +28,7 @@ export const usePendingGameScreen = (game: GameDto) => {
       joinGame({ gameId: game.id, userId: user?.id })
         .unwrap()
         .then((joinedGame) => {
-          console.log("JOIN SUCCESS", joinedGame);
+          console.log("Joined game: " + joinedGame.id);
         })
         .catch((error) => {
           handleApiError(error, (message) => {

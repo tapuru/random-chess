@@ -23,8 +23,6 @@ export const useOnlineGameTurn = () => {
     }
   }, [rematchData]);
 
-  console.log(rematchData);
-
   if (!game || !profile) return null;
   const frendlyPlayerColor = getFrendlyPlayerColor(game, profile.id);
 

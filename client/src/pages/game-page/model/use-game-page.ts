@@ -19,7 +19,6 @@ export const useGamePage = () => {
   useEffect(() => {
     return () => {
       if (params?.gameId && user) {
-        console.log("here");
         cancelRematch({ gameId: params.gameId, userId: user.id });
       }
     };
