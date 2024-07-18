@@ -22,3 +22,4 @@ export { createOnlineGameSchema } from "./lib/schemas/create-online-game-schema"
 export type { CreateOnlineGameFormData } from "./lib/schemas/create-online-game-schema";
 export { LeaveGameButton } from "./ui/leave-game-button/leave-game-button";
 export { GameRedirect } from "./ui/game-redirect/game-redirect";
+export { getEnemyPlayer } from "./lib/get-enemy-player";

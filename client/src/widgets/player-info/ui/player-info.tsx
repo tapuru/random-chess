@@ -1,7 +1,10 @@
 "use client";
 
+import {
+  OnlineGameEnemyPlayerInfo,
+  OnlineGameFrendlyPlayerInfo,
+} from "@/features/online-game";
 import { GameTypes } from "@/shared/types/game-type";
-import { OnlineGamePlayerInfo } from "@/features/online-game/ui/online-game-player-info/online-game-player-info";
 
 export const PlayerInfo = ({
   side,
@@ -10,12 +13,26 @@ export const PlayerInfo = ({
   gameType: GameTypes;
   side: "frendly" | "enemy";
 }) => {
-  switch (gameType) {
-    case GameTypes.ONLINE:
-      return <OnlineGamePlayerInfo side={side} />;
-    case GameTypes.ENGINE:
-      return <div>engine player info</div>;
-    case GameTypes.LOCAL:
-      return <div>local player info</div>;
+  switch (side) {
+    case "frendly": {
+      switch (gameType) {
+        case GameTypes.ONLINE:
+          return <OnlineGameFrendlyPlayerInfo />;
+        case GameTypes.ENGINE:
+          return <div>engine player info</div>;
+        case GameTypes.LOCAL:
+          return <div>local player info</div>;
+      }
+    }
+    case "enemy": {
+      switch (gameType) {
+        case GameTypes.ONLINE:
+          return <OnlineGameEnemyPlayerInfo />;
+        case GameTypes.ENGINE:
+          return <div>engine player info</div>;
+        case GameTypes.LOCAL:
+          return <div>local player info</div>;
+      }
+    }
   }
 };
