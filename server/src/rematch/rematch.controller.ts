@@ -7,7 +7,6 @@ export class RematchController {
 
   @Get('/:gameId')
   getRematchData(@Param('gameId') gameId: string) {
-    console.log(gameId);
     return this.rematchService.getRematchDataByGameId(gameId);
   }
 }
