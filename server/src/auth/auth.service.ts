@@ -127,7 +127,11 @@ export class AuthService {
         provider: 'google',
       });
       await this.userRepository.save(newUser);
-      await this.profileService.createProfile(newUser, user.username);
+      await this.profileService.createProfile(
+        newUser,
+        user.username,
+        user.photo,
+      );
       const tokens = await this.tokensService.getTokens(
         newUser.id,
         newUser.email,
