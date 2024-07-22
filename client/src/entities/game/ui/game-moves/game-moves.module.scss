@@ -1,10 +1,26 @@
+@import "@/shared/styles/breakpoints.module.scss";
+
 .root {
   border: 1px solid var(--background-600);
-  height: 300px;
+  min-height: 300px;
+
   min-width: 200px;
 
   border-radius: var(--border-radius);
   overflow: auto;
+
+  @media (max-width: $bp-l) {
+    min-height: 32px;
+    max-width: 100%;
+  }
+}
+
+.moveList {
+  @media (max-width: $bp-l) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 2px;
+  }
 }
 
 .moveRow {

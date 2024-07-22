@@ -14,16 +14,21 @@ export const GamePageLayout = ({
   frendlyPlayerInfo,
   enemyPlayerInfo,
 }: GamePageLayoutProps) => {
+  const width = window.innerWidth;
+  const mobile = width < 992;
+
   return (
     <main className={cl.root}>
       <div className={cl.content}>
+        {mobile && <div className={cl.playerInfo}>{enemyPlayerInfo}</div>}
         <div className={cl.board}>{board}</div>
         <div className={cl.info}>
-          {enemyPlayerInfo}
+          {mobile ? frendlyPlayerInfo : enemyPlayerInfo}
           {gameInfo}
-          {frendlyPlayerInfo}
+          {!mobile && frendlyPlayerInfo}
         </div>
       </div>
+      {mobile && <div className={cl.mobileMarginBottom}></div>}
     </main>
   );
 };

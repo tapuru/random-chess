@@ -11,15 +11,29 @@ export const GameInfoLayout = ({
   gameTurn: React.ReactNode;
   gameActions: React.ReactNode;
 }) => {
+  const mobile = window.innerWidth < 992;
+
   return (
     <AppCard>
       <AppCard.Content>
         <div className={cl.content}>
-          <div className={cl.moves}>{gameMoves}</div>
-          <div className={cl.infoRight}>
-            <div className={cl.actions}>{gameActions}</div>
-            {gameTurn}
-          </div>
+          {mobile ? (
+            <>
+              <div className={cl.infoRight}>
+                {gameTurn}
+                <div className={cl.actions}>{gameActions}</div>
+              </div>
+              <div className={cl.moves}>{gameMoves}</div>
+            </>
+          ) : (
+            <>
+              <div className={cl.moves}>{gameMoves}</div>
+              <div className={cl.infoRight}>
+                <div className={cl.actions}>{gameActions}</div>
+                {gameTurn}
+              </div>
+            </>
+          )}
         </div>
       </AppCard.Content>
     </AppCard>

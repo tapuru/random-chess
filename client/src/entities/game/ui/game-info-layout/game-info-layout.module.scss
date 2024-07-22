@@ -1,11 +1,28 @@
+@import "@/shared/styles/breakpoints.module.scss";
+
 .content {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 18px;
+
+  @media (max-width: $bp-l) {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+  }
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.infoRight {
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: $bp-l) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
