@@ -79,7 +79,7 @@ export class GameGateway implements OnModuleInit {
 
   @SubscribeMessage(GameMessages.MOVE)
   async handleMove(@MessageBody() payload: MakeMoveDto) {
-    const game = await this.boardService.makeMove(payload);
+    const game = await this.boardService.makeMove(payload, this.server);
     this.server.emit(GameMessages.MOVE, game);
     if (game.result) {
       this.server.emit(GameMessages.GAME_FINISHED, game);
@@ -88,7 +88,7 @@ export class GameGateway implements OnModuleInit {
 
   @SubscribeMessage(GameMessages.RESIGN)
   async handleResign(@MessageBody() payload: ManipulateGameDto) {
-    const game = await this.boardService.resign(payload);
+    const game = await this.boardService.resign(payload, this.server);
     this.server.emit(GameMessages.GAME_FINISHED, game);
   }
 

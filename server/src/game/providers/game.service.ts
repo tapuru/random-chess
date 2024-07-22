@@ -25,6 +25,7 @@ export class GameService {
   ) {}
 
   async createGame(dto: CreateGameDto) {
+    console.log(dto);
     const ownerProfile = await this.profileService.getProfileByUserId(
       dto.ownerId,
     );
@@ -249,6 +250,7 @@ export class GameService {
         settings: true,
         result: true,
         rematch: true,
+        moves: true,
       },
     });
     if (!game) {

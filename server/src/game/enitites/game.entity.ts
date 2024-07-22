@@ -47,6 +47,9 @@ export class Game {
   @Column({ nullable: true })
   endAt: Date;
 
+  @Column({ nullable: true })
+  lastMoveTime: Date;
+
   @OneToOne(() => GameSettings, (gameSettings) => gameSettings.game, {
     cascade: true,
   })
