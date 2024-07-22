@@ -223,7 +223,6 @@ export class BoardService {
   ) {
     if (game.moves.length === 1) {
       game.lastMoveTime = new Date();
-      console.log(game.settings.time);
 
       this.setTimerByGameId(
         game.id,
@@ -246,11 +245,12 @@ export class BoardService {
       const moveTimeTaken = Math.floor(
         (new Date().getTime() - game.lastMoveTime.getTime()) / 1000,
       );
-      console.log(moveTimeTaken);
+
+      const increment = game.settings.timeIncrement ?? 0;
 
       game.currentTurn === ChessColors.BLACK
-        ? (game.whiteTimeLeft -= moveTimeTaken)
-        : (game.blackTimeLeft -= moveTimeTaken);
+        ? (game.whiteTimeLeft -= moveTimeTaken - increment)
+        : (game.blackTimeLeft -= moveTimeTaken - increment);
 
       game.lastMoveTime = new Date();
       const timeout =
