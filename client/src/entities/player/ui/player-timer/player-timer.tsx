@@ -3,22 +3,22 @@
 import cl from "./player-timer.module.scss";
 import cn from "classnames";
 import { Player } from "../../types/player";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { secondsToHHMMSS } from "@/shared/lib/seconds-to-hhmmss";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 
 interface PlayerTimerProps {
-  player: Player;
   isActive: boolean;
-  decrement: () => {};
-  startTime: number;
+  startTime?: number;
+  timeLeft?: number;
+  onDecrement: () => void;
 }
 
 export const PlayerTimer = ({
-  player,
   isActive,
-  decrement,
   startTime,
+  onDecrement,
+  timeLeft,
 }: PlayerTimerProps) => {
   const timer = useRef<null | ReturnType<typeof setInterval>>(null);
 
@@ -36,7 +36,7 @@ export const PlayerTimer = ({
 
   function startTimer() {
     timer.current = setInterval(() => {
-      decrement();
+      onDecrement();
     }, 1000);
   }
 
@@ -45,10 +45,10 @@ export const PlayerTimer = ({
       clearInterval(timer.current);
     }
   }
-  if (player.timeLeft === null) return null;
+  if (!timeLeft || !startTime) return null;
 
-  const timeToShow = secondsToHHMMSS(player.timeLeft);
-  const isDanger = (player.timeLeft / startTime) * 100 < 10;
+  const timeToShow = secondsToHHMMSS(timeLeft);
+  const isDanger = (timeLeft / startTime) * 100 < 10;
 
   return (
     <div className={cn(cl.root, { [cl.danger]: isDanger })}>

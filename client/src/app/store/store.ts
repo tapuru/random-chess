@@ -3,6 +3,7 @@ import { boardReducer } from "@/entities/chess-board";
 import { gameReducer } from "@/entities/game";
 import { playersReducer } from "@/entities/player";
 import { createGameReducer } from "@/features/create-game";
+import { onlineGameReducer } from "@/features/online-game/model/online-game-slice";
 import { apiSlice } from "@/shared/api/api-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
@@ -58,12 +59,18 @@ const authPersistConfig = {
   storage: storage,
 };
 
+const onlineGamePersistConfig = {
+  key: "onlineGame",
+  storage: storage,
+};
+
 const rootReducer = combineReducers({
   board: persistReducer(boardPersistConfig, boardReducer),
   game: persistReducer(gamePersistConfig, gameReducer),
   players: persistReducer(playersPersistConfig, playersReducer),
   auth: persistReducer(authPersistConfig, authReducer),
   createGame: createGameReducer,
+  onilneGame: persistReducer(onlineGamePersistConfig, onlineGameReducer),
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

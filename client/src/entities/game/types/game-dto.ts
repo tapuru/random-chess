@@ -13,6 +13,8 @@ export interface GameDto {
   currentFen: string;
   currentTurn: ChessColors;
   status: GameStatus;
+  whiteTimeLeft?: number;
+  blackTimeLeft?: number;
   //TODO move that away
   playerWhite: PlayerDto | null;
   playerBlack: PlayerDto | null;

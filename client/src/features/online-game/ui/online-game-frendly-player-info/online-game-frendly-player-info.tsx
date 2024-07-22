@@ -2,28 +2,22 @@
 
 import { PlayerInfoLayout, PlayerTimer } from "@/entities/player";
 import { IngameProfileLayout, profileApi } from "@/entities/profile";
-import { useRouter } from "@/shared/config/navigation";
-import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
-import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
-import { toast } from "react-toastify";
+import { useOnlineGameFrendlyPlayerInfo } from "../../model/use-online-game-frendly-player-info";
+import { GameStatus } from "@/shared/types/game-status";
 
 export const OnlineGameFrendlyPlayerInfo = () => {
+  const result = useOnlineGameFrendlyPlayerInfo();
+  if (!result) return null;
   const {
-    data: me,
+    frendlyPlayerColor,
+    game,
     isLoading,
-    isError,
-    error,
     isSuccess,
-  } = profileApi.useGetMeQuery();
-  const { handleApiError } = useHandleApiError();
-  const router = useRouter();
-  if (isError) {
-    handleApiError(error, (message) => {
-      toast.error(message, getErrorToastConfig());
-      router.push("/login");
-    });
-  }
+    me,
+    timeLeft,
+    setTimeLeft,
+  } = result;
 
   if (isLoading) return <AppLoader />;
 
@@ -31,7 +25,22 @@ export const OnlineGameFrendlyPlayerInfo = () => {
     return (
       <PlayerInfoLayout
         profile={<IngameProfileLayout profile={me} />}
-        timer={<div>timer</div>}
+        timer={
+          <PlayerTimer
+            isActive={
+              game &&
+              game.currentTurn === frendlyPlayerColor &&
+              game.moves &&
+              game.moves.length !== 0 &&
+              game.status === GameStatus.ACTIVE
+            }
+            startTime={game.settings.time}
+            onDecrement={() =>
+              setTimeLeft((prev) => (prev ? prev - 1 : undefined))
+            }
+            timeLeft={timeLeft}
+          />
+        }
       />
     );
 };
