@@ -5,7 +5,7 @@ import { ProfileService } from 'src/profile/profile.service';
 import { Chess } from 'chess.js';
 import { Game, GameResult, GameSettings } from '../enitites';
 import { CreateGameDto, ManipulateGameDto, RematchDataDto } from '../dto';
-import { ChessColors, GameStatus, GameTypes } from '../types';
+import { ChessColors, GameModes, GameStatus, GameTypes } from '../types';
 import { BoardService } from './board.service';
 import { RematchService } from 'src/rematch/rematch.service';
 import { Rematch } from 'src/rematch/rematch.entity';
@@ -23,6 +23,20 @@ export class GameService {
     private boardService: BoardService,
     private rematchService: RematchService,
   ) {}
+
+  async getPendingGames({ mode }: { mode: string }) {
+    if (!Object.values(GameModes).includes(mode as GameModes)) {
+      throw new BadRequestException('invalid-game-mode');
+    }
+    const games = await this.gameRepository.find({
+      where: {
+        settings: { mode: mode as GameModes },
+        status: GameStatus.PENDING,
+      },
+      relations: { settings: true, playerBlack: true, playerWhite: true },
+    });
+    return games;
+  }
 
   async createGame(dto: CreateGameDto) {
     console.log(dto);

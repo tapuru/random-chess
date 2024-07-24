@@ -19,4 +19,9 @@ export class GameController {
   createGame(@Body() dto: CreateGameDto) {
     return this.gameService.createGame(dto);
   }
+
+  @Get("/pending/:mode")
+  getPendingGames(@Param("mode") mode: string,) {
+    return this.gameService.getPendingGames({mode})
+  }
 }
