@@ -67,8 +67,15 @@
     "passwordTooLongError": "Пароль не должен быть длинее 50 символов",
     "usernameTooLongError": "Имя не должно быть длинее 50 символов",
     "usernameTooShortError": "Имя не должно быть короче 3 символов",
-
+    "logout": "Выйти",
     "loginWithGoogle": "Войти через Google"
+  },
+  "GameModes": {
+    "classical": "Классический режим",
+    "fisher": "Шахматы фишера"
+  },
+  "SearchGame": {
+    "noGamesFound": "Игр не найдено..."
   },
   "ApiErrors": {
     "unexpected-error": "Произошла непредвиденная ошибка",

@@ -8,9 +8,11 @@ import { useTranslations } from "next-intl";
 export const LobbyHeader = () => {
   const searchParams = useSearchParams();
   const activeMode = searchParams?.get("mode");
-  const t = useTranslations();
+  const t = useTranslations("GameModes");
 
   if (!activeMode) return null;
 
-  return <LobbyHeaderLayout title={activeMode} action={<CreateGameButton />} />;
+  return (
+    <LobbyHeaderLayout title={t(activeMode)} action={<CreateGameButton />} />
+  );
 };

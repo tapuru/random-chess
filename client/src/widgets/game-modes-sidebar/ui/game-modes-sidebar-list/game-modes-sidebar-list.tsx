@@ -2,6 +2,7 @@ import { GameModes } from "@/shared/types/game-modes";
 import cl from "./game-modes-sidebar-list.module.scss";
 import cn from "classnames";
 import { Link } from "@/shared/config/navigation";
+import { useTranslations } from "next-intl";
 
 const GameModesSidebarListItem = ({
   isActive,
@@ -10,6 +11,7 @@ const GameModesSidebarListItem = ({
   mode: GameModes;
   isActive: boolean;
 }) => {
+  const t = useTranslations("GameModes");
   return (
     <li className={cl.item}>
       <Link href={`/lobby?mode=${mode}`}>
@@ -18,7 +20,7 @@ const GameModesSidebarListItem = ({
             [cl.active]: isActive,
           })}
         >
-          {mode}
+          {t(mode)}
         </div>
       </Link>
     </li>
@@ -35,7 +37,11 @@ export const GameModesSidebarList = ({
   return (
     <ul className={cl.list}>
       {modes.map((mode) => (
-        <GameModesSidebarListItem mode={mode} isActive={mode === activeMode} />
+        <GameModesSidebarListItem
+          mode={mode}
+          isActive={mode === activeMode}
+          key={mode}
+        />
       ))}
     </ul>
   );

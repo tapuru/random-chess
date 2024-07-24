@@ -9,6 +9,10 @@ import { ManipulateGameDto } from "../types/manipuldate-game-dto";
 
 export const gameApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getPendingGames: builder.query<GameDto[], string>({
+      query: (mode) => `game/pending/${mode}`,
+      providesTags: ["PendingGames"],
+    }),
     createGame: builder.mutation<GameDto, CreateOnlineGameFormData>({
       query: (body) => ({
         url: "game/create",

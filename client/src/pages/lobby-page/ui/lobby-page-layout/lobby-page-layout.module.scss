@@ -4,3 +4,9 @@
   column-gap: 24px;
   padding-top: 60px;
 }
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
