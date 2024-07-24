@@ -1,0 +1,15 @@
+.list {
+}
+
+.item {
+  .linkButton {
+    padding: 12px 18px 12px 18px;
+    color: var(--text-500);
+    border-radius: var(--border-radius);
+
+    &.active {
+      background-color: var(--accent-500);
+      color: var(--text-50);
+    }
+  }
+}
