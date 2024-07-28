@@ -5,7 +5,13 @@ import { ProfileService } from 'src/profile/profile.service';
 import { Chess } from 'chess.js';
 import { Game, GameResult, GameSettings } from '../enitites';
 import { CreateGameDto, ManipulateGameDto, RematchDataDto } from '../dto';
-import { ChessColors, GameModes, GameStatus, GameTypes } from '../types';
+import {
+  ChessColors,
+  GameModes,
+  GameStatus,
+  GameTypes,
+  TimeControls,
+} from '../types';
 import { BoardService } from './board.service';
 import { RematchService } from 'src/rematch/rematch.service';
 import { Rematch } from 'src/rematch/rematch.entity';
@@ -24,13 +30,31 @@ export class GameService {
     private rematchService: RematchService,
   ) {}
 
-  async getPendingGames({ mode }: { mode: string }) {
-    if (!Object.values(GameModes).includes(mode as GameModes)) {
-      throw new BadRequestException('invalid-game-mode');
+  async getPendingGames({
+    mode,
+    timeControl,
+    ownerColor,
+  }: {
+    mode?: string;
+    timeControl?: string;
+    ownerColor?: string;
+  }) {
+    if (
+      (mode && !Object.values(GameModes).includes(mode as GameModes)) ||
+      (timeControl &&
+        !Object.values(TimeControls).includes(timeControl as TimeControls)) ||
+      (ownerColor &&
+        !Object.values(ChessColors).includes(ownerColor as ChessColors))
+    ) {
+      throw new BadRequestException('invalid-params');
     }
     const games = await this.gameRepository.find({
       where: {
-        settings: { mode: mode as GameModes },
+        settings: {
+          mode: mode as GameModes,
+          timeControl: timeControl as TimeControls,
+          ownerColor: ownerColor as ChessColors,
+        },
         status: GameStatus.PENDING,
       },
       relations: { settings: true, playerBlack: true, playerWhite: true },
@@ -39,7 +63,6 @@ export class GameService {
   }
 
   async createGame(dto: CreateGameDto) {
-    console.log(dto);
     const ownerProfile = await this.profileService.getProfileByUserId(
       dto.ownerId,
     );
@@ -55,6 +78,7 @@ export class GameService {
       time: dto.settings.time,
       timeIncrement: dto.settings.timeIncrement,
       timeControl: dto.settings.timeControl,
+      ownerColor: dto.ownerColor,
     });
 
     const game = this.gameRepository.create({

@@ -1,6 +1,6 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Game } from './game.entity';
-import { GameModes, GameTypes, TimeControls } from '../types';
+import { ChessColors, GameModes, GameTypes, TimeControls } from '../types';
 
 @Entity('game_settings')
 export class GameSettings {
@@ -21,6 +21,9 @@ export class GameSettings {
 
   @Column({ nullable: true })
   timeIncrement: number;
+
+  @Column({ type: 'enum', enum: ChessColors })
+  ownerColor: ChessColors;
 
   @OneToOne(() => Game, (game) => game.settings)
   game: Game;
