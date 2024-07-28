@@ -75,7 +75,9 @@
     "fisher": "Шахматы фишера"
   },
   "SearchGame": {
-    "noGamesFound": "Игр не найдено..."
+    "noGamesFound": "Игр не найдено...",
+    "all": "Все",
+    "apply": "Применить"
   },
   "ApiErrors": {
     "unexpected-error": "Произошла непредвиденная ошибка",

@@ -1,0 +1,121 @@
+.content {
+  min-width: 220px;
+  background-color: var(--background-50);
+  border-radius: var(--border-radius);
+  padding: 6px;
+  box-shadow: var(--shadow);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+
+  &[data-side="top"] {
+    animation-name: slideDownAndFade;
+  }
+  &[data-side="bottom"] {
+    animation-name: slideUpAndFade;
+  }
+  &[data-side="left"] {
+    animation-name: slideRightAndFade;
+  }
+  &[data-side="right"] {
+    animation-name: slideLeftAndFade;
+  }
+}
+
+.arrow {
+  fill: var(--background-50);
+}
+
+.item,
+.checkboxItem {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-500);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 5px;
+  position: relative;
+  padding-left: 25px;
+  user-select: none;
+  outline: none;
+  cursor: pointer;
+
+  &[data-disabled] {
+    opacity: 0.7;
+    cursor: auto;
+    pointer-events: none;
+  }
+
+  &[data-highlighted] {
+    background-color: var(--primary-100);
+  }
+}
+
+.label {
+  padding-left: 25px;
+  font-size: 18px;
+  line-height: 25px;
+  color: var(--text-700);
+}
+
+.separator {
+  height: 1px;
+  background-color: var(--background-600);
+  margin: 5px;
+}
+
+.itemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-500);
+}
+
+@keyframes slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRightAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

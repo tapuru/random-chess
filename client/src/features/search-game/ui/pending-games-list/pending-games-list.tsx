@@ -42,9 +42,16 @@ export const PendingGamesList = () => {
     isSuccess,
     isError,
     error,
-  } = gameApi.useGetPendingGamesQuery(searchParams?.get("mode") || skipToken, {
-    pollingInterval: 5000,
-  });
+  } = gameApi.useGetGamesQuery(
+    {
+      mode: searchParams?.get("mode") ?? undefined,
+      ownerColor: searchParams?.get("ownerColor") ?? undefined,
+      timeControl: searchParams?.get("timeControl") ?? undefined,
+    },
+    {
+      pollingInterval: 5000,
+    }
+  );
   const { handleApiError } = useHandleApiError();
 
   const t = useTranslations("SearchGame");

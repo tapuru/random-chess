@@ -6,11 +6,15 @@ import { GameDto } from "../types/game-dto";
 import { MoveDto } from "../types/move-dto";
 import { RematchData } from "../types/rematch-data";
 import { ManipulateGameDto } from "../types/manipuldate-game-dto";
+import { GetGamesDto } from "../types/get-games-dto";
 
 export const gameApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getPendingGames: builder.query<GameDto[], string>({
-      query: (mode) => `game/pending/${mode}`,
+    getGames: builder.query<GameDto[], GetGamesDto>({
+      query: (params) => ({
+        url: "/game",
+        params,
+      }),
       providesTags: ["PendingGames"],
     }),
     createGame: builder.mutation<GameDto, CreateOnlineGameFormData>({

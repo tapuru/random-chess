@@ -19,6 +19,10 @@ export const usePendingGameScreen = (game: GameDto) => {
   const router = useRouter();
   const { handleApiError } = useHandleApiError();
 
+  if (me?.isInGame) {
+    router.push("/");
+  }
+
   useEffect(() => {
     if (
       game.playerBlack?.id !== me?.id &&
