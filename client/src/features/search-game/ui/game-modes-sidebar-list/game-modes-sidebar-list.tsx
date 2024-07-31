@@ -3,6 +3,8 @@ import cl from "./game-modes-sidebar-list.module.scss";
 import cn from "classnames";
 import { Link } from "@/shared/config/navigation";
 import { useTranslations } from "next-intl";
+import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
+import { searchGameModel } from "../../model/search-game-slice";
 
 const GameModesSidebarListItem = ({
   isActive,
@@ -12,8 +14,16 @@ const GameModesSidebarListItem = ({
   isActive: boolean;
 }) => {
   const t = useTranslations("GameModes");
+
+  const activeMode = useAppSelector(searchGameModel.selectActiveMode);
+  const dispatch = useAppDispatch();
+
+  const handleClick = () => {
+    dispatch(searchGameModel.setActiveMode(mode));
+  };
+
   return (
-    <li className={cl.item}>
+    <li className={cl.item} onClick={handleClick}>
       <Link href={`/lobby?mode=${mode}`}>
         <div
           className={cn(cl.linkButton, {

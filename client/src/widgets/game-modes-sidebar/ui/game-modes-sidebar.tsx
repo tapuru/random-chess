@@ -1,9 +1,9 @@
 "use client";
 
+import { GameModesSidebarList } from "@/features/search-game";
 import { GameModes } from "@/shared/types/game-modes";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 import { useSearchParams } from "next/navigation";
-import { GameModesSidebarList } from "./game-modes-sidebar-list/game-modes-sidebar-list";
 
 export const GameModesSidebar = () => {
   const searchParams = useSearchParams();

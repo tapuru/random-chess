@@ -1,20 +1,17 @@
 "use client";
+
 import { gameApi } from "@/entities/game";
-import { skipToken } from "@reduxjs/toolkit/query";
 import { useSearchParams } from "next/navigation";
 import cl from "./pending-games-list.module.scss";
 import { GameDto } from "@/entities/game/types/game-dto";
 import { AppText } from "@/shared/ui/app-text/app-text";
-import { ChessColors } from "@/shared/types/chess-colors";
 import { AppLoader } from "@/shared/ui/app-loader/app-loader";
-import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectUser } from "@/entities/auth";
-import { useRouter } from "@/shared/config/navigation";
 import { useHandleApiError } from "@/shared/lib/hooks/use-handle-api-error";
 import { toast } from "react-toastify";
 import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { useTranslations } from "next-intl";
 import { usePendingGamesListItem } from "../../model/use-pending-games-list-item";
+import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 
 const PendingGamesListItem = ({ game }: { game: GameDto }) => {
   const { color, handleClick, isWithTimeControl, ownerName, timeToShow } =

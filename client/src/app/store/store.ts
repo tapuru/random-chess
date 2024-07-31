@@ -4,6 +4,7 @@ import { gameReducer } from "@/entities/game";
 import { playersReducer } from "@/entities/player";
 import { createGameReducer } from "@/features/create-game";
 import { onlineGameReducer } from "@/features/online-game/model/online-game-slice";
+import { searchGameReducer } from "@/features/search-game";
 import { apiSlice } from "@/shared/api/api-slice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
@@ -64,6 +65,11 @@ const onlineGamePersistConfig = {
   storage: storage,
 };
 
+const searchGamePersistConfig = {
+  key: "searchGame",
+  storage: storage,
+};
+
 const rootReducer = combineReducers({
   board: persistReducer(boardPersistConfig, boardReducer),
   game: persistReducer(gamePersistConfig, gameReducer),
@@ -71,6 +77,7 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   createGame: createGameReducer,
   onilneGame: persistReducer(onlineGamePersistConfig, onlineGameReducer),
+  searchGame: persistReducer(searchGamePersistConfig, searchGameReducer),
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
