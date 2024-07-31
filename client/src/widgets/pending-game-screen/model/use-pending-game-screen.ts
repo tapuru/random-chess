@@ -19,9 +19,10 @@ export const usePendingGameScreen = (game: GameDto) => {
   const router = useRouter();
   const { handleApiError } = useHandleApiError();
 
-  if (me?.isInGame) {
-    router.push("/");
-  }
+  //TODO fix this
+  // if (me?.isInGame) {
+  //   router.push("/");
+  // }
 
   useEffect(() => {
     if (
@@ -35,6 +36,7 @@ export const usePendingGameScreen = (game: GameDto) => {
           console.log("Joined game: " + joinedGame.id);
         })
         .catch((error) => {
+          console.log(error);
           handleApiError(error, (message) => {
             toast.error(message, getErrorToastConfig());
           });

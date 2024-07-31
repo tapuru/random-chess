@@ -28,11 +28,13 @@ export const useOnlineGameBoard = () => {
   }, []);
 
   useEffect(() => {
+    console.log(game?.currentFen);
     const newChess = new Chess(game?.currentFen);
     setChess(newChess);
   }, [game]);
 
   function start() {
+    console.log(game?.initialFen);
     const chess = new Chess(game?.initialFen);
     setChess(chess);
   }
