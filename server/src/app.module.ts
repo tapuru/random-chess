@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { GameModule } from './game/game.module';
 import { RematchModule } from './rematch/rematch.module';
+import { GameModesModule } from './game-modes/game-modes.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RematchModule } from './rematch/rematch.module';
     ProfileModule,
     GameModule,
     RematchModule,
+    GameModesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

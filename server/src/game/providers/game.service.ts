@@ -17,6 +17,7 @@ import { RematchService } from 'src/rematch/rematch.service';
 import { Rematch } from 'src/rematch/rematch.entity';
 import { WsException } from '@nestjs/websockets';
 import { AppErrors } from 'src/common/types/app-errors';
+import { GameModesService } from 'src/game-modes/game-modes.service';
 
 @Injectable()
 export class GameService {
@@ -28,6 +29,7 @@ export class GameService {
     private profileService: ProfileService,
     private boardService: BoardService,
     private rematchService: RematchService,
+    private gameModesService: GameModesService,
   ) {}
 
   async getPendingGames({
@@ -72,6 +74,10 @@ export class GameService {
     if (ownerProfile.isInGame) {
       throw new BadRequestException(AppErrors.PROFILE_ALREADY_IN_GAME);
     }
+
+    const initialFen = this.gameModesService.generateInitialFen(
+      dto.settings.gameMode,
+    );
     const gameSettings = this.gameSettingsRepository.create({
       type: GameTypes.ONLINE,
       mode: dto.settings.gameMode,
@@ -82,10 +88,10 @@ export class GameService {
     });
 
     const game = this.gameRepository.create({
-      initialFen: dto.initialFen,
+      initialFen: initialFen,
       status: GameStatus.PENDING,
       currentTurn: ChessColors.WHITE,
-      currentFen: dto.initialFen,
+      currentFen: initialFen,
       whiteTimeLeft: dto.settings.time,
       blackTimeLeft: dto.settings.time,
     });
