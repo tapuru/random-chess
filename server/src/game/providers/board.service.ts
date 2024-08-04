@@ -200,7 +200,7 @@ export class BoardService {
     this.clearTimerByGameId(game.id);
     await this.gameRepository.save(game);
 
-    server.emit(GameMessages.GAME_FINISHED, game);
+    server.to(game.id).emit(GameMessages.GAME_FINISHED, game);
     return game;
   }
 
@@ -235,7 +235,7 @@ export class BoardService {
             },
             server,
           });
-          server.emit(GameMessages.GAME_FINISHED, game);
+          server.to(game.id).emit(GameMessages.GAME_FINISHED, game);
         }, game.settings.time * 1000),
       );
       console.log(this.timers);

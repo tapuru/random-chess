@@ -1,5 +1,4 @@
 import {
-  BaseWsExceptionFilter,
   ConnectedSocket,
   MessageBody,
   SubscribeMessage,
@@ -7,12 +6,11 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
-import { ChessColors, GameMessages } from '../types';
-import { OnModuleInit, UseFilters, UseGuards } from '@nestjs/common';
+import { GameMessages } from '../types';
+import { OnModuleInit } from '@nestjs/common';
 import { GameService } from './game.service';
-import { MakeMoveDto, ManipulateGameDto } from '../dto';
+import { CreateGameDto, MakeMoveDto, ManipulateGameDto } from '../dto';
 import { BoardService } from './board.service';
-import { AcessTokenGuard } from 'src/common/guards';
 
 @WebSocketGateway(3002, {
   cors: { origin: 'http://localhost:3000', credentials: true },
@@ -34,35 +32,23 @@ export class GameGateway implements OnModuleInit {
     });
   }
 
-  // @SubscribeMessage(GameMessages.CREATE_GAME)
-  // async handleCreateGame(
-  //   @MessageBody() payload: CreateGameDto,
-  //   @ConnectedSocket() client: Socket,
-  // ) {
-  //   try {
-  //     const game = await this.gameService.createGame(payload);
-  //     return game;
-  //   } catch (error) {
-  //     if (error.message === 'profile-not-found') {
-  //       this.server.emit(GameMessages.GAME_ALIERT, {
-  //         message: 'profile-not-found',
-  //       });
-  //     }
-  //     if (error.message === 'profile-already-in-game') {
-  //       this.server.emit(GameMessages.GAME_ALIERT, {
-  //         message: 'profile-already-in-game',
-  //       });
-  //     }
-  //     console.log(error);
-  //   }
-  // }
+  @SubscribeMessage(GameMessages.CREATE_GAME)
+  async handleCreateGame(
+    @MessageBody() payload: CreateGameDto,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const game = await this.gameService.createGame(payload);
+    client.join(game.id);
+    return game;
+  }
   @SubscribeMessage(GameMessages.JOIN_GAME)
   async handleJoinGame(
     @MessageBody() payload: ManipulateGameDto,
     @ConnectedSocket() client: Socket,
   ) {
     const game = await this.gameService.joinGame(payload);
-    this.server.emit(GameMessages.GAME_JOINED, game);
+    client.join(game.id);
+    this.server.to(game.id).emit(GameMessages.GAME_JOINED, game);
     return game;
   }
 
@@ -80,21 +66,25 @@ export class GameGateway implements OnModuleInit {
   @SubscribeMessage(GameMessages.MOVE)
   async handleMove(@MessageBody() payload: MakeMoveDto) {
     const game = await this.boardService.makeMove(payload, this.server);
-    this.server.emit(GameMessages.MOVE, game);
+    this.server.to(game.id).emit(GameMessages.MOVE, game);
     if (game.result) {
-      this.server.emit(GameMessages.GAME_FINISHED, game);
+      this.server.to(game.id).emit(GameMessages.GAME_FINISHED, game);
     }
   }
 
   @SubscribeMessage(GameMessages.RESIGN)
   async handleResign(@MessageBody() payload: ManipulateGameDto) {
     const game = await this.boardService.resign(payload, this.server);
-    this.server.emit(GameMessages.GAME_FINISHED, game);
+    this.server.to(game.id).emit(GameMessages.GAME_FINISHED, game);
   }
 
   @SubscribeMessage(GameMessages.ABORT_GAME)
-  async handleAbortGame(@MessageBody() payload: ManipulateGameDto) {
+  async handleAbortGame(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() payload: ManipulateGameDto,
+  ) {
     const message = await this.gameService.abortGame(payload);
+    client.leave(payload.gameId);
     return message;
   }
 
@@ -102,11 +92,11 @@ export class GameGateway implements OnModuleInit {
   async handleOfferRematch(@MessageBody() payload: ManipulateGameDto) {
     const { newGame, rematch } = await this.gameService.offerRematch(payload);
     if (rematch) {
-      this.server.emit(GameMessages.OFFER_REMATCH, rematch);
+      this.server.to(payload.gameId).emit(GameMessages.OFFER_REMATCH, rematch);
       return rematch;
     }
     if (newGame) {
-      this.server.emit(GameMessages.REMATCH_ACCEPTED, {
+      this.server.to(payload.gameId).emit(GameMessages.REMATCH_ACCEPTED, {
         newGameId: newGame.id,
       });
       return rematch;
@@ -116,7 +106,7 @@ export class GameGateway implements OnModuleInit {
   @SubscribeMessage(GameMessages.CANCEL_REMATCH)
   async handleCancelRematch(@MessageBody() payload: ManipulateGameDto) {
     const rematch = await this.gameService.cancelRematch(payload);
-    this.server.emit(GameMessages.CANCEL_REMATCH, rematch);
+    this.server.to(payload.gameId).emit(GameMessages.CANCEL_REMATCH, rematch);
     return rematch;
   }
 }
