@@ -32,6 +32,9 @@ export const CreateOnlineGameForm = () => {
               options={[
                 { title: "classical", value: GameModes.CLASSICAL },
                 { title: "fisher", value: GameModes.FISHER },
+                { title: "unfair fisher", value: GameModes.UNFAIR_FISHER },
+                { title: "random", value: GameModes.RANDOM },
+                { title: "unfair random", value: GameModes.UNFAIR_RANDOM },
               ]}
             />
           )}
