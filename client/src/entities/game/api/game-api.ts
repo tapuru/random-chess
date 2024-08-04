@@ -18,13 +18,25 @@ export const gameApi = apiSlice.injectEndpoints({
       providesTags: ["PendingGames"],
     }),
     createGame: builder.mutation<GameDto, CreateOnlineGameFormData>({
-      query: (body) => ({
-        url: "game/create",
-        body: body,
-        method: "POST",
-      }),
+      queryFn: (payload) => {
+        const socket = getSocket();
+        return new Promise((resolve) => {
+          socket.emit(GameMessages.CREATE_GAME, payload, (game: GameDto) => {
+            resolve({ data: game });
+          });
+        });
+      },
       invalidatesTags: ["Game"],
     }),
+
+    // createGame: builder.mutation<GameDto, CreateOnlineGameFormData>({
+    //   query: (body) => ({
+    //     url: "game/create",
+    //     body: body,
+    //     method: "POST",
+    //   }),
+    //   invalidatesTags: ["Game"],
+    // }),
     getGame: builder.query<GameDto, string>({
       query: (id) => `/game/${id}`,
       async onCacheEntryAdded(
