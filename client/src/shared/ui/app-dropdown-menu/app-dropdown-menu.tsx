@@ -1,6 +1,7 @@
 import cl from "./app-dropdown-menu.module.scss";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { FaCheck } from "react-icons/fa6";
+import cn from "classnames";
 
 interface AppDropdownMenuProps {
   trigger: React.ReactNode;
@@ -11,6 +12,7 @@ interface AppDropdownMenuProps {
   onOpenChange?: (state: boolean) => void;
   withArrow?: boolean;
   label?: string;
+  contentClassName?: string;
 }
 
 export const AppDropdownMenu = ({
@@ -22,7 +24,9 @@ export const AppDropdownMenu = ({
   open,
   withArrow,
   label,
+  contentClassName,
 }: AppDropdownMenuProps) => {
+  console.log(contentClassName);
   return (
     <DropdownMenu.Root
       defaultOpen={defaultOpen}
@@ -31,7 +35,11 @@ export const AppDropdownMenu = ({
     >
       <DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content side={side} className={cl.content} sideOffset={5}>
+        <DropdownMenu.Content
+          side={side}
+          className={cn(cl.content, contentClassName)}
+          sideOffset={5}
+        >
           {label && (
             <>
               <DropdownMenu.Label className={cl.label}>

@@ -4,6 +4,7 @@ import "@/app/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { Header } from "@/widgets/header";
 import { Providers } from "../providers/providers";
+import { HeaderProfile } from "@/features/profile";
 
 const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
@@ -26,7 +27,7 @@ export default function RootLayout({
     <html lang={locale} data-theme="light">
       <body className={montserrat.className}>
         <Providers>
-          <Header />
+          <Header profile={<HeaderProfile />} />
           {children}
           <footer></footer>
         </Providers>

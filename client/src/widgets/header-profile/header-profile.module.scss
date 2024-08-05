@@ -1,0 +1,21 @@
+.root {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.avatar {
+  img {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+.menuContent {
+  margin-top: 12px;
+}
+
+.link {
+  color: inherit;
+}

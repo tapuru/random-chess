@@ -2,29 +2,13 @@
 
 import { LanguageSelect } from "@/features/internationalization";
 import cl from "./header-right.module.scss";
-import { LoginButton, LogoutButton } from "@/features/auth";
-import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
-import { selectIsAuth, selectUser } from "@/entities/auth";
+import React from "react";
 
-export const HeaderRight = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const user = useAppSelector(selectUser);
-
+export const HeaderRight = ({ profile }: { profile: React.ReactNode }) => {
   return (
     <div className={cl.root}>
       <LanguageSelect />
-
-      {isAuth ? (
-        <div className={cl.profilePlaceholder}>
-          <div
-            className={cl.avatarPlaceholder}
-            onClick={() => console.log(user)}
-          ></div>
-          <LogoutButton />
-        </div>
-      ) : (
-        <LoginButton />
-      )}
+      {profile}
     </div>
   );
 };

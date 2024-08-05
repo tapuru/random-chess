@@ -13,6 +13,7 @@ import { getErrorToastConfig } from "@/shared/lib/toast-helpers";
 import { AppText } from "@/shared/ui/app-text/app-text";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
+import cl from "./logout-button.module.scss";
 
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
@@ -33,9 +34,8 @@ export const LogoutButton = () => {
     }
   };
   return (
-    //TODO move this into profile menu
-    <button onClick={handleLogout} disabled={isLoading}>
-      <AppText tag="span" color="text-500">
+    <button onClick={handleLogout} disabled={isLoading} className={cl.root}>
+      <AppText tag="span" color="text-500" className={cl.text}>
         {t("logout")}
       </AppText>
     </button>
