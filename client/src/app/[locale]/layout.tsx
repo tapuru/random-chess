@@ -4,7 +4,7 @@ import "@/app/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { Header } from "@/widgets/header";
 import { Providers } from "../providers/providers";
-import { HeaderProfile } from "@/features/profile";
+import { HeaderProfile } from "@/widgets/header-profile";
 
 const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
