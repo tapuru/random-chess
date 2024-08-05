@@ -7,7 +7,9 @@
   "Navigation": {
     "lobby": "Game",
     "history": "History",
-    "about": "About"
+    "about": "About",
+    "profile": "Profile",
+    "settings": "Settings"
   },
   "Game": {
     "w": "White",

@@ -1,6 +1,5 @@
 "use client";
 
-import { profileApi } from "../../entities/profile/api/profileApi";
 import cl from "./header-profile.module.scss";
 import React from "react";
 import { AppAvatar } from "@/shared/ui/app-avatar/app-avatar";
@@ -10,9 +9,12 @@ import { Link } from "@/shared/config/navigation";
 import { LoginButton, LogoutButton } from "@/features/auth";
 import { useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { selectIsAuth } from "@/entities/auth";
+import { profileApi } from "@/entities/profile";
+import { useTranslations } from "next-intl";
 
 export const HeaderProfile = () => {
   const isAuth = useAppSelector(selectIsAuth);
+  const t = useTranslations("Navigation");
 
   const {
     data: me,
@@ -56,16 +58,13 @@ export const HeaderProfile = () => {
         label={me.username}
         contentClassName={cl.menuContent}
       >
-        <AppDropdownMenu.Item>
-          <Link className={cl.link} href={`/profile/${me.id}`}>
-            Profile
-          </Link>
-        </AppDropdownMenu.Item>
-        <AppDropdownMenu.Item>
-          <Link href={`/settings`} className={cl.link}>
-            Settings
-          </Link>
-        </AppDropdownMenu.Item>
+        <Link className={cl.link} href={`/profile/${me.id}`}>
+          <AppDropdownMenu.Item>{t("profile")}</AppDropdownMenu.Item>
+        </Link>
+        <Link href={`/settings`} className={cl.link}>
+          <AppDropdownMenu.Item>{t("settings")}</AppDropdownMenu.Item>
+        </Link>
+
         <AppDropdownMenu.Separator />
         <AppDropdownMenu.Item>
           <LogoutButton />

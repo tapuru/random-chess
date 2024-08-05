@@ -7,6 +7,8 @@
   "Navigation": {
     "lobby": "Игра",
     "history": "Мои партии",
+    "profile": "Профиль",
+    "settings": "Настройки",
     "about": "Информация"
   },
   "Game": {
