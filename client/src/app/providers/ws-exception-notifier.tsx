@@ -31,7 +31,7 @@ export const WsExceptionNotifier = ({
     return () => {
       socket.off("exception");
     };
-  }, []);
+  }, [t]);
 
   return children;
 };

@@ -9,7 +9,7 @@ export default meta;
 
 type Story = StoryObj<typeof AppTabs>;
 
-export const tabs: Story = {
+export const Tabs: Story = {
   args: {
     tabs: [
       { label: "tab1", value: "tab1", content: "tab1 content" },

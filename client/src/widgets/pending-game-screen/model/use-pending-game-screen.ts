@@ -43,7 +43,7 @@ export const usePendingGameScreen = (game: GameDto) => {
           router.push("/");
         });
     }
-  }, [joinGame, me, game]);
+  }, [joinGame, me, game, router, user, handleApiError]);
 
   return {
     isLoading,

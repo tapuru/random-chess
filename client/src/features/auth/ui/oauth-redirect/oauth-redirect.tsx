@@ -27,7 +27,7 @@ export const OAuthRedirect = () => {
       );
       router.push("/");
     }
-  }, []);
+  }, [router, userString, dispath, accessToken]);
 
   if (!accessToken || !userString) router.push("/");
 

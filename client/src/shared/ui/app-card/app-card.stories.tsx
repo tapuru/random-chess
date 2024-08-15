@@ -9,13 +9,13 @@ export default meta;
 
 type Story = StoryObj<typeof AppCard>;
 
-export const basicCard: Story = {
+export const BasicCard: Story = {
   args: {
     children: "card",
   },
 };
 
-export const cardWithContent: Story = {
+export const CardWithContent: Story = {
   args: { children: <AppCard.Content>card with content</AppCard.Content> },
 };
 

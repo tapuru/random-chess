@@ -22,7 +22,7 @@ export const useGamePage = () => {
         cancelRematch({ gameId: params.gameId, userId: user.id });
       }
     };
-  }, []);
+  }, [cancelRematch, params, user]);
 
   return { game, isGameLoading };
 };

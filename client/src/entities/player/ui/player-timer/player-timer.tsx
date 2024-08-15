@@ -2,8 +2,7 @@
 
 import cl from "./player-timer.module.scss";
 import cn from "classnames";
-import { Player } from "../../types/player";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { secondsToHHMMSS } from "@/shared/lib/seconds-to-hhmmss";
 import { AppCard } from "@/shared/ui/app-card/app-card";
 
@@ -23,6 +22,16 @@ export const PlayerTimer = ({
   const timer = useRef<null | ReturnType<typeof setInterval>>(null);
 
   useEffect(() => {
+    const startTimer = () => {
+      timer.current = setInterval(() => {
+        onDecrement();
+      }, 1000);
+    };
+    const stopTimer = () => {
+      if (timer.current) {
+        clearInterval(timer.current);
+      }
+    };
     if (isActive) {
       startTimer();
     } else {
@@ -32,19 +41,8 @@ export const PlayerTimer = ({
     return () => {
       stopTimer();
     };
-  }, [isActive]);
+  }, [isActive, onDecrement]);
 
-  function startTimer() {
-    timer.current = setInterval(() => {
-      onDecrement();
-    }, 1000);
-  }
-
-  function stopTimer() {
-    if (timer.current) {
-      clearInterval(timer.current);
-    }
-  }
   if (!timeLeft || !startTime) return null;
 
   const timeToShow = secondsToHHMMSS(timeLeft);

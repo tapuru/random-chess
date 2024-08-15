@@ -11,7 +11,7 @@ export const GameRedirect = () => {
 
   useEffect(() => {
     if (pathname) router.push(`/${cookies.NEXT_LOCALE ?? "en"}/${pathname}`);
-  }, []);
+  }, [pathname, cookies, router]);
 
   return <AppLoader fullscreen />;
 };

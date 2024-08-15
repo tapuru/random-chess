@@ -21,7 +21,7 @@ export const useOnlineGameTurn = () => {
     if (rematchData?.newGameId) {
       router.push(`/game/${rematchData.newGameId}`);
     }
-  }, [rematchData]);
+  }, [rematchData, router]);
 
   if (!game || !profile) return null;
   const frendlyPlayerColor = getFrendlyPlayerColor(game, profile.id);

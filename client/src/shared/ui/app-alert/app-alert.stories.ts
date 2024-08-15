@@ -9,7 +9,7 @@ export default meta;
 
 type Story = StoryObj<typeof AppAlert>;
 
-export const errorAlert: Story = {
+export const ErrorAlert: Story = {
   args: {
     children: "error alert",
     variant: "error",

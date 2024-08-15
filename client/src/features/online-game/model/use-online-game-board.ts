@@ -23,21 +23,20 @@ export const useOnlineGameBoard = () => {
       : ChessColors.WHITE;
   const { handleApiError } = useHandleApiError();
 
+  const start = useCallback(() => {
+    const chess = new Chess(game?.initialFen);
+    setChess(chess);
+  }, [game?.initialFen]);
+
   useEffect(() => {
     start();
-  }, []);
+  }, [start]);
 
   useEffect(() => {
     console.log(game?.currentFen);
     const newChess = new Chess(game?.currentFen);
     setChess(newChess);
   }, [game]);
-
-  function start() {
-    console.log(game?.initialFen);
-    const chess = new Chess(game?.initialFen);
-    setChess(chess);
-  }
 
   const handleBoardChange = useCallback(
     (move: Move, chess: Chess) => {
@@ -50,7 +49,7 @@ export const useOnlineGameBoard = () => {
           });
         });
     },
-    [chess, game]
+    [game, handleApiError, makeMove]
   );
 
   const disableBoard = game?.currentTurn !== frendlyPlayerColor;

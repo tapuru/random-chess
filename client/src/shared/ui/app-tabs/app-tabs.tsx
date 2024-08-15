@@ -41,6 +41,7 @@ export const AppTabs = ({
             className={cl.trigger}
             value={tab.value}
             disabled={tab.disabled}
+            key={tab.value}
           >
             {tab.label}
           </Tabs.Trigger>

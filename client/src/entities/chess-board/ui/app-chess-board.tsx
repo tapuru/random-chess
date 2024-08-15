@@ -49,3 +49,5 @@ export const AppChessboard = memo(
     );
   }
 );
+
+AppChessboard.displayName = "AppChessboard";
