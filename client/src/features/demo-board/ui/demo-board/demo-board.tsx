@@ -2,13 +2,13 @@
 
 import { AppChessboard } from "@/entities/chess-board";
 import { safeGameMutate } from "@/entities/chess-board/lib/safe-game-mutate";
+import { GameModesService, pickRandomMode } from "@/entities/game-modes";
 import { getRandomArrayIndex } from "@/shared/lib/get-random-array-index";
-import { sleep } from "@/shared/lib/sleep";
 import { Chess } from "chess.js";
 import { useEffect, useState } from "react";
 
 export const DemoBoard = () => {
-  const [chess, setChess] = useState(new Chess());
+  const [chess, setChess] = useState<Chess>(new Chess());
 
   const makeRandomMove = () => {
     const moves = chess.moves();
@@ -17,6 +17,16 @@ export const DemoBoard = () => {
       copy.move(moves[randomMove]);
     });
   };
+
+  useEffect(() => {
+    const gameModesService = new GameModesService();
+    const mode = pickRandomMode({
+      classical: false,
+    });
+    console.log(mode);
+    const fen = gameModesService.generateInitialFen(mode);
+    setChess(new Chess(fen));
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
