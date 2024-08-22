@@ -27,7 +27,7 @@ export const AppChessboard = memo(
     return (
       <Chessboard
         animationDuration={200}
-        arePiecesDraggable={true}
+        arePiecesDraggable={false}
         position={chess.fen()}
         onSquareClick={handleSquareClick}
         customBoardStyle={{
