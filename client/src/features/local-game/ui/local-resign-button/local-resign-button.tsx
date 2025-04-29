@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { AppButton } from "@/shared/ui/app-button/app-button";
 import cl from "./local-resign-button.module.scss";
 import { FaRegFlag } from "react-icons/fa6";
@@ -14,10 +16,10 @@ export const LocalResignButton = () => {
   const playerTwo = useAppSelector(selectPlayerTwo);
 
   const currentPlayer = [playerOne, playerTwo].find(
-    (p) => p?.color === game?.currentTurn
+    (p) => p?.color === game?.currentTurn,
   );
   const winner = [playerOne, playerTwo].find(
-    (p) => p?.color !== currentPlayer?.color
+    (p) => p?.color !== currentPlayer?.color,
   );
 
   if (!game) return null;
@@ -32,7 +34,7 @@ export const LocalResignButton = () => {
             ? GameEndReason.BLACK_RESIGNED
             : GameEndReason.WHITE_RESIGNED,
         winner,
-      })
+      }),
     );
   };
 

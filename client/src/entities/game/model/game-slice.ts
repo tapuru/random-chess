@@ -25,9 +25,6 @@ const initialState: GameState = {
   settings: {
     mode: GameModes.CLASSICAL,
     type: GameTypes.LOCAL,
-    time: null,
-    additionTime: null,
-    timeControl: null,
   },
   result: null,
   //this flag is used for updating the board with non-serializable chess state

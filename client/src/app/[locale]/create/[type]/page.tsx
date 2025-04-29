@@ -1,4 +1,4 @@
-import { CreateGamePage } from "@/pages/create-game-page";
+import { CreateGamePage } from "@/pages-components/create-game-page";
 
 const Page = () => {
   return <CreateGamePage />;

@@ -25,15 +25,12 @@ export const useGameResult = () => {
 
   let titleColor: "s" | "e" | "n" = "n";
   if (
-    playerOne?.color === gameResult?.winner?.color ||
+    playerOne?.color === gameResult?.winner ||
     (gameType === GameTypes.LOCAL && gameResult?.winner !== null)
   ) {
     titleColor = "s";
   }
-  if (
-    playerTwo?.color === gameResult?.winner?.color &&
-    gameType !== GameTypes.LOCAL
-  ) {
+  if (playerTwo?.color === gameResult?.winner && gameType !== GameTypes.LOCAL) {
     titleColor = "e";
   }
 
@@ -51,11 +48,11 @@ export const useGameResult = () => {
 
   if (gameResult?.winner) {
     if (gameType === GameTypes.LOCAL) {
-      console.log(t(gameResult.winner.color));
-      title = `${t(gameResult.winner.color)} ${t("win")}!`;
-    } else if (gameResult.winner.color === playerOne?.color) {
+      console.log(t(gameResult.winner));
+      title = `${t(gameResult.winner)} ${t("win")}!`;
+    } else if (gameResult.winner === playerOne?.color) {
       title = `${t("victory")}!`;
-    } else if (gameResult.winner.color === playerTwo?.color) {
+    } else if (gameResult.winner === playerTwo?.color) {
       title = `${t("defeat")}!`;
     }
   }

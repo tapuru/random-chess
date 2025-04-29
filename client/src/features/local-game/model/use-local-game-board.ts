@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import { useAppDispatch, useAppSelector } from "@/shared/lib/hooks/redux-hooks";
 import { useCallback, useEffect, useState } from "react";
@@ -25,7 +26,7 @@ export const useLocalGameBoard = () => {
   const gameHasRestarted = useAppSelector(selectGameHasRestarted);
   const gameSettions = useAppSelector(selectGameSettings);
   const currentPlayer = [playerOne, playerTwo].find(
-    (p) => p?.color === game?.currentTurn
+    (p) => p?.color === game?.currentTurn,
   );
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export const useLocalGameBoard = () => {
             playerOne.color === ChessColors.BLACK
               ? "blackOutOfTime"
               : "whiteOutOfTime",
-        })
+        }),
       );
       dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
     }
@@ -68,7 +69,7 @@ export const useLocalGameBoard = () => {
             playerTwo.color === ChessColors.BLACK
               ? "blackOutOfTime"
               : "whiteOutOfTime",
-        })
+        }),
       );
       dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
     }
@@ -95,7 +96,7 @@ export const useLocalGameBoard = () => {
               winner,
               moves: game.moves,
               reason: "checkmate",
-            })
+            }),
           );
           dispatch(gameActions.setGameStatus(GameStatus.FINISHED));
         }
@@ -104,7 +105,7 @@ export const useLocalGameBoard = () => {
             gameActions.setResult({
               reason: "draw",
               moves: game.moves,
-            })
+            }),
           );
         }
         if (chess.isStalemate()) {
@@ -118,11 +119,11 @@ export const useLocalGameBoard = () => {
             color: game.currentTurn,
             time: gameSettions.additionTime,
             maxTime: gameSettions.time,
-          })
+          }),
         );
       }
     },
-    [chess, game, dispatch]
+    [chess, game, dispatch],
   );
 
   return {

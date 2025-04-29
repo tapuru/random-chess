@@ -61,6 +61,7 @@ export class GameGateway implements OnModuleInit {
     this.server.emit(GameMessages.GAME_ALIERT, {
       message: 'game-left',
     });
+    client.send('asd', { data: 'sd' }, 'sdfs');
   }
 
   @SubscribeMessage(GameMessages.MOVE)
